@@ -50,8 +50,8 @@
 
         <p><input type="checkbox" id="sub" name="sub"> <label for="sub">Subscribirse al bolerin de Novedades</label></p>
 
-        <p><input type="submit" value="Guardar cambios">
-            <input type="reset" value="Borrar los datos introducidos">
+        <p><input type="submit" value="Guardar cambios" name="save">
+            <input type="reset" value="Borrar los datos introducidos" name="reset">
         </p>
     </form>
 </body>
