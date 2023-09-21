@@ -75,7 +75,8 @@ if (isset($_POST["save"]) && !$error_form) {
             ?>
 
 
-            <p><label for="foto"><span>Incluir mi foto:</span></label>
+            <p>
+                <label for="foto"><span>Incluir mi foto:</span></label>
                 <input type="file" id="foto" name="foto">
             </p>
 
@@ -93,9 +94,13 @@ if (isset($_POST["save"]) && !$error_form) {
                 <textarea name="comment" id="comm" cols="30" rows="10"></textarea>
             </p>
 
-            <p><input type="checkbox" id="sub" name="sub"> <label for="sub">Subscribirse al bolerin de Novedades</label></p>
+            <p>
+                <input type="checkbox" id="sub" name="sub">
+                <label for="sub">Subscribirse al bolerin de Novedades</label>
+            </p>
 
-            <p><input type="submit" value="Guardar cambios" name="save">
+            <p>
+                <input type="submit" value="Guardar cambios" name="save">
                 <input type="reset" value="Borrar los datos introducidos" name="reset">
             </p>
         </form>
