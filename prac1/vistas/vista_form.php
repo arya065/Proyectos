@@ -67,8 +67,8 @@
             <label for="comment">Comentarios:</label>
             <textarea name="comment" id="comment" cols="30" rows="2"><?php if (isset($_POST["comment"])) echo $_POST["comment"]; ?></textarea>
             <?php
-            if (isset($_POST["send"]) && $error_comment)
-                echo "<span class='error'> *Campo obligatorio* </span>";
+            // if (isset($_POST["send"]) && $error_comment)
+            //     echo "<span class='error'> *Campo obligatorio* </span>";
             ?>
         </p>
 
