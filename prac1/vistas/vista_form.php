@@ -56,11 +56,11 @@
         <p>
             Aficiones:
             <label for="sport">Deportes</label>
-            <input type="checkbox" name="hobby" id="sport">
+            <input type="checkbox" name="hobby[]" id="sport" value="sport">
             <label for="read">Lectura</label>
-            <input type="checkbox" name="hobby" id="read">
+            <input type="checkbox" name="hobby[]" id="read" value="read">
             <label for="other">Otros</label>
-            <input type="checkbox" name="hobby" id="other">
+            <input type="checkbox" name="hobby[]" id="other" value="other">
         </p>
 
         <p>

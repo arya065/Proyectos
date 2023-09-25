@@ -15,10 +15,16 @@
     echo "<p><strong>Nacido en: </strong>" . $_POST["birth"] . "</p>";
     echo "<p><strong>Sexo: </strong>" . $_POST["sexo"] . "</p>";
 
-    if (isset($_POST["hobby"])) {
-        echo "<p><strong>Aficiones:</strong>Si</p>";
+    $hobby_arr = $_POST["hobby"];
+    if (isset($hobby_arr)) {
+        echo "<p><strong>Aficiones:</strong></p>";
+        echo "<ol>";
+        for ($i = 0; $i < count($hobby_arr); $i++){
+            echo  "<li>$hobby_arr[$i] </li>";
+        }
+        echo "</ol>";
     } else {
-        echo "<p><strong>Aficiones:</strong>No</p>";
+        echo "<p><strong>Aficiones:</strong>No elegido</p>";
     }
 
     if ($_POST["comment"] !== "") {
