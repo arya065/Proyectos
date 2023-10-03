@@ -49,15 +49,14 @@ if (isset($_POST["compare"])) {
                 <label for="first">Primera palabra: </label>
                 <input type="text" id="first" name="first" value="<?php if (isset($_POST["first"])) echo $_POST["first"] ?>">
                 <?php
-                $_POST["first"] = trim($_POST["first"]);
                 if (isset($_POST["compare"])) {
+                    $_POST["first"] = trim($_POST["first"]);
                     if ($error_first) {
                 ?>
                         <span>*Campo Vacio*</span>
                 <?php
                     } else if (strlen($_POST["first"]) > 3) {
                         $first = substr($_POST["first"], strlen($_POST["first"]) - 3);
-                        echo "<h1>$first</h1>";
                     } else {
                         $first = $_POST["first"];
                     }
@@ -68,16 +67,14 @@ if (isset($_POST["compare"])) {
                 <label for="second">Secunda palabra: </label>
                 <input type="text" id="second" name="second" value="<?php if (isset($_POST["second"])) echo $_POST["second"] ?>">
                 <?php
-                $_POST["second"] = trim($_POST["second"]);
                 if (isset($_POST["compare"])) {
+                    $_POST["second"] = trim($_POST["second"]);
                     if ($error_second) {
                 ?>
                         <span>*Campo Vacio*</span>
                 <?php
                     } else if (strlen($_POST["second"]) > 3) {
-
                         $second = substr($_POST["second"], strlen($_POST["second"]) - 3);
-                        echo "<h1>$second</h1>";
                     } else {
                         $second = $_POST["second"];
                     }
@@ -115,7 +112,6 @@ if (isset($_POST["compare"])) {
             ?>
         </div>
     <?php
-
     }
     ?>
 
