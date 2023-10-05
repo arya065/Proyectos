@@ -1,8 +1,7 @@
 <?php
 if (isset($_POST["compare"])) {
     $error_first = $_POST["first"] == "";
-    $error_form = $error_first || (ifWord($_POST["first"]) && ifNum($_POST["first"]));
-    echo "<h1>$error_first</h1>";
+    $error_form = $error_first || (!ifWord($_POST["first"]) && !ifNum($_POST["first"]));
 }
 
 function ifWord($first)
@@ -18,11 +17,12 @@ function ifWord($first)
 }
 function ifNum($first)
 {
-    for ($i = 0; $i <= 9; $i++) {
-        for ($j = 0; $j < strlen($first); $j++) {
+    for ($j = 0; $j < strlen($first); $j++) {
+        for ($i = 0; $i <= 9; $i++) {
             $tmp = false;
             if ($first[$j] == $i) {
                 $tmp = true;
+                break;
             }
         }
         if (!$tmp) {
@@ -30,6 +30,13 @@ function ifNum($first)
         }
     }
     return true;
+}
+
+function ifPalindrom($first)
+{
+    if ($first == strrev($first)) {
+        return true;
+    }
 }
 ?>
 
@@ -81,11 +88,6 @@ function ifNum($first)
                 ?>
                         <span>*Campo Vacio*</span>
                 <?php
-                        // } else if (strlen($_POST["first"]) > 3) {
-                        //     $first = substr($_POST["first"], strlen($_POST["first"]) - 3);
-                        // } else {
-                        //     $first = $_POST["first"];
-                        // }
                     }
                 }
                 ?>
@@ -100,24 +102,15 @@ function ifNum($first)
         <div class="results">
             <h1>Palindromos/capicuas - Resultado</h1>
             <?php
-            // if (strlen($first) > strlen($second)) {
-            //     $first = substr($first, strlen($first) - strlen($second));
-            // } else if (strlen($first) < strlen($second)) {
-            //     $second = substr($second, strlen($second) - strlen($first));
-            // }
-            // if (isset($_POST["compare"]) && $first == $second && strlen($first) == 3 && strlen($second) == 3) {
-            //     echo "<p>" . $_POST["first"] . " y "  . $_POST["second"] . " se riman</p>";
-            // } else if (isset($_POST["compare"]) && $first == $second && strlen($first) == 2 && strlen($second) == 2) {
-            //     echo "<p>" . $_POST["first"] . " y "  . $_POST["second"] . " se riman un poco</p>";
-            // } else if (isset($_POST["compare"]) && $first == $second && strlen($first) == 1 && strlen($second) == 1) {
-            //     echo "<p>" . $_POST["first"] . " y "  . $_POST["second"] . " se riman muy poco</p>";
-            // } else if (isset($_POST["compare"]) && substr($first, 1) == substr($second, 1) && strlen($first) == 3 && strlen($second) == 3) {
-            //     echo "<p>" . $_POST["first"] . " y "  . $_POST["second"] . " se riman un poco</p>";
-            // } else if (isset($_POST["compare"]) && substr($first, 2) == substr($second, 2) && strlen($first) == 3 && strlen($second) == 3) {
-            //     echo "<p>" . $_POST["first"] . " y "  . $_POST["second"] . " se riman muy poco</p>";
-            // } else {
-            //     echo "<p>no se riman</p>";
-            // }
+            if (ifPalindrom($_POST["first"]) && ifWord($_POST["first"])) {
+                echo $_POST["first"], " es palindromo";
+            } elseif (!ifPalindrom($_POST["first"]) && ifWord($_POST["first"])) {
+                echo $_POST["first"], " no es palindromo";
+            } elseif (ifPalindrom($_POST["first"]) && ifNum($_POST["first"])) {
+                echo $_POST["first"], " es numero capicua";
+            } elseif (!ifPalindrom($_POST["first"]) && ifNum($_POST["first"])) {
+                echo $_POST["first"], " no es numero capicua";
+            }
             ?>
         </div>
     <?php
