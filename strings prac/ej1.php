@@ -7,8 +7,6 @@ if (isset($_POST["compare"])) {
 }
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 

@@ -31,10 +31,10 @@
         <p>
             <label for="birth">Nacido en:</label>
             <select name="birth" id="birth">
-                <option value="Malaga" <?php if (!isset($_POST["birth"]) || (isset($_POST["birth"]) && $_POST["birth"] == "Malaga")) echo "selected" ?>>
+                <option value="Malaga" <?php if ( (isset($_POST["birth"]) && $_POST["birth"] == "Malaga")) echo "selected" ?>>
                     Malaga
                 </option>
-                <option value="No Malaga" <?php if (!isset($_POST["birth"]) || (isset($_POST["birth"]) && $_POST["birth"] == "No Malaga")) echo "selected" ?>>
+                <option value="No Malaga" <?php if ( (isset($_POST["birth"]) && $_POST["birth"] == "No Malaga")) echo "selected" ?>>
                     No Malaga
                 </option>
             </select>
