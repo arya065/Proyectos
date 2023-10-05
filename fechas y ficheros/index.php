@@ -28,6 +28,13 @@ if (isset($_POST["send"]) && !$error_archivo) {
                 <label for="archivo">Seleccione un archivo imagen (Max 500KB):</label>
                 <input type="file" name="archivo" id="archivo" accept="img/*">
                 <?php
+                // $_FILES["foto"]["name"]
+                                // ["error"]
+                                // ["type"]
+                                // ["size"]
+                                // ["tmp_name"]
+                //теория о $_FILES
+                
                 if (isset($_POST["send"]) && $error_archivo) {
                     if ($_FILES["archivo"]["name"] != "") {
                         echo "<span class='error'>No se ha selecionado ningun archivo</span>";
