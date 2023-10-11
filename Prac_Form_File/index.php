@@ -1,6 +1,22 @@
 <?php
+// Doca
+// https://educacionadistancia.juntadeandalucia.es/centros/malaga/pluginfile.php/385132/mod_resource/content/2/Enunciado_Formulario2.pdf
 if (isset($_POST["send"])) {
     $error_foto = $_FILES["photo"]["name"] != "" && ($_FILES["photo"]["error"] || !getimagesize($_FILES["photo"]["tmp_name"]));
+}
+function dniCorrect()
+{
+    /*
+    También, controlaremos que el DNI introducido sea válido. Para ello vamos a suponer que un
+DNI válido va a ser una secuencia de ocho dígitos seguidos de una letra (Ejemplos: 11223344P,
+12347898g, …..). Para comprobar que la letra del DNI es válida podemos usar la siguiente
+función PHP, a la cual se le pasa un número de DNI, y nos devuelve la letra mayúscula que le
+corresponde:
+function LetraNIF($dni)
+{
+return substr("TRWAGMYFPDXBNJZSQVHLCKEO", $dni % 23, 1);
+}
+    */
 }
 ?>
 
