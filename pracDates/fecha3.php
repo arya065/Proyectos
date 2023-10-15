@@ -1,12 +1,15 @@
 <?php
 if (isset($_POST["compare"])) {
-    $error_first = $_POST["first"] == "" || correctDate($_POST["first"]);
-    $error_second = $_POST["second"] == "" || correctDate($_POST["second"]);
-
+    $error_first = $_POST["first"] == "";
+    $error_second = $_POST["second"] == "";
     $error_form = $error_first || $error_second;
 }
-function correctDate($date){
-    
+
+function diffdates()
+{
+    $date1New = strtotime($_POST["first"]);
+    $date2New = strtotime($_POST["second"]);
+    return sprintf("%.0f", ($date2New - $date1New) / 86400);
 }
 ?>
 
@@ -44,13 +47,12 @@ function correctDate($date){
 <body>
     <div class="form">
         <h1>Fechas - Formulario</h1>
-        <form action="fecha1.php" method="post">
+        <form action="fecha3.php" method="post">
             <p>
                 <label for="first">Una Fecha (DD/MM/YYYY): </label>
-                <input type="text" id="first" name="first" value="<?php if (isset($_POST["first"])) echo $_POST["first"] ?>">
+                <input type="date" name="first" id="first" value="<?php if (isset($_POST["first"])) echo $_POST["first"] ?>">
                 <?php
                 if (isset($_POST["compare"])) {
-                    $_POST["first"] = trim($_POST["first"]);
                     if ($error_first) {
                 ?>
                         <span>*Campo Vacio*</span>
@@ -61,7 +63,8 @@ function correctDate($date){
             </p>
             <p>
                 <label for="second">Otra Fecha (DD/MM/YYYY): </label>
-                <input type="text" id="second" name="second" value="<?php if (isset($_POST["second"])) echo $_POST["second"] ?>">
+                <input type="date" name="second" id="second" value="<?php if (isset($_POST["second"])) echo $_POST["second"] ?>">
+
                 <?php
                 if (isset($_POST["compare"])) {
                     $_POST["second"] = trim($_POST["second"]);
@@ -84,6 +87,8 @@ function correctDate($date){
             <h1>Fechas - Respuesta</h1>
             <?php
             //Логкигка
+            echo "<p>La diferencia en dias entre las dos fechas introducidas es ";
+            echo diffdates($_POST["first"], $_POST["second"]), "</p>";
             ?>
         </div>
     <?php
