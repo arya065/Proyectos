@@ -1,12 +1,12 @@
 <?php
 if (isset($_POST["compare"])) {
-    $error_first = $_POST["day1"] == "" || $_POST["month1"] == "" || $_POST["year1"] == "" || correctDate($_POST["day1"], $_POST["month1"], $_POST["year1"]);
-    $error_second = $_POST["day2"] == "" || $_POST["month2"] == "" || $_POST["year2"] == "" || correctDate($_POST["day2"], $_POST["month2"], $_POST["year2"]);
+    $error_first = $_POST["day1"] == "" || $_POST["month1"] == "" || $_POST["year1"] == "" || !correctDate($_POST["day1"], $_POST["month1"], $_POST["year1"]);
+    $error_second = $_POST["day2"] == "" || $_POST["month2"] == "" || $_POST["year2"] == "" || !correctDate($_POST["day2"], $_POST["month2"], $_POST["year2"]);
     $error_form = $error_first || $error_second;
 }
 function correctDate($day, $month, $year)
 {
-    return !checkdate(trim($month), trim($day), trim($year));
+    return checkdate(trim($month), trim($day), trim($year));
 }
 function diffdates()
 {
@@ -15,7 +15,7 @@ function diffdates()
     $date1New = strtotime($_POST["month1"] . "/" . $_POST["day1"] . "/" . $_POST["year1"]);
     $date2New = strtotime($_POST["month2"] . "/" . $_POST["day2"] . "/" . $_POST["year2"]);
 
-    return sprintf("%.0f", ($date2New - $date1New) / 86400);
+    return sprintf("%.0f", abs(($date2New - $date1New) / 86400));
 }
 ?>
 
@@ -94,6 +94,11 @@ function diffdates()
                     <option value="1980" <?php if ((isset($_POST["year1"]) && $_POST["year1"] == "1980")) echo "selected" ?>>1980</option>
                 </select>
             </p>
+            <?php
+            if ($_POST["compare"] && $error_first) {
+                echo "<span>Fecha invalida</span>";
+            }
+            ?>
             <p>
                 <label for="second">Introduzca otra fecha:</label>
             </p>
@@ -134,6 +139,11 @@ function diffdates()
                     <option value="1979" <?php if ((isset($_POST["year2"]) && $_POST["year2"] == "1979")) echo "selected" ?>>1979</option>
                     <option value="1980" <?php if ((isset($_POST["year2"]) && $_POST["year2"] == "1980")) echo "selected" ?>>1980</option>
                 </select>
+                <?php
+                if ($_POST["compare"] && $error_second) {
+                    echo "<span>Fecha invalida</span>";
+                }
+                ?>
             </p>
             <input type="submit" value="Calcular" name="compare">
         </form>
