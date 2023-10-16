@@ -28,6 +28,11 @@ function LetraNIF($dni)
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rellena tu CV</title>
 </head>
+<style>
+    span {
+        color: red;
+    }
+</style>
 
 <body>
     <h1>Rellena tu CV</h1>
@@ -37,7 +42,7 @@ function LetraNIF($dni)
             <input type="text" name="nombre" id="nombre" value="<?php if (isset($_POST["nombre"])) echo $_POST["nombre"] ?>">
             <?php
             if (isset($_POST["send"]) && $_POST["nombre"] == "") {
-                echo "Campo vacio";
+                echo "<span>Campo vacio</span>";
             }
             ?>
         </p>
@@ -46,7 +51,7 @@ function LetraNIF($dni)
             <input type="text" name="usuario" id="usuario" value="<?php if (isset($_POST["usuario"])) echo $_POST["usuario"] ?>">
             <?php
             if (isset($_POST["send"]) && $_POST["usuario"] == "") {
-                echo "Campo vacio";
+                echo "<span>Campo vacio</span>";
             }
             ?>
         </p>
@@ -55,7 +60,7 @@ function LetraNIF($dni)
             <input type="password" name="contrasena" id="contrasena">
             <?php
             if (isset($_POST["send"]) && $_POST["contrasena"] == "") {
-                echo "Campo vacio";
+                echo "<span>Campo vacio</span>";
             }
             ?>
         </p>
@@ -64,7 +69,7 @@ function LetraNIF($dni)
             <input type="text" name="dni" id="dni" value="<?php if (isset($_POST["dni"])) echo $_POST["dni"] ?>">
             <?php
             if (isset($_POST["send"]) && $_POST["dni"] == "") {
-                echo "Campo vacio";
+                echo "<span>Campo vacio</span>";
             }
             ?>
         </p>
@@ -76,7 +81,7 @@ function LetraNIF($dni)
             <label for="mujer">Mujer</label><br>
             <?php
             if (isset($_POST["send"]) && !isset($_POST["sexo"])) {
-                echo "Campo vacio";
+                echo "<span>Campo vacio</span>";
             }
             ?>
         </p>
