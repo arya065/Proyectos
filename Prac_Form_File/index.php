@@ -15,6 +15,7 @@ if (isset($_POST["send"])) {
 function LetraNIF($dni)
 {
     return substr("TRWAGMYFPDXBNJZSQVHLCKEO", $dni % 23, 1);
+    //comprueba los numeros con letras
 }
 
 // }
@@ -71,6 +72,7 @@ function LetraNIF($dni)
             if (isset($_POST["send"]) && $_POST["dni"] == "") {
                 echo "<span>Campo vacio</span>";
             }
+            if(LetraNIF(454545554))
             ?>
         </p>
         <p>
