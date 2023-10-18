@@ -14,6 +14,9 @@
     echo "<p>Contrasena:", $_POST["contrasena"], "</p>";
     echo "<p>DNI:", $_POST["dni"], "</p>";
     echo "<p>Sexo:", $_POST["sexo"], "</p>";
+    $destination = "img/" . $_FILES["photo"]["name"];
+    move_uploaded_file($_FILES["photo"]["tmp_name"], $destination);
+    echo '<p><img src="' . $destination . '" alt="photo"></p>';
     // echo "<p>Foto:", $_FILES["photo"], "</p>";
     if (isset($_POST["sub"])) {
         echo "<p>Sub: si</p>";
