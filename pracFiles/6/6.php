@@ -74,11 +74,11 @@
                         echo "</th>";
                     }
                 }
-
             }
             ?>
         </table>
     <?php
+        fclose($fd);
     }
     ?>
 </body>

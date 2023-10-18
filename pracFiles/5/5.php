@@ -41,6 +41,7 @@
             ?>
         </table>
     <?php
+        fclose($fd);
     }
     ?>
 </body>
