@@ -3,6 +3,7 @@ if (isset($_POST["send"])) {
     if (correctFile($_FILES["fichero"])) {
         @$fd = fopen("Ficheros/filename", "w");
         fwrite($fd, file_get_contents($_FILES["fichero"]["tmp_name"]));
+        // move_uploaded_file($_FILES["fichero"]["tmp_name"],"Ficheros/filename");
         echo "Fichero subido";
         fclose($fd);
     } else {
