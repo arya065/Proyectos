@@ -1,5 +1,7 @@
 <?php
 if (isset($_POST["count"]) && $_POST["texto"] != "") {
+    $text = $_POST["texto"];
+    
     echo "simoblos:",strlen($_POST["texto"]);
 }
 ?>
