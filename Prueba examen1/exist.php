@@ -16,8 +16,11 @@ function mi_explode($string, $delimiter)
         }
     }
 }
-function mi_substr($string, $start, $end = strlen($string) - 1)
+function mi_substr($string, $start, $end)
 {
+    if ($end == null) {
+        $end = strlen($string) - 1;
+    }
     $volver = "";
     for ($i = $start; $i < $end; $i++) {
         $volver = $volver . $string[$i];
