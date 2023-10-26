@@ -43,3 +43,12 @@ function correctFile($file)
     }
     return true;
 }
+function fileFunctions()
+{
+    @$fd = fopen("path/to/file.php", "w");
+    fclose($fd);
+    while (!feof($fd)) {
+        $string = fgets($fd);
+    }
+    fwrite($fd, $string . PHP_EOL);
+}
