@@ -20,6 +20,59 @@ function getUsers()
     }
     return $result;
 }
+function deleteUser($id)
+{
+    try {
+        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_foro");
+        mysqli_set_charset($conn, "utf-8");
+    } catch (Exception $e) {
+        die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
+    }
+    try {
+        $consulta = "delete from usuarios where id = '" . $id . "'";
+        $result = mysqli_query($conn, $consulta);
+    } catch (Exception $e) {
+        mysqli_close($conn);
+        die("<p>no he podido crear consulta:" . $e->getMessage() . "</p></body></html>");
+    }
+    return $result;
+}
+function showInfo($id)
+{
+    $page = '
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Informacion</title>
+    </head>
+    <body>
+        <p>Nombre:' . getInfo($id, "Nombre") . '</p>
+        <p>Usuario:' . getInfo($id, "Usuario") . '</p>
+        <p>Contrasena:' . getInfo($id, "clave") . '</p>
+        <p>Email:' . getInfo($id, "email") . '</p>
+    </body>
+    </html>
+    ';
+}
+function getInfo($id, $param)
+{
+    try {
+        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_foro");
+        mysqli_set_charset($conn, "utf-8");
+    } catch (Exception $e) {
+        die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
+    }
+    try {
+        $consulta = "select " . $param . "from usuarios where id = '" . $id . "'";
+        $result = mysqli_query($conn, $consulta);
+    } catch (Exception $e) {
+        mysqli_close($conn);
+        die("<p>no he podido crear consulta:" . $e->getMessage() . "</p></body></html>");
+    }
+    return $result;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +95,7 @@ function getUsers()
         $list = getUsers();
         foreach ($list as $i => $value) {
             $line = mysqli_fetch_assoc($list);
-            echo '<td><a>' . $line[$i] . '</a></td>';
+            echo '<td><a id="' . $line . '">' . $line[$i] . '</a></td>';
         }
         ?>
     </table>
