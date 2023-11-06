@@ -1,4 +1,8 @@
 <?php
+if (isset($_POST["go_insert"])) {
+    require "usuario_nuevo.php";
+    return;
+}
 function getUsers()
 {
     try {
@@ -28,7 +32,7 @@ function getUsers()
 
 <body>
     <h1>Listado de los usuarios</h1>
-    <table>
+    <table border="1">
         <tr>
             <th>Nombre de usuario</th>
             <th>Borrar</th>
@@ -43,7 +47,7 @@ function getUsers()
         ?>
     </table>
     <form action="index.php" method="post">
-        <input type="submit" value="Insertar nuevo Usuario" name="send">
+        <input type="submit" value="Insertar nuevo Usuario" name="go_insert">
     </form>
 </body>
 
