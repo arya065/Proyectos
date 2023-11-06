@@ -8,12 +8,68 @@ function errors()
     // if (isset($_POST["send"])) {
     //     //name
     //     //user
+
+    try {
+        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_foro");
+        mysqli_set_charset($conn, "utf-8");
+    } catch (Exception $e) {
+        die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
+    }
+    try {
+        $consulta = "select * from usuarios where usuario = '" . $_POST["usuario"] . "'";
+        $result = mysqli_query($conn, $consulta);
+    } catch (Exception $e) {
+        mysqli_close($conn);
+        die("<p>no he podido crear consulta:" . $e->getMessage() . "</p></body></html>");
+    }
+    $error_user = mysqli_num_rows($result) > 0;
+
+
     //     //pass
     //     //email
     //     $err = filter_var($_POST["email"], FILTER_VALIDATE_EMAIL);//проверяет правильно ли написан email
-        
+    //так же проверить зарегистрирован ли эта почта
+    $error_form = $error_nombre || $error_nombre || $error_email || $error_pass;
+    if (!$error_form) {
+        $consulta = "insert into usuarios (nombre,usuario,clave,email) values ('" . $_POST["nombre"] . "','" . $_POST["usuario"] . "','" . md5($_POST["clave"]) . "','" . $_POST["email"] . "',)";
+        header("Location:index.php");
+        exit;
+    }
+    if ($conn) {
+        mysqli_close($conn);
+    }
     // }
     // return true;
+
+
+}
+function repeated($conn, $table, $column, $value)
+{
+    try {
+        $consulta = "select * from" . $table . "where " . $column . " = '" . $_POST["usuario"] . "'";
+        $result = mysqli_query($conn, $consulta);
+        $result  = mysqli_num_rows($result) > 1;
+    } catch (Exception $e) {
+        mysqli_close($conn);
+        die("<p>no he podido crear consulta:" . $e->getMessage() . "</p></body></html>");
+    }
+    return $result;
+}
+function error_pg($title, $body)
+{
+    $page = '
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>' . $title . '</title>
+    </head>
+    <body>
+        ' . $body . '
+    </body>
+    </html>';
+    return $page;
 }
 ?>
 <!DOCTYPE html>
