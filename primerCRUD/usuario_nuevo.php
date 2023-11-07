@@ -2,12 +2,15 @@
 //сделать проверку ошибок формы
 //если значения пустые, пишем что пустые, если значения неправильные, пишем что неправильные
 //неправильные значения - это те, которые превышают допустимое кол-во символов
+//если пользователь уже существует
 //если ошибок нет, то пишем что ошибок нет и добавляем в БД
 function errors()
 {
     // if (isset($_POST["send"])) {
     //     //name
+    $error_name = false;
     //     //user
+    $error_user = false;
 
     try {
         $conn = mysqli_connect("localhost", "jose", "josefa", "bd_foro");
@@ -26,10 +29,11 @@ function errors()
 
 
     //     //pass
+    $error_pass = false;
     //     //email
-    //     $err = filter_var($_POST["email"], FILTER_VALIDATE_EMAIL);//проверяет правильно ли написан email
+    $error_email = filter_var($_POST["email"], FILTER_VALIDATE_EMAIL); //проверяет правильно ли написан email
     //так же проверить зарегистрирован ли эта почта
-    $error_form = $error_nombre || $error_nombre || $error_email || $error_pass;
+    $error_form = $error_name || $error_user || $error_email || $error_pass;
     if (!$error_form) {
         $consulta = "insert into usuarios (nombre,usuario,clave,email) values ('" . $_POST["nombre"] . "','" . $_POST["usuario"] . "','" . md5($_POST["clave"]) . "','" . $_POST["email"] . "',)";
         header("Location:index.php");

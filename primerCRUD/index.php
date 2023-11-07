@@ -55,6 +55,9 @@ function showInfo($id)
     </body>
     </html>
     ';
+    return $page;
+    //скорее всего придётся создавать генератор файла и кидать в него текст
+    //добавить отлов ошибок в получении данных, для того, если юзер удалён на сервере и его удаляют в приложении, не возникло ошибки
 }
 function getInfo($id, $param)
 {
@@ -81,6 +84,15 @@ function getInfo($id, $param)
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listado usuarios</title>
+    <style>
+        img {
+            height: 50px;
+            width: 50px;
+        }
+        table{
+            border-collapse: collapse;
+        }
+    </style>
 </head>
 
 <body>
@@ -95,7 +107,10 @@ function getInfo($id, $param)
         $list = getUsers();
         foreach ($list as $i => $value) {
             $line = mysqli_fetch_assoc($list);
-            echo '<td><a id="' . $line . '">' . $line[$i] . '</a></td>';
+            echo '<td><a href="' . showInfo($line["id_usuario"]) . '" id="' . $line["id_usuario"] . '">' . $line[$i] . '</a></td>';
+            //возможно придётся сделать с помощью формы и кнопок, перенаправляющих на нужную инфу
+            echo '<td><img src="img/borrar.png" alt="borrar"></td>';
+            echo '<td><img src="img/editar.png" alt="editar"></td>';
         }
         ?>
     </table>
