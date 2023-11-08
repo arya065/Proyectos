@@ -1,0 +1,34 @@
+<html>
+
+<head>
+    <script>
+        function muestraSugerencia(str) {
+            if (str.length == 0) {
+                document.getElementById("txtSugerencia").innerHTML = "";
+                return;
+            } else {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("txtSugerencia").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttp.open("GET", "http://localhost/Proyectos/js/SUGERENCIA CIUDADES/ciudades.php?param=" + str, true);
+                // La dirección anterior corresponde a la ubicación de la página php en el servidor localhost
+                // Esta dirección podrá diferir dependiendo de la necesidad del programador.
+                xmlhttp.send();
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+    <p><b>Escribe el nombre de alguna ciudad d&oacute;nde quieres ir:</b></p>
+    <form>
+        Ciudad: <input type="text" onkeyup="muestraSugerencia(this.value)">
+    </form>
+    <p>Sugerencias: <span id="txtSugerencia"></span></p>
+</body>
+
+</html>

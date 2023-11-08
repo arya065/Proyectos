@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <p id="listado"></p>
+
+    <script>
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                recuperaDatos(this);
+            }
+        };
+        xhttp.open("GET", "coches.xml", true);
+        xhttp.send();
+
+        function recuperaDatos(xml) {
+            var datos = "";
+            var xmlDatos = xml.responseXML;
+            array = xmlDatos.getElementsByTagName("marca");
+            for (i = 0; i < array.length; i++) {
+                datos = datos + "marca: " + array[i].childNodes[0].nodeValue + "<br>";
+            }
+            document.getElementById("listado").innerHTML = datos;
+        }
+    </script>
+</body>
+
+</html>
