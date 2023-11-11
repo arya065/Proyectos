@@ -4,14 +4,51 @@
 //неправильные значения - это те, которые превышают допустимое кол-во символов
 //если пользователь уже существует
 //если ошибок нет, то пишем что ошибок нет и добавляем в БД
-function errors()
-{
-    // if (isset($_POST["send"])) {
-    //     //name
-    $error_name = false;
-    //     //user
-    $error_user = false;
 
+
+if (isset($_POST["send"])) {
+
+    try {
+        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_foro");
+        mysqli_set_charset($conn, "utf-8");
+    } catch (Exception $e) {
+        die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
+    }
+    //name
+    $error_name = is_numeric($_POST["nombre"]);
+    if (strlen($_POST["nombre"]) > 20) {
+        $error_name = true;
+    }
+    //user
+    $error_user = correct_user();
+    if (strlen($_POST["usuario"]) > 20) {
+        $error_name = true;
+    }
+    //pass
+    $error_pass = false;
+    if (strlen($_POST["clave"]) > 50) {
+        $error_pass = true;
+    }
+    //email
+    $error_email = filter_var($_POST["email"], FILTER_VALIDATE_EMAIL); //проверяет правильно ли написан email
+    if (strlen($_POST["email"]) > 50) {
+        $error_email = true;
+    } else if (repeated($conn, "table_name", "email")) {
+        $error_email = true;
+    }
+    //так же проверить зарегистрирован ли эта почта
+    $error_form = $error_name || $error_user || $error_pass || $error_email;
+    if (!$error_form) {
+        $consulta = "insert into usuarios (nombre,usuario,clave,email) values ('" . $_POST["nombre"] . "','" . $_POST["usuario"] . "','" . md5($_POST["clave"]) . "','" . $_POST["email"] . "',)";
+        header("Location:index.php");
+        exit;
+    }
+    if ($conn) {
+        mysqli_close($conn);
+    }
+}
+function correct_user()
+{
     try {
         $conn = mysqli_connect("localhost", "jose", "josefa", "bd_foro");
         mysqli_set_charset($conn, "utf-8");
@@ -25,29 +62,9 @@ function errors()
         mysqli_close($conn);
         die("<p>no he podido crear consulta:" . $e->getMessage() . "</p></body></html>");
     }
-    $error_user = mysqli_num_rows($result) > 0;
-
-
-    //     //pass
-    $error_pass = false;
-    //     //email
-    $error_email = filter_var($_POST["email"], FILTER_VALIDATE_EMAIL); //проверяет правильно ли написан email
-    //так же проверить зарегистрирован ли эта почта
-    $error_form = $error_name || $error_user || $error_email || $error_pass;
-    if (!$error_form) {
-        $consulta = "insert into usuarios (nombre,usuario,clave,email) values ('" . $_POST["nombre"] . "','" . $_POST["usuario"] . "','" . md5($_POST["clave"]) . "','" . $_POST["email"] . "',)";
-        header("Location:index.php");
-        exit;
-    }
-    if ($conn) {
-        mysqli_close($conn);
-    }
-    // }
-    // return true;
-
-
+    return mysqli_num_rows($result) > 0;
 }
-function repeated($conn, $table, $column, $value)
+function repeated($conn, $table, $column)
 {
     try {
         $consulta = "select * from" . $table . "where " . $column . " = '" . $_POST["usuario"] . "'";
@@ -89,23 +106,43 @@ function error_pg($title, $body)
     <form action="usuario_nuevo.php" method="post">
         <p>
             <label for="nombre">Nombre:</label>
-            <input type="text" name="nombre" id="nombre" value="<?php if (isset($_POST["continue"])) echo $_POST["nombre"] ?>" maxlength="20">
+            <input type="text" name="nombre" id="nombre" value="<?php if (isset($_POST["send"])) echo $_POST["nombre"] ?>" maxlength="20">
+            <?php
+            if (isset($_POST["send"]) && $_POST["nombre"] == "") {
+                echo '<span>*Campo vacio*</span>';
+            }
+            ?>
         </p>
         <p>
             <label for="usuario">Usuario:</label>
-            <input type="text" name="usuario" id="usuario" value="<?php if (isset($_POST["continue"])) echo $_POST["usuario"] ?>" maxlength="20">
+            <input type="text" name="usuario" id="usuario" value="<?php if (isset($_POST["send"])) echo $_POST["usuario"] ?>" maxlength="20">
+            <?php
+            if (isset($_POST["send"]) && $_POST["usuario"] == "") {
+                echo '<span>*Campo vacio*</span>';
+            }
+            ?>
         </p>
         <p>
             <label for="clave">Contrasena:</label>
             <input type="password" name="clave" id="clave" maxlength="50">
+            <?php
+            if (isset($_POST["send"]) && $_POST["clave"] == "") {
+                echo '<span>*Campo vacio*</span>';
+            }
+            ?>
         </p>
         <p>
             <label for="email">Email:</label>
-            <input type="text" name="email" id="email" value="<?php if (isset($_POST["continue"])) echo $_POST["email"] ?>" maxlength="50">
+            <input type="text" name="email" id="email" value="<?php if (isset($_POST["send"])) echo $_POST["email"] ?>" maxlength="50">
+            <?php
+            if (isset($_POST["send"]) && $_POST["email"] == "") {
+                echo '<span>*Campo vacio*</span>';
+            }
+            ?>
         </p>
         <p>
-            <input type="submit" value="Continuar" name="continue">
-            <input type="button" value="Volver" name="volver">
+            <input type="submit" value="Continuar" name="send">
+            <input type="button" value="Volver" name="back">
         </p>
     </form>
 </body>

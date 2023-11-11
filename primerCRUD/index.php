@@ -89,7 +89,8 @@ function getInfo($id, $param)
             height: 50px;
             width: 50px;
         }
-        table{
+
+        table {
             border-collapse: collapse;
         }
     </style>
@@ -106,11 +107,13 @@ function getInfo($id, $param)
         <?php
         $list = getUsers();
         foreach ($list as $i => $value) {
+            echo '<tr>';
             $line = mysqli_fetch_assoc($list);
             echo '<td><a href="' . showInfo($line["id_usuario"]) . '" id="' . $line["id_usuario"] . '">' . $line[$i] . '</a></td>';
             //возможно придётся сделать с помощью формы и кнопок, перенаправляющих на нужную инфу
-            echo '<td><img src="img/borrar.png" alt="borrar"></td>';
+            echo '<td><img src="img/borrar.png" alt="borrar">test</td>';
             echo '<td><img src="img/editar.png" alt="editar"></td>';
+            echo '</tr>';
         }
         ?>
     </table>
