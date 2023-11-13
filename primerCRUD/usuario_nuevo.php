@@ -39,7 +39,7 @@ if (isset($_POST["send"])) {
     //так же проверить зарегистрирован ли эта почта
     $error_form = $error_name || $error_user || $error_pass || $error_email;
     if (!$error_form) {
-        $consulta = "insert into usuarios (nombre,usuario,clave,email) values ('" . $_POST["nombre"] . "','" . $_POST["usuario"] . "','" . md5($_POST["clave"]) . "','" . $_POST["email"] . "',)";
+        $consulta = "insert into usuarios (Usuario,Nombre,Clave,Email) values ('" . $_POST["usuario"] . "','" . $_POST["nombre"] . "','" . md5($_POST["clave"]) . "','" . $_POST["email"] . "',)";
         header("Location:index.php");
         exit;
     }
@@ -56,7 +56,7 @@ function correct_user()
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
     }
     try {
-        $consulta = "select * from usuarios where usuario = '" . $_POST["usuario"] . "'";
+        $consulta = "select * from usuarios where Usuario = '" . $_POST["usuario"] . "'";
         $result = mysqli_query($conn, $consulta);
     } catch (Exception $e) {
         mysqli_close($conn);

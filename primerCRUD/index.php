@@ -85,38 +85,54 @@ function getInfo($id, $param)
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listado usuarios</title>
     <style>
-        img {
+        /* img {
             height: 50px;
             width: 50px;
-        }
+        } */
 
         table {
             border-collapse: collapse;
+        }
+
+        .img_button_del {
+            background-image: url(img/borrar.png);
+        }
+
+        .img_button_edit {
+            background-image: url(img/editar.png);
         }
     </style>
 </head>
 
 <body>
     <h1>Listado de los usuarios</h1>
-    <table border="1">
-        <tr>
-            <th>Nombre de usuario</th>
-            <th>Borrar</th>
-            <th>Editar</th>
-        </tr>
-        <?php
-        $list = getUsers();
-        foreach ($list as $i => $value) {
-            echo '<tr>';
-            $line = mysqli_fetch_assoc($list);
-            echo '<td><a href="' . showInfo($line["id_usuario"]) . '" id="' . $line["id_usuario"] . '">' . $line[$i] . '</a></td>';
-            //возможно придётся сделать с помощью формы и кнопок, перенаправляющих на нужную инфу
-            echo '<td><img src="img/borrar.png" alt="borrar">test</td>';
-            echo '<td><img src="img/editar.png" alt="editar"></td>';
-            echo '</tr>';
-        }
-        ?>
-    </table>
+    <form action="index.php" method="post">
+
+        <table border="1">
+            <tr>
+                <th>Nombre de usuario</th>
+                <th>Borrar</th>
+                <th>Editar</th>
+            </tr>
+            <?php
+            $list = getUsers();
+            foreach ($list as $i => $value) {
+                echo '<tr>';
+                $line = mysqli_fetch_assoc($list);
+                // <input type="submit" value="" name="">
+                // <input type="button" value="" name="">
+                echo '<td><input type="submit" value="' . $line[$i] . '" name="' . $line["id_usuario"] . 'show" class="' . $line["id_usuario"] . '"></td>';
+                // echo '<td><a href="' . showInfo($line["id_usuario"]) . '" id="' . $line["id_usuario"] . '">' . $line[$i] . '</a></td>';
+                //возможно придётся сделать с помощью формы и кнопок, перенаправляющих на нужную инфу
+                // echo '<td><img src="img/borrar.png" alt="borrar">test</td>';
+                echo '<td><input type="button" name="' . $line["id_usuario"] . 'del" class="img_button_del ' . $line["id_usuario"] . '"></td>';
+                // echo '<td><img src="img/editar.png" alt="editar"></td>';
+                echo '<td><input type="button" name="' . $line["id_usuario"] . 'edit" class="img_button_edit ' . $line["id_usuario"] . '"></td>';
+                echo '</tr>';
+            }
+            ?>
+        </table>
+    </form>
     <form action="index.php" method="post">
         <input type="submit" value="Insertar nuevo Usuario" name="go_insert">
     </form>
