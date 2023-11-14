@@ -29,7 +29,7 @@
             <th>#</th>
             <th>Foto</th>
             <th>Nombre</th>
-            <th><a href="#">Usuario+</a></th><!--при нажатии открывает форму с добавлением пользователя-->
+            <th><a href="add_user.php">Usuario+</a></th><!--при нажатии открывает форму с добавлением пользователя-->
         </tr>
         <?php
         try {
@@ -51,8 +51,8 @@
             echo '<tr>';
             echo '<td>' . $line["id_usuario"] . '</td>';
             echo '<td><img src = "img/' . $line["foto"] . '"alt="Foto usuario"></td>';
-            echo '<td><a href="#">' . $line["nombre"] . '</a></td>';
-            echo '<td><a href="#">Borrar</a> - <a href="#">Editar</a></td>';
+            echo '<td><a href="show_info.php?id=' . $line["id_usuario"] . '">' . $line["nombre"] . '</a></td>';
+            echo '<td><a href="delete.php">Borrar</a> - <a href="edit.php">Editar</a></td>';
             echo '</tr>';
         }
         ?>
