@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+
+<body>
+    <form action="check.php" method="get">
+        <label for="user">Introduzca usuario y password:</label>
+        <br>
+        <input type="text" name="user" id="user" placeholder="usuario">
+        <br>
+        <input type="password" name="pass" id="pass" placeholder="password">
+        <br>
+        <input type="submit" value="Log in" name="login" onclick="action()">
+    </form>
+    <script>
+
+        function action() {
+            let url;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let user = document.getElementById("user");
+                    let pass = document.getElementById("pass");
+                    console.log(user);
+                    console.log(pass);
+                    url = "check.php?user=" + user + "&pass=" + pass;
+                    console.log(url);
+                };
+                xhttp.open("GET", url, true);
+                xhttp.send();
+            }
+        }
+    </script>
+</body>
+
+</html>
