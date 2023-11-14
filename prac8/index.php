@@ -1,3 +1,4 @@
+<!-- mysqli_insert_id -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,7 +53,7 @@
             echo '<td>' . $line["id_usuario"] . '</td>';
             echo '<td><img src = "img/' . $line["foto"] . '"alt="Foto usuario"></td>';
             echo '<td><a href="show_info.php?id=' . $line["id_usuario"] . '">' . $line["nombre"] . '</a></td>';
-            echo '<td><a href="delete.php">Borrar</a> - <a href="edit.php">Editar</a></td>';
+            echo '<td><a href="delete.php?id=' . $line["id_usuario"] . '">Borrar</a> - <a href="edit.php?id=' . $line["id_usuario"] . '">Editar</a></td>';
             echo '</tr>';
         }
         ?>
