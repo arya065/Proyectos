@@ -1,6 +1,10 @@
 <?php
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+if (isset($_GET['id']) || isset($_POST["delete"])) {
+    if (isset($_GET["id"])) {
+        $id = $_GET['id'];
+    } else {
+        $id = $_POST["delete"];
+    }
     try {
         $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
         mysqli_set_charset($conn, "utf-8");
@@ -19,16 +23,16 @@ if (isset($_GET['id'])) {
     $usuario = $line["usuario"];
     $nombre = $line["nombre"];
     $img = $line["foto"];
-    // mysqli_close($conn);
+    mysqli_close($conn);
 
     //delete button
     if (isset($_POST["delete"])) {
-        // try {
-        //     $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
-        //     mysqli_set_charset($conn, "utf-8");
-        // } catch (Exception $e) {
-        //     die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
-        // }
+        try {
+            $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
+            mysqli_set_charset($conn, "utf-8");
+        } catch (Exception $e) {
+            die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
+        }
         delete_user($conn, $id, $img);
         mysqli_close($conn);
         return;
@@ -62,12 +66,10 @@ function delete_user($conn, $id, $img)
         echo "<p>ID: $id</p>";
         echo "<p>Usuario: $usuario</p>";
         echo "<p>Nombre: $nombre</p>";
+        echo "<p>Foto: $img</p>";
         ?>
-        
-        <input type="submit" value="Eliminar" name="delete">
-        <a href="index.php">
-            <input type="button" value="Volver" name="back">
-        </a>
+        <a href="index.php"><button type="submit" value="<?php echo $id ?>" name="delete">Eliminar</button></a>
+        <a href="index.php"><button type="button" value="Volver" name="back">Volver</button></a>
     </form>
 </body>
 
