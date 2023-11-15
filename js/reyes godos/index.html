@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reyes Godos</title>
+</head>
+
+<body>
+    <button onclick="action()">Click here</button>
+    <ul id="list"></ul>
+    <script>
+        function action() {
+            let url;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    showJson(JSON.parse(this.responseText).reyesgodos, document.getElementById("list"));
+                };
+            }
+            url = "http://localhost/Proyectos/js/reyes godos/tierra.php";
+            xhttp.open("GET", url, true);
+            xhttp.send();
+        }
+        function showJson(data, parentElement) {
+            data.forEach(element => {
+                if (element.hijos == undefined) {
+                    let li = document.createElement("li");
+                    li.appendChild(document.createTextNode(element));
+                    parentElement.appendChild(li);
+                } else {
+                    let li = document.createElement("li");
+                    li.appendChild(document.createTextNode(element.nombre));
+                    parentElement.appendChild(li);
+
+                    let ul = document.createElement("ul");
+                    parentElement.appendChild(ul);
+                    showJson(element.hijos, ul);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
