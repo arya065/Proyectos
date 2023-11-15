@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuota</title>
+</head>
+
+<body>
+    <input type="text" name="capital" id="capital" placeholder="capital solicitado"><br>
+    <input type="text" name="interes" id="interes" placeholder="interes anual"><br>
+    <input type="text" name="plazo" id="plazo" placeholder="plazo (meses)"><br>
+    <button id="send" onclick="action()">Calcular</button><br>
+    <p id="response"></p>
+
+    <script>
+        function action() {
+            let url;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("response").innerHTML = "Su cuota mensual de: " + this.responseText;
+                };
+            }
+            let capital = document.getElementById("capital").value;
+            let interes = document.getElementById("interes").value;
+            let plazo = document.getElementById("plazo").value;
+            url = "http://localhost/Proyectos/js/cuota/calculate.php?capital=" + capital + "&interes=" + interes + "&plazo=" + plazo;
+            xhttp.open("GET", url, true);
+            xhttp.send();
+        }
+    </script>
+</body>
+
+</html>
