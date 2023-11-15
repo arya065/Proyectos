@@ -35,7 +35,7 @@ if (isset($_GET['id']) || isset($_POST["delete"])) {
         }
         delete_user($conn, $id, $img);
         mysqli_close($conn);
-        return;
+        require ("index.php");
     }
 }
 function delete_user($conn, $id, $img)
