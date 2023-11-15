@@ -8,32 +8,28 @@
 </head>
 
 <body>
-    <form action="check.php" method="get">
-        <label for="user">Introduzca usuario y password:</label>
-        <br>
-        <input type="text" name="user" id="user" placeholder="usuario">
-        <br>
-        <input type="password" name="pass" id="pass" placeholder="password">
-        <br>
-        <input type="submit" value="Log in" name="login" onclick="action()">
-    </form>
+    <label for="user">Introduzca usuario y password:</label>
+    <br>
+    <input type="text" name="user" id="user" placeholder="usuario">
+    <br>
+    <input type="password" name="pass" id="pass" placeholder="password">
+    <br>
+    <button value="Log in" name="login" onclick="action()">Log in</button>
+    <p id="response">&nbsp;</p>
     <script>
-
         function action() {
             let url;
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    let user = document.getElementById("user");
-                    let pass = document.getElementById("pass");
-                    console.log(user);
-                    console.log(pass);
-                    url = "check.php?user=" + user + "&pass=" + pass;
-                    console.log(url);
+                    document.getElementById("response").innerHTML = this.responseText;
                 };
-                xhttp.open("GET", url, true);
-                xhttp.send();
             }
+            let user = document.getElementById("user").value;
+            let pass = document.getElementById("pass").value;
+            url = "http://localhost/Proyectos/js/ventana de login/check.php?user=" + user + "&pass=" + pass;
+            xhttp.open("GET", url, true);
+            xhttp.send();
         }
     </script>
 </body>
