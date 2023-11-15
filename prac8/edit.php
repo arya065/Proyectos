@@ -59,7 +59,7 @@ function show_info($conn, $id)
 </head>
 
 <body>
-    <form action="index.php" method="post">
+    <form action="edit.php" method="post">
         <p>
             <label for="id">ID:</label>
             <input type="text" name="id" id="id" placeholder="___">
