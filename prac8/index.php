@@ -18,7 +18,7 @@ function delete_user($id, $img)
         mysqli_close($conn);
         die("<p>no he podido eliminar:" . $e->getMessage() . "</p></body></html>");
     }
-    unlink("img/" . $img . "");
+    // unlink("img/" . $img . "");
 }
 function getInfo($id)
 {

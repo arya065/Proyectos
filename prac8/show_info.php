@@ -28,6 +28,7 @@ function show_info($conn, $id)
     echo '<p>DNI: ' . $line["dni"] . '</p>';
     echo '<p>Sexo: ' . $line["sexo"] . '</p>';
     echo '<p>Imagen: <img src = "img/' . $line["foto"] . '"alt="Foto usuario"></p>';
+    echo '<button><a href="index.php">Volver</a></button>';
 }
 ?>
 <!DOCTYPE html>
@@ -41,6 +42,15 @@ function show_info($conn, $id)
         img {
             height: 100px;
             width: 100px;
+        }
+
+        a {
+            color: black;
+            text-decoration: none;
+        }
+
+        a:visited {
+            color: black;
         }
     </style>
 </head>
