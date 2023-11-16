@@ -85,9 +85,13 @@ function errors($post, $file)
     }
     //dni
     $dni_err = false;
-    //add exist()
-    //file
-    $file_err = false;
+    if ((strlen($post["dni"]) > 10) && ($post["dni"]) != "") {
+        $dni_err = true;
+    }
+    if ($post["dni"][strlen($post["dni"]) - 1] != LetraNIF(substr($post["dni"], 0, strlen($post["dni"]) - 1)))
+        //add exist()
+        //file
+        $file_err = false;
     if (isset($file["img"])) {
         if ($file["img"]["size"] > 500 * 1024) {
             $file_err = true;
@@ -101,6 +105,15 @@ function errors($post, $file)
     $result = false;
     $result = $user_err || $pass_err || $name_err || $dni_err || $file_err;
     return $result;
+}
+function LetraNIF($dni)
+{
+    $valor = (int) ($dni / 23);
+    $valor *= 23;
+    $valor = $dni - $valor;
+    $letras = "TRWAGMYFPDXBNJZSQVHLCKEO";
+    $letraNif = substr($letras, $valor, 1);
+    return $letraNif;
 }
 function exist($id, $value)
 {
