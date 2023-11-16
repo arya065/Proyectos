@@ -1,5 +1,5 @@
 <?php
-if (isset($_POST["send"])) {
+if (isset($_POST["send"]) && !errors($_POST, $_FILES)) {
     $id = $_POST["id"];
     foreach ($_POST as $key => $value) {
         if (($value != "") && ($key != "id" && $key != "send")) {
@@ -43,7 +43,7 @@ function show_info($conn, $id)
     echo '<option value="hombre">hombre</option>';
     echo '<option value="mujer">mujer</option>';
     echo '</select></p>';
-    echo '<p><label for="img">Imagen:</label><img src="' . $line["foto"] . '" alt="imagen usuario"><br><input type="file" name="img" id="img"></p>';
+    echo '<p><label for="img">Imagen:</label><img src="img/' . $line["foto"] . '" alt="imagen usuario"><br><input type="file" name="img" id="img"></p>';
     echo '<input type="submit" value="Guardar" name="send">';
     echo '<button><a href="index.php">Volver</a></button>';
     echo '</form>';
@@ -65,6 +65,47 @@ function change($id, $value, $key)
         die("<p>no he podido crear consulta:" . $e->getMessage() . "</p></body></html>");
     }
 }
+function errors($post, $file)
+{
+    //user
+    $user_err = false;
+    if ((strlen($post["usuario"]) > 30) && ($post["usuario"]) != "") {
+        $user_err = true;
+    }
+    //add exist()
+    //pass
+    $pass_err = false;
+    if ((strlen($post["clave"]) > 50) && ($post["clave"]) != "") {
+        $pass_err = true;
+    }
+    //name
+    $name_err = false;
+    if ((strlen($post["nombre"]) > 50) && ($post["nombre"]) != "") {
+        $name_err = true;
+    }
+    //dni
+    $dni_err = false;
+    //add exist()
+    //file
+    $file_err = false;
+    if (isset($file["img"])) {
+        if ($file["img"]["size"] > 500 * 1024) {
+            $file_err = true;
+        } else if (!getimagesize($file["img"]["tmp_name"])) {
+            $file_err = true;
+        } else if ($file["img"]["error"]) {
+            $file_err = true;
+        }
+    }
+
+    $result = false;
+    $result = $user_err || $pass_err || $name_err || $dni_err || $file_err;
+    return $result;
+}
+function exist($id, $value)
+{
+}
+// 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -91,24 +132,6 @@ function change($id, $value, $key)
 </head>
 
 <body>
-    <!-- если значение пустое, то не меняем, вообще так надо для каждого из полей сделать -->
-    <!-- <form action="edit.php" method="post">
-        <p><label for="id">ID:</label> <input type="text" name="id" id="id" placeholder="___"></p>
-        <p><label for="usuario">Usuario:</label><input type="text" name="usuario" id="usuario" placeholder="___"></p>
-        <p><label for="clave">Clave:</label><input type="password" name="clave" id="clave" placeholder="___"></p>
-        <p><label for="nombre">Nombre:</label><input type="text" name="nombre" id="nombre" placeholder="___"></p>
-        <p><label for="dni">DNI:</label><input type="text" name="dni" id="dni" placeholder="___"></p>
-        <p><label for="sexo">Sexo:</label>
-            <select name="sexo" id="sexo">
-                <option hidden>Default</option>
-                <option value="hombre">Hombre</option>
-                <option value="mujer">Mujer</option>
-            </select>
-        </p>
-        <p><label for="img">Imagen:</label><img src="___" alt="imagen usuario"><input type="file" name="img" id="img"></p>
-        <button><a href="index.php">Volver</a></button>
-    </form> -->
-
 </body>
 
 </html>
