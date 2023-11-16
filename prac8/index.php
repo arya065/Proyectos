@@ -101,6 +101,7 @@ function getInfo($id)
             ?>
         </form>
     </table>
+
 </body>
 
 </html>
