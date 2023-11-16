@@ -12,8 +12,8 @@ if (isset($_POST["send"]) && !errors($_POST, $_FILES)) {
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     try {
-        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
-        mysqli_set_charset($conn, "utf-8");
+        $conn = mysqli_connect("localhost", "root", "qwer", "bd_cv");
+        mysqli_set_charset($conn, "utf8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
     }
@@ -51,8 +51,8 @@ function show_info($conn, $id)
 function change($id, $value, $key)
 {
     try {
-        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
-        mysqli_set_charset($conn, "utf-8");
+        $conn = mysqli_connect("localhost", "root", "qwer", "bd_cv");
+        mysqli_set_charset($conn, "utf8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
     }
@@ -124,7 +124,7 @@ function exist($id, $value)
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar</title>
     <style>
