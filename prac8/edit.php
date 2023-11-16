@@ -1,12 +1,16 @@
 <?php
-if (isset($_POST["send"]) && !errors($_POST, $_FILES)) {
-    $id = $_POST["id"];
-    foreach ($_POST as $key => $value) {
-        if (($value != "") && ($key != "id" && $key != "send")) {
-            change($id, $value, $key);
+if (isset($_POST["send"])) {
+    if (!errors($_POST, $_FILES)) {
+        $id = $_POST["id"];
+        foreach ($_POST as $key => $value) {
+            if (($value != "") && ($key != "id" && $key != "send")) {
+                change($id, $value, $key);
+            }
         }
+        require "index.php";
+    } else {
+        require "index.php";
     }
-    require "index.php";
     return;
 }
 if (isset($_GET['id'])) {
@@ -64,38 +68,62 @@ function change($id, $value, $key)
         mysqli_close($conn);
         die("<p>no he podido crear consulta:" . $e->getMessage() . "</p></body></html>");
     }
+    mysqli_close($conn);
 }
 function errors($post, $file)
 {
-    //user
+    //username
     $user_err = false;
-    if ((strlen($post["usuario"]) > 30) && ($post["usuario"]) != "") {
-        $user_err = true;
+    if ($post["usuario"] != "") {
+        if (strlen($post["usuario"]) > 30) {
+            echo "<span class ='red'>usuario tiene que ser menor de 30 simbolos</span>";
+            $user_err = true;
+        } else if (exist($post["id"], $post["usuario"], "usuario")) {
+            echo "<span class ='red'>no puedes repetir los nombres de usuario</span>";
+            $user_err = true;
+        }
     }
-    //add exist()
     //pass
     $pass_err = false;
-    if ((strlen($post["clave"]) > 50) && ($post["clave"]) != "") {
-        $pass_err = true;
+    if ($post["clave"] != "") {
+        if (strlen($post["clave"]) > 50) {
+            echo "<span class ='red'>clave tiene que ser menor de 50 sibmolos</span>";
+            $pass_err = true;
+        }
     }
     //name
     $name_err = false;
-    if ((strlen($post["nombre"]) > 50) && ($post["nombre"]) != "") {
-        $name_err = true;
+    if ($post["nombre"] != "") {
+        if (strlen($post["nombre"]) > 50) {
+            echo "<span class ='red'>nombre tiene que ser menor de 50 sibmolos</span>";
+            $name_err = true;
+        }
     }
     //dni
     $dni_err = false;
-    if ((strlen($post["dni"]) > 10) && ($post["dni"]) != "") {
-        $dni_err = true;
+    if (($post["dni"]) != "") {
+        if (strlen($post["dni"]) > 10) {
+            echo "<span class ='red'>dni tiene que ser menor de 10 simbolos</span>";
+            $dni_err = true;
+        } else if (!is_numeric(substr($post["dni"], 0, strlen($post["dni"]) - 1))) {
+            echo "<span class ='red'>dni tiene que tener los numeros y una letra</span>";
+            $dni_err = true;
+        } else if ($post["dni"][strlen($post["dni"]) - 1] != LetraNIF(substr($post["dni"], 0, strlen($post["dni"]) - 1))) {
+            echo "<span class ='red'>dni no correcto</span>";
+            $dni_err = true;
+        } else if (exist($post["id"], $post["dni"], "dni")) {
+            echo "<span class ='red'>no puedes utilizar dni que la esta utilizada</span>";
+            $dni_err = true;
+        }
     }
-    if ($post["dni"][strlen($post["dni"]) - 1] != LetraNIF(substr($post["dni"], 0, strlen($post["dni"]) - 1)))
-        //add exist()
-        //file
-        $file_err = false;
+    //file
+    $file_err = false;
     if (isset($file["img"])) {
         if ($file["img"]["size"] > 500 * 1024) {
+            echo "<span class ='red'>imagen tiene que ser menos de 500 KB</span>";
             $file_err = true;
         } else if (!getimagesize($file["img"]["tmp_name"])) {
+            echo "<span class ='red'>tienes que cargar la imagen</span>";
             $file_err = true;
         } else if ($file["img"]["error"]) {
             $file_err = true;
@@ -115,8 +143,32 @@ function LetraNIF($dni)
     $letraNif = substr($letras, $valor, 1);
     return $letraNif;
 }
-function exist($id, $value)
+function exist($id, $value, $key)
 {
+    try {
+        $conn = mysqli_connect("localhost", "root", "qwer", "bd_cv");
+        mysqli_set_charset($conn, "utf8");
+    } catch (Exception $e) {
+        die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
+    }
+    try {
+        $consulta = "select * from usuarios";
+        $result = mysqli_query($conn, $consulta);
+    } catch (Exception $e) {
+        mysqli_close($conn);
+        die("<p>no he podido crear consulta:" . $e->getMessage() . "</p></body></html>");
+    }
+    $line = mysqli_fetch_assoc($result);
+    foreach ($line as $value2) {
+        if ($value == $value2) {
+            return true;
+        }
+    }
+    // if ($line[$key] == $value) {
+    //     mysqli_close($conn);
+    //     return true;
+    // }
+    return false;
 }
 // 
 ?>

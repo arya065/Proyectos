@@ -59,6 +59,10 @@ function getInfo($id)
         a:visited {
             color: blue;
         }
+
+        .red {
+            color: red;
+        }
     </style>
 </head>
 
