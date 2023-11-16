@@ -19,19 +19,23 @@ function show_info($conn, $id)
         mysqli_close($conn);
         die("<p>no he podido crear consulta:" . $e->getMessage() . "</p></body></html>");
     }
-    // print_r($result);
     $line = mysqli_fetch_assoc($result);
 
-    // echo '<form action="index.php" method="post">';
-    // echo '<p>ID: ' . $line["id_usuario"] . '</p>';
-    // echo '<p>Usuario: ' . $line["usuario"] . '</p>';
-    // echo '<p>Clave: ' . $line["clave"] . '</p>';
-    // echo '<p>Nombre: ' . $line["nombre"] . '</p>';
-    // echo '<p>DNI: ' . $line["dni"] . '</p>';
-    // echo '<p>Sexo: ' . $line["sexo"] . '</p>';
-    // echo '<p>Imagen: <img src = "img/' . $line["foto"] . '"alt="Foto usuario"></p>';
-    // echo '<button><a href="index.php">Volver</a></button>';
-    // echo '</form>';
+    echo '<form action="index.php" method="post">';
+    echo ' <p><label for="id">ID:</label><input type="text" name="id" id="id" placeholder="' . $line["id_usuario"] . '"></p>';
+    echo '<p><label for="usuario">Usuario:</label><input type="text" name="usuario" id="usuario" placeholder="' . $line["usuario"] . '"></p>';
+    echo '<p><label for="clave">Clave:</label><input type="password" name="clave" id="clave" placeholder="' . $line["clave"] . '"></p>';
+    echo '<p><label for="nombre">Nombre:</label><input type="text" name="nombre" id="nombre" placeholder="' . $line["nombre"] . '"></p>';
+    echo '<p><label for="dni">DNI:</label><input type="text" name="dni" id="dni" placeholder="' . $line["dni"] . '"></p>';
+    echo '<p><label for="sexo">Sexo:</label>';
+    echo '<select name="sexo" id="sexo">';
+    echo '<option hidden>' . $line["sexo"] . '</option>';
+    echo '<option value="hombre">Hombre</option>';
+    echo '<option value="mujer">Mujer</option>';
+    echo '</select></p>';
+    echo '<p><label for="img">Imagen:</label><img src="img/' . $line["foto"] . '" alt="imagen usuario"><input type="file" name="img" id="img"></p>';
+    echo '<button><a href="index.php">Volver</a></button>';
+    echo '</form>';
 }
 ?>
 <!DOCTYPE html>
@@ -59,43 +63,23 @@ function show_info($conn, $id)
 </head>
 
 <body>
-    <form action="edit.php" method="post">
-        <p>
-            <label for="id">ID:</label>
-            <input type="text" name="id" id="id" placeholder="___">
-        </p>
-        <p>
-            <label for="usuario">Usuario:</label>
-            <input type="text" name="usuario" id="usuario" placeholder="___">
-        </p>
-        <p>
-            <label for="clave">Clave:</label>
-            <input type="password" name="clave" id="clave" placeholder="___">
-        </p>
-        <p>
-            <label for="nombre">Nombre:</label>
-            <input type="text" name="nombre" id="nombre" placeholder="___">
-        </p>
-        <p>
-            <label for="dni">DNI:</label>
-            <input type="text" name="dni" id="dni" placeholder="___">
-        </p>
-        <p>
-            <label for="sexo">Sexo:</label>
+    <!-- если значение пустое, то не меняем, вообще так надо для каждого из полей сделать -->
+    <!-- <form action="edit.php" method="post">
+        <p><label for="id">ID:</label> <input type="text" name="id" id="id" placeholder="___"></p>
+        <p><label for="usuario">Usuario:</label><input type="text" name="usuario" id="usuario" placeholder="___"></p>
+        <p><label for="clave">Clave:</label><input type="password" name="clave" id="clave" placeholder="___"></p>
+        <p><label for="nombre">Nombre:</label><input type="text" name="nombre" id="nombre" placeholder="___"></p>
+        <p><label for="dni">DNI:</label><input type="text" name="dni" id="dni" placeholder="___"></p>
+        <p><label for="sexo">Sexo:</label>
             <select name="sexo" id="sexo">
                 <option hidden>Default</option>
                 <option value="hombre">Hombre</option>
                 <option value="mujer">Mujer</option>
             </select>
         </p>
-        <p>
-            <label for="img">Imagen:</label>
-            <input type="file" name="img" id="img">
-            <!-- если значение пустое, то не меняем, вообще так надо для каждого из полей сделать -->
-        </p>
+        <p><label for="img">Imagen:</label><img src="___" alt="imagen usuario"><input type="file" name="img" id="img"></p>
         <button><a href="index.php">Volver</a></button>
-
-    </form>
+    </form> -->
 
 </body>
 
