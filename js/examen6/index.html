@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>BOTONERA GODOS</title>
+</head>
+
+<body>
+    <button onclick="llama('godos')">GODOS</button>
+    <button onclick="llama('normandos')">NORMANDOS</button>
+    <div id="botonera"></div>
+    <script>
+        const showList = (values, parent) => {
+            values.map(element => {
+                if (element instanceof Array) {
+                    let ul = document.createElement("ul");
+                    showList(element, ul);
+                    parent.appendChild(ul);
+                } else {
+                    let li = document.createElement("li");
+                    let button = document.createElement("button");
+                    button.appendChild(document.createTextNode(element));
+                    li.appendChild(button);
+                    parent.appendChild(li);
+                }
+            });
+            return parent;
+        }
+        const llama = (value) => {
+            let ul = document.createElement("ul");
+            let li = document.createElement("li");
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    ul = showList(JSON.parse(this.responseText), ul);
+                    li.appendChild(document.createTextNode(JSON.parse(this.responseText)));
+                }
+            };
+            document.getElementById("botonera").appendChild(ul);
+            xhttp.open("GETY", "examen.php?godos=" + value, "true");
+            xhttp.send();
+        }
+    </script>
+</body>
+
+</html>
+<!-- Спрашивается:
+А. Умеете ли вы создавать это приложение (до 10 баллов)?
+Б. Умеете ли вы хотя бы отображать всех готов или норманнов в li на одном уровне
+(до 6,5 баллов)?
+В. Умеете ли вы хотя бы отображать кнопки для готов или норманнов, даже
+если их нет в списках <li>. (до 6 баллов)?
+D. Не могли бы вы хотя бы знать, как отображать на консоли готов или норманнов по одному в зависимости
+от того, нажимаете ли вы ту или иную кнопку. (до 4 баллов)?
+Выполните только один из вариантов. Попробуйте выбрать тот, который принесет вам наибольшее количество очков, исходя
+из ваших возможностей.
+Это будет оценено:
+● Удобочитаемость кода.
+● Длина кода.
+● Использование map, find или filter, а не циклов for.
+● Использование функций arrow.
+● Программа выполняет требуемый функционал.
+● Чтобы в консоли не было ошибок.
+● Эффективность.
+● Модульность (высокая сплоченность и низкое сцепление).
+● Сделайте код чистым, гибким, многоразовым и поддерживаемым.
+● Придерживайтесь принципов SOLID.
+● Другие критерии. -->
+
+<!-- Se pide:
+A. ¿Sabrías crear esta aplicación (hasta 10 puntos)?
+B. ¿Sabrías al menos mostrar todos los godos o normandos en li al mismo nivel
+(hasta 6,5 puntos)?
+C. ¿Sabrías al menos mostrar los botones de los godos o normandos aunque no
+estén en listas <li>. (hasta 6 puntos)?
+D. ¿Sabrías al menos mostrar por consola los godos o normandos uno a uno según
+pulses un botón u otro. (hasta 4 puntos)?
+Realiza una sola de las opciones. Intenta hacer la que te ofrezca mayor puntuación según
+tus posibilidades.
+Se valorará:
+● Legibilidad del código.
+● Longitud del código.
+● La utilización de map, find o filter y no bucles for.
+● La utilización de funciones arrow.
+● El programa realiza la funcionalidad requerida.
+● Que no haya errores en la consola.
+● La eficiencia.
+● La modularidad (alta cohesión y bajo acoplamiento).
+● Que el código sea limpio, flexible, reutilizable y mantenible.
+● Sigue los principios SOLID.
+● Otros criterios. -->
