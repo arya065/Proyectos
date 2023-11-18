@@ -99,7 +99,7 @@ function getInfo($id)
                 echo '<td>' . $line["id_usuario"] . '</td>';
                 echo '<td><img src = "img/' . $line["foto"] . '"alt="Foto usuario"></td>';
                 echo '<td><a href="show_info.php?id=' . $line["id_usuario"] . '">' . $line["nombre"] . '</a></td>';
-                echo '<td><a href="index.php?id=' . $line["id_usuario"] . '&action=delete">Borrar</a> - <a href="edit.php?id=' . $line["id_usuario"] . '">Editar</a></td>';
+                echo '<td><a href="index.php?id=' . $line["id_usuario"] . '&action=delete">Borrar</a> - <a href="edit2.php?id=' . $line["id_usuario"] . '">Editar</a></td>';
                 echo '</tr>';
             }
             ?>
