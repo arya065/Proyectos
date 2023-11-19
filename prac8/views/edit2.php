@@ -79,10 +79,10 @@ function user_err($post)
 {
     if ($post["usuario"] != "") {
         if (strlen($post["usuario"]) > 30) {
-            echo "<span class ='red'>usuario tiene que ser menor de 30 simbolos</span>";
+            // echo "<span class ='red'>usuario tiene que ser menor de 30 simbolos</span>";
             return true;
         } else if (exist($post["id"], $post["usuario"], "usuario")) {
-            echo "<span class ='red'>no puedes repetir los nombres de usuario</span>";
+            // echo "<span class ='red'>no puedes repetir los nombres de usuario</span>";
             return true;
         }
     }
@@ -95,7 +95,7 @@ function pass_err($post)
 {
     if ($post["clave"] != "") {
         if (strlen($post["clave"]) > 50) {
-            echo "<span class ='red'>clave tiene que ser menor de 50 sibmolos</span>";
+            // echo "<span class ='red'>clave tiene que ser menor de 50 sibmolos</span>";
             return true;
         }
     }
@@ -108,7 +108,7 @@ function name_err($post)
 {
     if ($post["nombre"] != "") {
         if (strlen($post["nombre"]) > 50) {
-            echo "<span class ='red'>nombre tiene que ser menor de 50 sibmolos</span>";
+            // echo "<span class ='red'>nombre tiene que ser menor de 50 sibmolos</span>";
             return true;
         }
     }
@@ -121,16 +121,16 @@ function dni_err($post)
 {
     if (($post["dni"]) != "") {
         if (strlen($post["dni"]) > 10) {
-            echo "<span class ='red'>dni tiene que ser menor de 10 simbolos</span>";
+            // echo "<span class ='red'>dni tiene que ser menor de 10 simbolos</span>";
             return true;
         } else if (!is_numeric(substr($post["dni"], 0, strlen($post["dni"]) - 1))) {
-            echo "<span class ='red'>dni tiene que tener los numeros y una letra</span>";
+            // echo "<span class ='red'>dni tiene que tener los numeros y una letra</span>";
             return true;
         } else if ($post["dni"][strlen($post["dni"]) - 1] != LetraNIF(substr($post["dni"], 0, strlen($post["dni"]) - 1))) {
             // echo "<span class ='red'>dni no correcto</span>";
             return true;
         } else if (exist($post["id"], $post["dni"], "dni")) {
-            echo "<span class ='red'>no puedes utilizar dni que ya esta utilizada</span>";
+            // echo "<span class ='red'>no puedes utilizar dni que ya esta utilizada</span>";
             return true;
         }
     }
@@ -143,10 +143,10 @@ function file_err($file)
 {
     if (isset($file["img"])) {
         if ($file["img"]["size"] > 500 * 1024) {
-            echo "<span class ='red'>imagen tiene que ser menos de 500 KB</span>";
+            // echo "<span class ='red'>imagen tiene que ser menos de 500 KB</span>";
             return true;
         } else if (!getimagesize($file["img"]["tmp_name"])) {
-            echo "<span class ='red'>tienes que cargar la imagen</span>";
+            // echo "<span class ='red'>tienes que cargar la imagen</span>";
             return true;
         } else if ($file["img"]["error"]) {
             return true;
