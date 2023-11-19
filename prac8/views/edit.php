@@ -9,7 +9,7 @@ if (isset($_POST["send"])) {
         }
         echo '<style>a {color: black; text-decoration: none} a:visited {color: black}</style>';
         echo "Cambiado";
-        echo '<p><button><a href="index.php">Volver</a></button></p>';
+        echo '<p><button><a href="../index.php">Volver</a></button></p>';
         return;
         // } else {
         //     echo '<style>a {color: black; text-decoration: none} a:visited {color: black}</style>';
@@ -268,7 +268,7 @@ if (!function_exists('show_info')) {
         </p>
         <p><label for="img">Imagen:</label><img src="img/<?php echo $line["foto"] ?>" alt="imagen usuario"><br><input type="file" name="img" id="img"></p>
         <input type="submit" value="Guardar" name="send">
-        <button><a href="index.php">Volver</a></button>
+        <button><a href="../index.php">Volver</a></button>
     </form>
 </body>
 

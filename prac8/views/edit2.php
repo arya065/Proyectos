@@ -9,7 +9,7 @@ if (isset($_POST["send"])) {
         }
         echo '<style>a {color: black; text-decoration: none} a:visited {color: black}</style>';
         echo "Cambiado";
-        echo '<p><button><a href="index.php">OK</a></button></p>';
+        echo '<p><button><a href="../index.php">OK</a></button></p>';
         // header("location: index.php");
     } else {
     }
@@ -75,65 +75,97 @@ function change($id, $value, $key)
     }
     mysqli_close($conn);
 }
-function errors($post, $file)
+function user_err($post)
 {
-    //username
-    $user_err = false;
     if ($post["usuario"] != "") {
         if (strlen($post["usuario"]) > 30) {
             echo "<span class ='red'>usuario tiene que ser menor de 30 simbolos</span>";
-            $user_err = true;
+            return true;
         } else if (exist($post["id"], $post["usuario"], "usuario")) {
             echo "<span class ='red'>no puedes repetir los nombres de usuario</span>";
-            $user_err = true;
+            return true;
         }
     }
-    //pass
-    $pass_err = false;
+    if ($post["usuario"] == "") {
+        return true;
+    }
+    return false;
+}
+function pass_err($post)
+{
     if ($post["clave"] != "") {
         if (strlen($post["clave"]) > 50) {
             echo "<span class ='red'>clave tiene que ser menor de 50 sibmolos</span>";
-            $pass_err = true;
+            return true;
         }
     }
-    //name
-    $name_err = false;
+    if ($post["clave"] == "") {
+        return true;
+    }
+    return false;
+}
+function name_err($post)
+{
     if ($post["nombre"] != "") {
         if (strlen($post["nombre"]) > 50) {
             echo "<span class ='red'>nombre tiene que ser menor de 50 sibmolos</span>";
-            $name_err = true;
+            return true;
         }
     }
-    //dni
-    $dni_err = false;
+    if ($post["nombre"] == "") {
+        return true;
+    }
+    return false;
+}
+function dni_err($post)
+{
     if (($post["dni"]) != "") {
         if (strlen($post["dni"]) > 10) {
             echo "<span class ='red'>dni tiene que ser menor de 10 simbolos</span>";
-            $dni_err = true;
+            return true;
         } else if (!is_numeric(substr($post["dni"], 0, strlen($post["dni"]) - 1))) {
             echo "<span class ='red'>dni tiene que tener los numeros y una letra</span>";
-            $dni_err = true;
+            return true;
         } else if ($post["dni"][strlen($post["dni"]) - 1] != LetraNIF(substr($post["dni"], 0, strlen($post["dni"]) - 1))) {
-            echo "<span class ='red'>dni no correcto</span>";
-            $dni_err = true;
+            // echo "<span class ='red'>dni no correcto</span>";
+            return true;
         } else if (exist($post["id"], $post["dni"], "dni")) {
             echo "<span class ='red'>no puedes utilizar dni que ya esta utilizada</span>";
-            $dni_err = true;
+            return true;
         }
     }
-    //file
-    $file_err = false;
+    if ($post["dni"] == "") {
+        return true;
+    }
+    return false;
+}
+function file_err($file)
+{
     if (isset($file["img"])) {
         if ($file["img"]["size"] > 500 * 1024) {
             echo "<span class ='red'>imagen tiene que ser menos de 500 KB</span>";
-            $file_err = true;
+            return true;
         } else if (!getimagesize($file["img"]["tmp_name"])) {
             echo "<span class ='red'>tienes que cargar la imagen</span>";
-            $file_err = true;
+            return true;
         } else if ($file["img"]["error"]) {
-            $file_err = true;
+            return true;
         }
     }
+    return false;
+}
+function errors($post, $file)
+{
+    //username
+    $user_err = user_err($post);
+    //pass
+    $pass_err = pass_err($post);
+    //name
+    $name_err = name_err($post);
+    //dni
+    $dni_err = dni_err($post);
+    //file
+    $file_err = file_err($file);
 
     $result = false;
     $result = $user_err || $pass_err || $name_err || $dni_err || $file_err;
@@ -157,22 +189,23 @@ function exist($id, $value, $key)
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
     }
     try {
-        $consulta = "select * from usuarios";
+        $consulta = "select * from usuarios where id_usuario!=" . $id . "";
         $result = mysqli_query($conn, $consulta);
     } catch (Exception $e) {
         mysqli_close($conn);
         die("<p>no he podido crear consulta:" . $e->getMessage() . "</p></body></html>");
     }
     $line = mysqli_fetch_assoc($result);
+    // if ($line[$key] == $value) {
+    //     return true;
+    // }
     foreach ($line as $value2) {
         if ($value == $value2) {
+            mysqli_close($conn);
             return true;
         }
     }
-    // if ($line[$key] == $value) {
-    //     mysqli_close($conn);
-    //     return true;
-    // }
+    mysqli_close($conn);
     return false;
 }
 ?>
@@ -217,29 +250,38 @@ function exist($id, $value, $key)
             }
             ?>" readonly></p>
             <p><label for="usuario">Usuario:</label><input type="text" name="usuario" id="usuario" value="<?php
-            if (isset($_POST["send"]) && $_POST["usuario"] != "") {
+            if (isset($_POST["send"])) {
                 echo $_POST["usuario"];
             } else {
                 echo $line["usuario"];
             } ?>"></p>
             <?php
-            // if (isset($_POST["send"])) {
-            //     // if ($_POST["usuario"] != "") {
-            //     if (strlen($_POST["usuario"]) > 30) {
-            //         echo "<span class ='red'>usuario tiene que ser menor de 30 simbolos</span>";
-            //     } else if (exist($_POST["id"], $_POST["usuario"], "usuario")) {
-            //         echo "<span class ='red'>no puedes repetir los nombres de usuario</span>";
-            //     }
-            //     // }
-            // }
+            if (isset($_POST["send"])) {
+                if (strlen($_POST["usuario"]) > 30) {
+                    echo "<span class ='red'>usuario tiene que ser menor de 30 simbolos</span>";
+                } else if (exist($_POST["id"], $_POST["usuario"], "usuario")) {
+                    echo "<span class ='red'>no puedes repetir los nombres de usuario</span>";
+                } else if ($_POST["usuario"] == "") {
+                    echo "<span class ='red'>no puedes dejar campo vacio</span>";
+                }
+            }
             ?>
             <p><label for="clave">Clave:</label><input type="text" name="clave" id="clave" value="<?php
-            if (isset($_POST["send"]) && $_POST["clave"] != "") {
+            if (isset($_POST["send"])) {
                 echo $_POST["clave"];
             } else {
                 echo $pass;
             }
             ?>"></p>
+            <?php
+            if (isset($_POST["send"])) {
+                if (strlen($_POST["clave"]) > 30) {
+                    echo "<span class ='red'>clave tiene que ser menor de 30 simbolos</span>";
+                } else if ($_POST["clave"] == "") {
+                    echo "<span class ='red'>no puedes dejar campo vacio</span>";
+                }
+            }
+            ?>
             <p><label for="nombre">Nombre:</label><input type="text" name="nombre" id="nombre" value="<?php
             if (isset($_POST["send"])) {
                 echo $_POST["nombre"];
@@ -247,6 +289,17 @@ function exist($id, $value, $key)
                 echo $name;
             }
             ?>"></p>
+            <?php
+            if (isset($_POST["send"])) {
+                if (strlen($_POST["nombre"]) > 50) {
+                    echo "<span class ='red'>nombre tiene que ser menor de 50 simbolos</span>";
+                } else if (exist($_POST["id"], $_POST["nombre"], "nombre")) {
+                    echo "<span class ='red'>no puedes repetir los nombres</span>";
+                } else if ($_POST["nombre"] == "") {
+                    echo "<span class ='red'>no puedes dejar campo vacio</span>";
+                }
+            }
+            ?>
             <p><label for="dni">DNI:</label><input type="text" name="dni" id="dni" value="<?php
             if (isset($_POST["send"])) {
                 echo $_POST["dni"];
@@ -254,6 +307,17 @@ function exist($id, $value, $key)
                 echo $dni;
             }
             ?>"></p>
+            <?php
+            if (isset($_POST["send"])) {
+                if (strlen($_POST["dni"]) > 10) {
+                    echo "<span class ='red'>dni tiene que ser menor de 10 simbolos</span>";
+                } else if (exist($_POST["id"], $_POST["dni"], "dni")) {
+                    echo "<span class ='red'>no puedes repetir los dni</span>";
+                } else if ($_POST["dni"] == "") {
+                    echo "<span class ='red'>no puedes dejar campo vacio</span>";
+                }
+            }
+            ?>
             <p><label for="sexo">Sexo:</label>
                 <select name="sexo" id="sexo">
                     <option hidden>
@@ -270,8 +334,7 @@ function exist($id, $value, $key)
                 </select>
             </p>
             <p><label for="img">Imagen:</label>
-                <img src="img/
-                <?php
+                <img src="../img/<?php
                 if (isset($_POST["send"])) {
                     echo getImage($_POST["id"]);
                 } else {
@@ -281,7 +344,7 @@ function exist($id, $value, $key)
                 <input type="file" name="img" id="img">
             </p>
             <input type="submit" value="Guardar" name="send">
-            <button><a href="index.php">Volver</a></button>
+            <button><a href="../index.php">Volver</a></button>
         </form>
         <?php
     }
