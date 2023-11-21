@@ -1,4 +1,6 @@
 <?php
+require("functions.php");
+
 if (isset($_POST["send"])) {
     if (!errors($_POST, $_FILES)) {
         $id = $_POST["id"];
@@ -16,7 +18,7 @@ if (isset($_POST["send"])) {
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     try {
-        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
+        $conn = mysqli_connect("localhost", USER, PASS, BD_NAME);
         mysqli_set_charset($conn, "utf8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
@@ -41,7 +43,7 @@ if (isset($_GET['id'])) {
 function getImage($id)
 {
     try {
-        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
+        $conn = mysqli_connect("localhost", USER, PASS, BD_NAME);
         mysqli_set_charset($conn, "utf8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
@@ -59,7 +61,7 @@ function getImage($id)
 function change($id, $value, $key)
 {
     try {
-        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
+        $conn = mysqli_connect("localhost", USER, PASS, BD_NAME);
         mysqli_set_charset($conn, "utf8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
@@ -182,7 +184,7 @@ function LetraNIF($dni)
 function exist($id, $value, $key)
 {
     try {
-        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
+        $conn = mysqli_connect("localhost", USER, PASS, BD_NAME);
         mysqli_set_charset($conn, "utf8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");

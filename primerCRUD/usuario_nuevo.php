@@ -9,7 +9,7 @@
 if (isset($_POST["send"])) {
 
     try {
-        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_foro");
+        $conn = mysqli_connect("localhost", USER, PASS, "bd_foro");
         mysqli_set_charset($conn, "utf-8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
@@ -50,7 +50,7 @@ if (isset($_POST["send"])) {
 function correct_user()
 {
     try {
-        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_foro");
+        $conn = mysqli_connect("localhost", USER, PASS, "bd_foro");
         mysqli_set_charset($conn, "utf-8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");

@@ -1,8 +1,10 @@
 <?php
+require("functions.php");
+
 if (isset($_POST["send"])) {
     if (!errors($_POST, $_FILES)) {
         try {
-            $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
+            $conn = mysqli_connect("localhost", USER, PASS, BD_NAME);
             mysqli_set_charset($conn, "utf8");
         } catch (Exception $e) {
             die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
@@ -133,7 +135,7 @@ function LetraNIF($dni)
 function exist($value, $key)
 {
     try {
-        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
+        $conn = mysqli_connect("localhost", USER, PASS, BD_NAME);
         mysqli_set_charset($conn, "utf8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");

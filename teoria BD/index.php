@@ -10,7 +10,7 @@
 <body>
     <?php
     try {
-        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_teoria");
+        $conn = mysqli_connect("localhost", USER, PASS, "bd_teoria");
         mysqli_set_charset($conn, "utf-8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");

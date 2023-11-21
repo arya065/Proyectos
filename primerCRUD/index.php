@@ -6,7 +6,7 @@ if (isset($_POST["go_insert"])) {
 function getUsers()
 {
     try {
-        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_foro");
+        $conn = mysqli_connect("localhost", USER, PASS, "bd_foro");
         mysqli_set_charset($conn, "utf-8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
@@ -23,7 +23,7 @@ function getUsers()
 function deleteUser($id)
 {
     try {
-        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_foro");
+        $conn = mysqli_connect("localhost", USER, PASS, "bd_foro");
         mysqli_set_charset($conn, "utf-8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
@@ -62,7 +62,7 @@ function showInfo($id)
 function getInfo($id, $param)
 {
     try {
-        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_foro");
+        $conn = mysqli_connect("localhost", USER, PASS, "bd_foro");
         mysqli_set_charset($conn, "utf-8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");

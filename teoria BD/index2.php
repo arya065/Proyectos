@@ -10,7 +10,7 @@
 <body>
     <?php
     try {
-        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_foro");
+        $conn = mysqli_connect("localhost", USER, PASS, "bd_foro");
         mysqli_set_charset($conn, "utf-8");
     } catch (Exception $e) {
         die("no he podido conectarse a la base de datos");

@@ -1,12 +1,13 @@
 <!-- mysqli_insert_id -->
 <?php
+require("functions.php");
 if (isset($_GET["id"]) && $_GET["action"] == "delete") {
     delete_user($_GET["id"], getInfo($_GET["id"])["foto"]);
 }
 function delete_user($id, $img)
 {
     try {
-        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
+        $conn = mysqli_connect("localhost", USER, PASS, BD_NAME);
         mysqli_set_charset($conn, "utf8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
@@ -23,7 +24,7 @@ function delete_user($id, $img)
 function getInfo($id)
 {
     try {
-        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
+        $conn = mysqli_connect("localhost", USER, PASS, BD_NAME);
         mysqli_set_charset($conn, "utf8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
@@ -80,7 +81,7 @@ function getInfo($id)
             </tr>
             <?php
             try {
-                $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
+                $conn = mysqli_connect(BD_SERVER, USER, PASS, BD_NAME);
                 mysqli_set_charset($conn, "utf8");
             } catch (Exception $e) {
                 die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
