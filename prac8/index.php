@@ -6,7 +6,7 @@ if (isset($_GET["id"]) && $_GET["action"] == "delete") {
 function delete_user($id, $img)
 {
     try {
-        $conn = mysqli_connect("localhost", "root", "qwer", "bd_cv");
+        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
         mysqli_set_charset($conn, "utf8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
@@ -23,7 +23,7 @@ function delete_user($id, $img)
 function getInfo($id)
 {
     try {
-        $conn = mysqli_connect("localhost", "root", "qwer", "bd_cv");
+        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
         mysqli_set_charset($conn, "utf8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
@@ -80,7 +80,7 @@ function getInfo($id)
             </tr>
             <?php
             try {
-                $conn = mysqli_connect("localhost", "root", "qwer", "bd_cv");
+                $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
                 mysqli_set_charset($conn, "utf8");
             } catch (Exception $e) {
                 die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
