@@ -1,5 +1,5 @@
 <?php
-require("functions.php");
+require("../functions.php");
 
 if (isset($_POST["send"])) {
     if (!errors($_POST, $_FILES)) {
