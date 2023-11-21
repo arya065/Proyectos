@@ -11,13 +11,12 @@ if (isset($_POST["send"])) {
         echo "Cambiado";
         echo '<p><button><a href="../index.php">OK</a></button></p>';
         // header("location: index.php");
-    } else {
     }
 }
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     try {
-        $conn = mysqli_connect("localhost", "root", "qwer", "bd_cv");
+        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
         mysqli_set_charset($conn, "utf8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
@@ -42,7 +41,7 @@ if (isset($_GET['id'])) {
 function getImage($id)
 {
     try {
-        $conn = mysqli_connect("localhost", "root", "qwer", "bd_cv");
+        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
         mysqli_set_charset($conn, "utf8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
@@ -60,7 +59,7 @@ function getImage($id)
 function change($id, $value, $key)
 {
     try {
-        $conn = mysqli_connect("localhost", "root", "qwer", "bd_cv");
+        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
         mysqli_set_charset($conn, "utf8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
@@ -183,26 +182,36 @@ function LetraNIF($dni)
 function exist($id, $value, $key)
 {
     try {
-        $conn = mysqli_connect("localhost", "root", "qwer", "bd_cv");
+        $conn = mysqli_connect("localhost", "jose", "josefa", "bd_cv");
         mysqli_set_charset($conn, "utf8");
     } catch (Exception $e) {
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
     }
     try {
-        $consulta = "select * from usuarios where id_usuario!=" . $id . "";
+        $consulta = "select * from usuarios where id_usuario !=" . $id . "";
         $result = mysqli_query($conn, $consulta);
     } catch (Exception $e) {
         mysqli_close($conn);
         die("<p>no he podido crear consulta:" . $e->getMessage() . "</p></body></html>");
     }
-    $line = mysqli_fetch_assoc($result);
+    // $line = mysqli_fetch_assoc($result);
     // if ($line[$key] == $value) {
     //     return true;
     // }
-    foreach ($line as $value2) {
-        if ($value == $value2) {
-            mysqli_close($conn);
-            return true;
+    // foreach ($line as $value2) {
+    //     if ($value == $value2) {
+    //         mysqli_close($conn);
+    //         return true;
+    //     }
+    // }
+    while ($line = mysqli_fetch_assoc($result)) {
+        foreach ($line as $key2 => $value2) {
+            if ($key == $key2) {
+                if ($value == $value2) {
+                    mysqli_close($conn);
+                    return true;
+                }
+            }
         }
     }
     mysqli_close($conn);
@@ -239,7 +248,7 @@ function exist($id, $value, $key)
 
 <body>
     <?php
-    if ((isset($_GET["id"])) || (isset($_POST["send"]) && errors($_POST, $_FILES))) {
+    if ((isset($_GET["id"])) || (isset($_POST["send"])) && errors($_POST, $_FILES)) {
         ?>
         <form action="edit2.php" method="post">
             <p><label for="id">ID:</label><input type="text" name="id" id="id" value="<?php
@@ -311,8 +320,12 @@ function exist($id, $value, $key)
             if (isset($_POST["send"])) {
                 if (strlen($_POST["dni"]) > 10) {
                     echo "<span class ='red'>dni tiene que ser menor de 10 simbolos</span>";
+                } else if (!is_numeric(substr($_POST["dni"], 0, strlen($_POST["dni"]) - 1))) {
+                    echo "<span class ='red'>dni tiene que tener los numeros y una letra</span>";
+                } else if ($_POST["dni"][strlen($_POST["dni"]) - 1] != LetraNIF(substr($_POST["dni"], 0, strlen($_POST["dni"]) - 1))) {
+                    echo "<span class ='red'>dni no correcto</span>";
                 } else if (exist($_POST["id"], $_POST["dni"], "dni")) {
-                    echo "<span class ='red'>no puedes repetir los dni</span>";
+                    echo "<span class ='red'>no puedes utilizar dni que ya esta utilizada</span>";
                 } else if ($_POST["dni"] == "") {
                     echo "<span class ='red'>no puedes dejar campo vacio</span>";
                 }
