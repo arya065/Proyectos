@@ -108,19 +108,17 @@ function file_err($file)
     }
     return false;
 }
-function fileExists($filename)
-{
 
-}
 function createFile($id, $file)
 {
-    print_r($file["img"]);
-    $file["img"]["tmp_name"] = $file["img"]["tmp_name"] . $id;
-    // @$fd = fopen("../img/" . $file["tmp_name"] . "", "w");
-    if (!fopen("../img/" . $file["img"]["tmp_name"] . "", "w")) {
-        // fwrite($fd, $file);
-        move_uploaded_file($file["img"]["tmp_name"], "../img/");
+    $arry_nombre = explode(".", $file["img"]["name"]);
+    $ext = end($arry_nombre);
+    $nombre_nuevo = "img_" . $id . "." . $ext;
+
+    if (!file_exists("../img/" . $nombre_nuevo)) {
+        move_uploaded_file($file["img"]["tmp_name"], "../img/" . $nombre_nuevo);
     }
+
 
 }
 function errors($post, $file)
@@ -212,7 +210,7 @@ function exist($value, $key)
 </head>
 
 <body>
-    <form action="add_user.php" method="post">
+    <form action="add_user.php" method="post" enctype="multipart/form-data">
 
         <p><label for="usuario">Usuario:</label><input type="text" name="usuario" id="usuario" value="<?php
         if (isset($_POST["send"])) {
