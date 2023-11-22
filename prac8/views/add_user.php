@@ -12,18 +12,20 @@ if (isset($_POST["send"])) {
         // show_info($conn, $id);
         try {
             $consulta = "insert into usuarios (usuario,clave,nombre,dni,sexo,foto) 
-            values ('" . $_POST["usuario"] . "','" . $_POST["clave"] . "','" . $_POST["nombre"] . "','" . $_POST["dni"] . "','" . $_POST["sexo"] . "','    no_imagen.jpg')";
+            values ('" . $_POST["usuario"] . "','" . $_POST["clave"] . "','" . $_POST["nombre"] . "','" . $_POST["dni"] . "','" . $_POST["sexo"] . "','no_imagen.jpg')";
             $result = mysqli_query($conn, $consulta);
         } catch (Exception $e) {
             mysqli_close($conn);
             die("<p>no he podido crear consulta:" . $e->getMessage() . "</p></body></html>");
         }
+        $last = $conn->insert_id;
+        createFile($last, $_FILES);
         echo '<style>a {color: black; text-decoration: none} a:visited {color: black}</style>';
-        echo "Cambiado";
+        echo "Creado";
         echo '<p><button><a href="../index.php">OK</a></button></p>';
+        mysqli_close($conn);
+        // header("location: index.php");
     }
-    mysqli_close($conn);
-    // header("location: index.php");
 }
 
 
@@ -105,6 +107,21 @@ function file_err($file)
         }
     }
     return false;
+}
+function fileExists($filename)
+{
+
+}
+function createFile($id, $file)
+{
+    print_r($file["img"]);
+    $file["img"]["tmp_name"] = $file["img"]["tmp_name"] . $id;
+    // @$fd = fopen("../img/" . $file["tmp_name"] . "", "w");
+    if (!fopen("../img/" . $file["img"]["tmp_name"] . "", "w")) {
+        // fwrite($fd, $file);
+        move_uploaded_file($file["img"]["tmp_name"], "../img/");
+    }
+
 }
 function errors($post, $file)
 {
