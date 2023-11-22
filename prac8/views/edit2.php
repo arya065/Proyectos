@@ -5,9 +5,10 @@ if (isset($_POST["send"])) {
     if (!errors($_POST, $_FILES)) {
         $id = $_POST["id"];
         foreach ($_POST as $key => $value) {
-            if (($value != "") && ($key != "id" && $key != "send")) {
+            if (($value != "") && ($key != "id" && $key != "send" && $key != "img")) {
                 change($id, $value, $key);
             }
+            createFile($id, $_FILES);
         }
         echo '<style>a {color: black; text-decoration: none} a:visited {color: black}</style>';
         echo "Cambiado";
@@ -155,6 +156,15 @@ function file_err($file)
     }
     return false;
 }
+function createFile($id, $file)
+{
+    $type = end(explode('.', $file["img"]["name"]));
+    $newName = "img_$id.$type";
+    if (!file_exists("../img/" . $newName)) {
+        move_uploaded_file($file["img"]["tmp_name"], "../img/" . $newName);
+    }
+    return $newName;
+}
 function errors($post, $file)
 {
     //username
@@ -252,7 +262,7 @@ function exist($id, $value, $key)
     <?php
     if ((isset($_GET["id"])) || (isset($_POST["send"])) && errors($_POST, $_FILES)) {
         ?>
-        <form action="edit2.php" method="post">
+        <form action="edit2.php" method="post" enctype="multipart/form-data">
             <p><label for="id">ID:</label><input type="text" name="id" id="id" value="<?php
             if (isset($_POST["send"]) && $_POST["id"] != "") {
                 echo $_POST["id"];
