@@ -11,15 +11,14 @@ if (isset($_POST["send"])) {
         }
         // show_info($conn, $id);
         try {
-            $consulta = "insert into usuarios (usuario,clave,nombre,dni,sexo,foto) 
-            values ('" . $_POST["usuario"] . "','" . $_POST["clave"] . "','" . $_POST["nombre"] . "','" . $_POST["dni"] . "','" . $_POST["sexo"] . "','no_imagen.jpg')";
+            $consulta = "insert into usuarios (usuario,clave,nombre,dni,sexo,foto)
+        values ('" . $_POST["usuario"] . "','" . $_POST["clave"] . "','" . $_POST["nombre"] . "','" . $_POST["dni"] . "','" . $_POST["sexo"] . "','" . createFile($last, $_FILES) . ")";
             $result = mysqli_query($conn, $consulta);
         } catch (Exception $e) {
             mysqli_close($conn);
             die("<p>no he podido crear consulta:" . $e->getMessage() . "</p></body></html>");
         }
         $last = $conn->insert_id;
-        createFile($last, $_FILES);
         echo '<style>a {color: black; text-decoration: none} a:visited {color: black}</style>';
         echo "Creado";
         echo '<p><button><a href="../index.php">OK</a></button></p>';
@@ -111,15 +110,12 @@ function file_err($file)
 
 function createFile($id, $file)
 {
-    $arry_nombre = explode(".", $file["img"]["name"]);
-    $ext = end($arry_nombre);
-    $nombre_nuevo = "img_" . $id . "." . $ext;
-
-    if (!file_exists("../img/" . $nombre_nuevo)) {
-        move_uploaded_file($file["img"]["tmp_name"], "../img/" . $nombre_nuevo);
+    $type = end(explode('.', $file["img"]["name"]));
+    $newName = "img_$id.$type";
+    if (!file_exists("../img/" . $newName)) {
+        move_uploaded_file($file["img"]["tmp_name"], "../img/" . $newName);
     }
-
-
+    return $newName;
 }
 function errors($post, $file)
 {
