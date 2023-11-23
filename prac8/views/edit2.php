@@ -7,8 +7,9 @@ if (isset($_POST["send"])) {
         foreach ($_POST as $key => $value) {
             if (($value != "") && ($key != "id" && $key != "send" && $key != "img")) {
                 change($id, $value, $key);
+            } else if ($value != "" && $key == "img") {
+                createFile($id, $_FILES);
             }
-            createFile($id, $_FILES);
         }
         echo '<style>a {color: black; text-decoration: none} a:visited {color: black}</style>';
         echo "Cambiado";
