@@ -6,15 +6,31 @@ if (isset($_POST["send"])) {
         $id = $_POST["id"];
         foreach ($_POST as $key => $value) {
             if (($value != "") && ($key != "id" && $key != "send" && $key != "img")) {
+                // echo $key, ";", $value, "<br>";
                 change($id, $value, $key);
-            } else if ($value != "" && $key == "img") {
-                createFile($id, $_FILES);
             }
         }
+        if (isset($_FILES["img"]) && $_FILES['img']['tmp_name'] != "") {
+            $value = createFile($id, $_FILES);
+            try {
+                $conn = mysqli_connect("localhost", USER, PASS, BD_NAME);
+                mysqli_set_charset($conn, "utf8");
+            } catch (Exception $e) {
+                die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
+            }
+            try {
+                $consulta = "UPDATE usuarios SET foto = '" . $value . "' WHERE id_usuario='" . $id . "'";
+                $result = mysqli_query($conn, $consulta);
+            } catch (Exception $e) {
+                mysqli_close($conn);
+                die("<p>no he podido crear consulta:" . $e->getMessage() . "</p></body></html>");
+            }
+        }
+
         echo '<style>a {color: black; text-decoration: none} a:visited {color: black}</style>';
         echo "Cambiado";
         echo '<p><button><a href="../index.php">OK</a></button></p>';
-        // header("location: index.php");
+        header("location: ../index.php");
     }
 }
 if (isset($_GET['id'])) {
@@ -144,7 +160,7 @@ function dni_err($post)
 }
 function file_err($file)
 {
-    if (isset($file["img"])) {
+    if (isset($file["img"]) && $file['img']['tmp_name'] != "") {
         if ($file["img"]["size"] > 500 * 1024) {
             // echo "<span class ='red'>imagen tiene que ser menos de 500 KB</span>";
             return true;
@@ -159,7 +175,9 @@ function file_err($file)
 }
 function createFile($id, $file)
 {
-    $type = end(explode('.', $file["img"]["name"]));
+    $tmp = explode('.', $file["img"]["name"]);
+    
+    $type = end($tmp);
     $newName = "img_$id.$type";
     if (!file_exists("../img/" . $newName)) {
         move_uploaded_file($file["img"]["tmp_name"], "../img/" . $newName);

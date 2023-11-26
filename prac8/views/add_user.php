@@ -9,21 +9,19 @@ if (isset($_POST["send"])) {
         } catch (Exception $e) {
             die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
         }
-        // show_info($conn, $id);
+        $last = $conn->insert_id;
         try {
-            $consulta = "insert into usuarios (usuario,clave,nombre,dni,sexo,foto)
-        values ('" . $_POST["usuario"] . "','" . $_POST["clave"] . "','" . $_POST["nombre"] . "','" . $_POST["dni"] . "','" . $_POST["sexo"] . "','" . createFile($last, $_FILES) . ")";
+            $consulta = "insert into usuarios (usuario,clave,nombre,dni,sexo,foto) values ('" . $_POST["usuario"] . "','" . $_POST["clave"] . "','" . $_POST["nombre"] . "','" . $_POST["dni"] . "','" . $_POST["sexo"] . "','" . createFile($last, $_FILES) . "')";
             $result = mysqli_query($conn, $consulta);
         } catch (Exception $e) {
             mysqli_close($conn);
             die("<p>no he podido crear consulta:" . $e->getMessage() . "</p></body></html>");
         }
-        $last = $conn->insert_id;
         echo '<style>a {color: black; text-decoration: none} a:visited {color: black}</style>';
         echo "Creado";
         echo '<p><button><a href="../index.php">OK</a></button></p>';
         mysqli_close($conn);
-        // header("location: index.php");
+        header("location: ../index.php");
     }
 }
 
@@ -94,7 +92,7 @@ function dni_err($post)
 }
 function file_err($file)
 {
-    if (isset($file["img"])) {
+    if (isset($file["img"]) && $file['img']['tmp_name'] != "") {
         if ($file["img"]["size"] > 500 * 1024) {
             // echo "<span class ='red'>imagen tiene que ser menos de 500 KB</span>";
             return true;
@@ -110,7 +108,8 @@ function file_err($file)
 
 function createFile($id, $file)
 {
-    $type = end(explode('.', $file["img"]["name"]));
+    $tmp = explode('.', $file["img"]["name"]);
+    $type = end($tmp);
     $newName = "img_$id.$type";
     if (!file_exists("../img/" . $newName)) {
         move_uploaded_file($file["img"]["tmp_name"], "../img/" . $newName);
