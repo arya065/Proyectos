@@ -72,6 +72,23 @@ function getNameAsigna($id)
     $line = mysqli_fetch_assoc($result);
     return $line["denominacion"];
 }
+function getMissingAsigna($id)
+{
+    try {
+        $conn = mysqli_connect("localhost", USER, PASS, BD_NAME);
+        mysqli_set_charset($conn, "utf8");
+    } catch (Exception $e) {
+        die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
+    }
+    try {
+        $consulta = "select * from notas join asignaturas on notas.cod_asig=asignaturas.cod_asig where notas.cod_alu=$id";
+        $result = mysqli_query($conn, $consulta);
+    } catch (Exception $e) {
+        mysqli_close($conn);
+        die("<p>no he podido eliminar:" . $e->getMessage() . "</p></body></html>");
+    }
+    return $result;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -133,7 +150,7 @@ function getNameAsigna($id)
             echo '<th>Nota</th>';
             echo '<th>Accion</th>';
             echo '</tr>';
-            if (mysqli_num_rows($notas) > 0) {
+            if (mysqli_num_rows($notas) == mysqli_num_rows($asigna)) {
                 // tiene asignaturas calificadas
                 while ($line = mysqli_fetch_assoc($notas)) {
                     echo '<tr>';
@@ -149,13 +166,15 @@ function getNameAsigna($id)
                     echo '</tr>';
                 }
                 echo '</table>';
+                echo '<p>A ' . $name . ' no quedan asignaturas para calificar</p>';
             } else {
                 // no tiene asignaturas calificadas
                 echo '</table>';
                 echo '<form action="index.php" method="post">';
                 echo '<p>Asignaturas que a ' . $name . ' quedan por calificar  ';
                 echo '<select name="asigna" id="asigna">';
-                while ($line = mysqli_fetch_assoc($asigna)) {
+                $missing = getMissingAsigna($_POST["nombre"]);
+                while ($line = mysqli_fetch_assoc($missing)) {
                     foreach ($line as $key => $value) {
                         if ($key == "denominacion") {
                             echo '<option value="' . $line["cod_asig"] . '">' . $value . '</option>';
