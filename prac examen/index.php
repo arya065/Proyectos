@@ -1,5 +1,8 @@
 <?php
 require("functions.php");
+if (isset($_GET["action"]) && $_GET["action"] == "delete") {
+    deleteNote($_GET["codAlu"], $_GET["codAsigna"]);
+}
 function emptyTable($tableName)
 {
     try {
@@ -81,13 +84,33 @@ function getMissingAsigna($id)
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
     }
     try {
-        $consulta = "select * from notas join asignaturas on notas.cod_asig=asignaturas.cod_asig where notas.cod_alu=$id";
+        $consulta = "select * from asignaturas where not exists(
+            select cod_asig from notas
+            where asignaturas.cod_asig = notas.cod_asig
+            and cod_alu = $id
+        )";
         $result = mysqli_query($conn, $consulta);
     } catch (Exception $e) {
         mysqli_close($conn);
         die("<p>no he podido eliminar:" . $e->getMessage() . "</p></body></html>");
     }
     return $result;
+}
+function deleteNote($codAlu, $codAsigna)
+{
+    try {
+        $conn = mysqli_connect("localhost", USER, PASS, BD_NAME);
+        mysqli_set_charset($conn, "utf8");
+    } catch (Exception $e) {
+        die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
+    }
+    try {
+        $consulta = "DELETE FROM notas WHERE cod_asig='" . $codAsigna . "' AND cod_alu='" . $codAlu . "'";
+        $result = mysqli_query($conn, $consulta);
+    } catch (Exception $e) {
+        mysqli_close($conn);
+        die("<p>no he podido eliminar:" . $e->getMessage() . "</p></body></html>");
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -154,15 +177,17 @@ function getMissingAsigna($id)
                 // tiene asignaturas calificadas
                 while ($line = mysqli_fetch_assoc($notas)) {
                     echo '<tr>';
+                    $codAsigna;
                     foreach ($line as $key => $value) {
                         if ($key == "cod_asig") {
                             echo '<td>' . getNameAsigna($value) . '</td>';
+                            $codAsigna = $value;
                         }
                         if ($key == "nota") {
                             echo '<td>' . $value . '</td>';
                         }
                     }
-                    echo '<td><a href="editar.php">Editar</a> - <a href="borrar.php">Borrar</a></td>';
+                    echo '<td><a href="editar.php">Editar</a> - <a href="index.php?codAsigna=' . $codAsigna . '&codAlu=' . $_POST["nombre"] . '&action=delete">Borrar</a></td>';
                     echo '</tr>';
                 }
                 echo '</table>';
@@ -170,6 +195,9 @@ function getMissingAsigna($id)
             } else {
                 // no tiene asignaturas calificadas
                 echo '</table>';
+                if (isset($_GET["action"]) && $_GET["action"] == "delete") {
+                    echo "Asignatura descalificada con exito!";
+                }
                 echo '<form action="index.php" method="post">';
                 echo '<p>Asignaturas que a ' . $name . ' quedan por calificar  ';
                 echo '<select name="asigna" id="asigna">';
@@ -183,7 +211,6 @@ function getMissingAsigna($id)
                 }
                 echo '<input type="submit" value="Calificar" name="qualify">';
                 echo '</select></p>';
-
                 echo '</form>';
             }
         }
