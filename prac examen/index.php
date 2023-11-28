@@ -1,7 +1,10 @@
 <?php
 require("functions.php");
-if (isset($_GET["action"]) && $_GET["action"] == "delete") {
-    deleteNote($_GET["codAlu"], $_GET["codAsigna"]);
+session_start();
+
+if (isset($_POST["del"])) {
+    $_SESSION["message"] = "asignatura descalificada con exito!";
+    deleteNote($_POST["del"][0], $_POST["del"][1]);
 }
 function emptyTable($tableName)
 {
@@ -141,7 +144,6 @@ function deleteNote($codAlu, $codAsigna)
         ?>
         <p>
         <form action="index.php" method="post">
-
             Seleccione un Alumno:
             <select name="nombre" id="nombre">
                 <?php
@@ -167,7 +169,7 @@ function deleteNote($codAlu, $codAsigna)
             $asigna = getValues("asignaturas");
             $notas = getNotes($_POST["nombre"]);
             echo '<h2>Notas de alumno ' . $name . '</h2>';
-            echo '<table border="2px">';
+            echo '<table border="1px">';
             echo '<tr>';
             echo '<th>Asignatura</th>';
             echo '<th>Nota</th>';
@@ -187,16 +189,18 @@ function deleteNote($codAlu, $codAsigna)
                             echo '<td>' . $value . '</td>';
                         }
                     }
-                    echo '<td><a href="editar.php">Editar</a> - <a href="index.php?codAsigna=' . $codAsigna . '&codAlu=' . $_POST["nombre"] . '&action=delete">Borrar</a></td>';
+                    echo '<td><form action="index.php" method="post"><button type="submit" value="Editar" name="edit">Editar</button> - <button type="submit" value="' . $_POST["nombre"], $line["cod_asig"] . '" name="del">Borrar</button></form></td>';
                     echo '</tr>';
                 }
                 echo '</table>';
                 echo '<p>A ' . $name . ' no quedan asignaturas para calificar</p>';
+
             } else {
                 // no tiene asignaturas calificadas
                 echo '</table>';
-                if (isset($_GET["action"]) && $_GET["action"] == "delete") {
-                    echo "Asignatura descalificada con exito!";
+                if (isset($_SESSION["message"])) {
+                    echo $_SESSION["message"];
+                    session_destroy();
                 }
                 echo '<form action="index.php" method="post">';
                 echo '<p>Asignaturas que a ' . $name . ' quedan por calificar  ';
