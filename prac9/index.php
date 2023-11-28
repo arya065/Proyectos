@@ -52,6 +52,15 @@ function deleteFilm($id)
     table th {
         background-color: lightgrey;
     }
+
+    button a {
+        color: black;
+        text-decoration: none;
+    }
+
+    button a:visited {
+        color: black;
+    }
 </style>
 
 <body>
@@ -76,11 +85,11 @@ function deleteFilm($id)
                 }
             }
             echo "<td>";
-            echo '<form action="index.php" method="post"><button type="submit" name="del" value="' . $line["idPelicula"] . '">Borrar</button> - <button type="submit" name="edit" value="' . $line["idPelicula"] . '">Editar</button></form>';
+            echo '<form action="index.php" method="post"><button type="submit" name="del" value="' . $line["idPelicula"] . '">Borrar</button> - ';
+            echo '<button type="submit" name="edit" value="' . $line["idPelicula"] . '"><a href="views/edit.php?id=' . $line["idPelicula"] . '">Editar</a></button></form>';
             echo "</td>";
             echo "</tr>";
         }
-
         ?>
     </table>
 </body>
