@@ -2,6 +2,7 @@
 require("functions.php");
 if (isset($_POST["del"])) {
     deleteFilm($_POST["del"]);
+    echo "eliminado con exito";
 }
 function getAllFilms()
 {
@@ -61,6 +62,10 @@ function deleteFilm($id)
     button a:visited {
         color: black;
     }
+
+    img {
+        width: 100px;
+    }
 </style>
 
 <body>
@@ -92,6 +97,16 @@ function deleteFilm($id)
         }
         ?>
     </table>
+    <?php
+    if (isset($_POST["delPhoto"])) {
+        echo "se dispone a cambiar la carratula <img src='img/" . $_POST["delPhoto"] . "' alt='old picture'> por esta otra: <img src='img/no_imagen.jpg' alt='new picture'>";
+        echo "<form action='index.php' method='post'>";
+        echo '<br>';
+        echo '<input type="submit" value="Continuar" name ="send">';
+        echo '<button><a href="views/edit.php">Atras</a></button>';
+        echo "</form>";
+    }
+    ?>
 </body>
 
 </html>

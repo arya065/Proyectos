@@ -5,6 +5,9 @@ session_start();
 if (isset($_POST["del"])) {
     $_SESSION["message"] = "asignatura descalificada con exito!";
     deleteNote($_POST["del"][0], $_POST["del"][1]);
+    $_SESSION["alumno"] = $_POST["del"][0];
+    header("location: index.php");
+    exit;
 }
 function emptyTable($tableName)
 {
@@ -141,7 +144,7 @@ function deleteNote($codAlu, $codAsigna)
         echo '<p>En este momento no tenemos ningun alumno registrado en la BD</p>';
     } else {
         $arr = getValues("alumnos");
-        ?>
+    ?>
         <p>
         <form action="index.php" method="post">
             Seleccione un Alumno:
@@ -150,7 +153,7 @@ function deleteNote($codAlu, $codAsigna)
                 while ($line = mysqli_fetch_assoc($arr)) {
                     foreach ($line as $key => $value) {
                         if ($key == "nombre") {
-                            if (isset($_POST["send"]) && $_POST["nombre"] == $line["cod_alu"]) {
+                            if ((isset($_POST["send"]) && $_POST["nombre"] == $line["cod_alu"]) || (isset($_SESSION["alumno"]) && $_SESSION["alumno"] == $line["cod_alu"])) {
                                 echo '<option value="' . $line["cod_alu"] . '" selected>' . $value . '</option>';
                                 $name = $line["nombre"];
                             } else {
@@ -165,9 +168,14 @@ function deleteNote($codAlu, $codAsigna)
         </form>
         </p>
         <?php
-        if (isset($_POST["send"])) {
+        if (isset($_POST["send"]) || isset($_SESSION["alumno"])) {
+            if (isset($_POST["send"])) {
+                $codalumno = $_POST["nombre"];
+            } else {
+                $codalumno = $_SESSION["alumno"];
+            }
             $asigna = getValues("asignaturas");
-            $notas = getNotes($_POST["nombre"]);
+            $notas = getNotes($codalumno);
             echo '<h2>Notas de alumno ' . $name . '</h2>';
             echo '<table border="1px">';
             echo '<tr>';
@@ -194,7 +202,6 @@ function deleteNote($codAlu, $codAsigna)
                 }
                 echo '</table>';
                 echo '<p>A ' . $name . ' no quedan asignaturas para calificar</p>';
-
             } else {
                 // no tiene asignaturas calificadas
                 echo '</table>';
@@ -220,7 +227,7 @@ function deleteNote($codAlu, $codAsigna)
         }
         ?>
 
-        <?php
+    <?php
     }
     ?>
 </body>

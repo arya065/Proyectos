@@ -1,5 +1,5 @@
 <?php
 define("BD_SERVER", "localhost");
-define("USER", "root");
-define("PASS", "qwer");
+define("USER", "jose");
+define("PASS", "josefa");
 define("BD_NAME", "bd_videoclub");
