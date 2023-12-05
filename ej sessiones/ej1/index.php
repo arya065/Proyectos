@@ -10,6 +10,9 @@ if (isset($_POST["send"])) {
 if (isset($_POST["del"])) {
     session_destroy();
 }
+if (isset($_SESSION["username"])) {
+    echo '<p>Su nombre es: <b>' . $_SESSION["username"] . '</b></p>';
+}
 
 ?>
 <!DOCTYPE html>
