@@ -1,13 +1,6 @@
 <?php
-session_name("ej1");
+session_name("ej2");
 session_start();
-if (isset($_POST["back"])) {
-    // session_destroy();
-    // session_unset();
-    header("Location: index.php");
-    exit;
-    // print_r($_SESSION);
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,11 +18,15 @@ if (isset($_POST["back"])) {
     } else {
         echo '<p>Su nombre es vacio</p>';
     }
-    echo '<form action="index2.php" method="post">';
+    echo '<form action="index.php" method="post">';
     echo '<input type="submit" value="Volver a la primera pagina" name="back">';
     echo '</form>';
 
-
+    if (isset($_POST["back"])) {
+        session_destroy();
+        header("Location: index.php");
+        exit;
+    }
     ?>
 </body>
 
