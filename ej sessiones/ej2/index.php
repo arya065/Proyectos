@@ -1,19 +1,21 @@
 <?php
-session_name("ej2");
+session_name("ej1");
 session_start();
-if (isset($_POST["send"])) {
-    $_SESSION["username"] = $_POST["nombre"];
-    header("Location: index2.php");
-    print_r($_SESSION);
-    exit;
-}
 if (isset($_POST["del"])) {
     session_destroy();
-}
-if (isset($_SESSION["username"])) {
-    echo '<p>Su nombre es: <b>' . $_SESSION["username"] . '</b></p>';
-}
+} else {
 
+
+    if (isset($_POST["send"])) {
+        $_SESSION["username"] = $_POST["nombre"];
+        // session_destroy();
+        header("Location: index2.php");
+        exit;
+    }
+    if (isset($_SESSION["username"]) && $_SESSION["username"] != "") {
+        echo '<p>Su nombre es: <b>' . $_SESSION["username"] . '</b></p>';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
