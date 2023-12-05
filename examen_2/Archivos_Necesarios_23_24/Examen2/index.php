@@ -161,6 +161,7 @@ function delGroup($id, $dia, $hora, $grupo)
     <h1>Examen2 PHP</h1>
     <h2>Horario de los Profesores</h2>
     <?php
+
     if (!exist("usuarios")) {
         echo '<p>En estos momentos no tenemos ningun alumno registrado en la BD</p>';
     } else {
@@ -181,6 +182,10 @@ function delGroup($id, $dia, $hora, $grupo)
     }
 
     //ver horario
+    if (isset($_POST["username"])) {
+        $_SESSION["username"] = $_POST["username"];
+        $_SESSION["id"] = $_POST["profesor"];
+    }
     if (isset($_POST["username"]) || (isset($_SESSION["username"]))) {
         if (!isset($_SESSION["username"])) {
             $_SESSION["username"] = $_POST["username"];
@@ -313,7 +318,6 @@ function delGroup($id, $dia, $hora, $grupo)
         echo '</select>';
         echo '<button type ="submit" value="' . $_SESSION["id"] . '" name ="add">Anadir</button>';
         echo '</form></p>';
-        // session_destroy();
         if (isset($_POST["del"])) {
             delGroup($_SESSION["id"], $day, $hour, $_POST["del"]);
         } else {
@@ -322,6 +326,9 @@ function delGroup($id, $dia, $hora, $grupo)
         if (isset($_POST["add"])) {
         }
     }
+    // session_destroy();
+    // unset($_SESSION["username"]);
+
     ?>
 
 </body>
