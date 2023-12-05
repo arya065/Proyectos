@@ -1,4 +1,5 @@
 <?php
+session_name("ej1");
 session_start();
 if (isset($_POST["send"])) {
     $_SESSION["username"] = $_POST["nombre"];

@@ -1,4 +1,5 @@
 <?php
+session_name("ej1");
 session_start();
 ?>
 <!DOCTYPE html>
