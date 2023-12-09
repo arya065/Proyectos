@@ -3,7 +3,7 @@ require("functions.php");
 session_start();
 
 if (isset($_SESSION["message"])) {
-    echo $_SESSION["message"];
+    print_r($_SESSION["message"]);
     unset($_SESSION["message"]);
 }
 if (isset($_POST["del"])) {
@@ -135,7 +135,7 @@ function change($id, $key, $value)
         mysqli_close($conn);
     }
     try {
-        $result = mysqli_query($conn, "update peliculas set $key=$value where idPelicula=$id");
+        $result = mysqli_query($conn, "update peliculas set $key= '$value' where idPelicula=$id");
     } catch (Exception $e) {
         echo "no se puede proceder query a BD";
         mysqli_close($conn);
@@ -192,7 +192,7 @@ function change($id, $key, $value)
                 } elseif ($key == "titulo") {
                     echo "<td><a href='views/show.php?id=" . $line["idPelicula"] . "'>$value</a></td>";
                 } elseif ($key == "caratula") {
-                    echo "<td>$value</td>";
+                    echo '<td><img src="img/' . $value . '" alt="user_img"></td>';
                 }
             }
             echo "<td>";
