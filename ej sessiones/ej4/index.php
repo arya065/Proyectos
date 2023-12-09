@@ -25,5 +25,4 @@ if (!isset($_SESSION["axis"]) || $_SESSION["axis"] == "") {
         <button type="submit" name="back">Volver a centro</button>
     </form>
 </body>
-
 </html>
