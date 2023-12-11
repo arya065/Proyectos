@@ -1,6 +1,7 @@
 <?php
-session_name("Primer_login");
 require("functions.php");
+timeout();
+session_name("Primer_login");
 session_start();
 
 if (isset($_POST["exit"])) {
@@ -23,7 +24,7 @@ if (isset($_SESSION["login"])) {
         <h1>we are logged in</h1>
         <form action="login.php" method="post">
             <?php
-            echo '<p>Hi there ' . $_SESSION['login'] . '</p>';
+            echo '<p>Hi there, user ' . $_SESSION['login'] . '</p>';
             ?>
             <button type="submit" name="exit">Exit</button>
         </form>

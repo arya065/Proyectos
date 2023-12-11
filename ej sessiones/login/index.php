@@ -9,14 +9,12 @@ if (isset($_POST["login"])) {
     if (!$err_form) {
         if (!existUser($_POST["usuario"], $_POST["clave"])) {
             $err_user = true;
-        } else {
-            if (!isset($_SESSION["login"]) || $_SESSION["login"] == "") {
-                session_name("Primer_login");
-                session_start();
-                $_SESSION["login"] = $_POST["usuario"];
-                header("Location: login.php");
-                return;
-            }
+        } else if (!isset($_SESSION["login"]) || $_SESSION["login"] == "") {
+            session_name("Primer_login");
+            session_start();
+            $_SESSION["login"] = $_POST["usuario"];
+            header("Location: login.php");
+            return;
         }
     }
 }
@@ -40,23 +38,6 @@ function existUser($user, $pass)
         return true;
     }
     return false;
-}
-function ini_connect()
-{
-    try {
-        $conn = mysqli_connect("localhost", USER, PASS, BD_NAME);
-        mysqli_set_charset($conn, "utf8");
-    } catch (Exception $e) {
-        die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
-    }
-    try {
-        $consulta = "select * from table";
-        $result = mysqli_query($conn, $consulta);
-    } catch (Exception $e) {
-        mysqli_close($conn);
-        die("<p>no he podido eliminar:" . $e->getMessage() . "</p></body></html>");
-    }
-    return $result;
 }
 ?>
 <!DOCTYPE html>
@@ -88,8 +69,10 @@ function ini_connect()
             <label for="usuario">Usuario:</label>
             <input type="text" name="usuario" id="usuario" value="<?php if (isset($_POST["usuario"])) echo $_POST["usuario"] ?>">
             <?php
-            if (isset($_POST["login"]) && $err_user) {
-                echo '<span class="red">Error in username</span>';
+            if (isset($_POST["login"]) && $_POST["usuario"] == "") {
+                echo '<span class="red">Username empty</span>';
+            } else if (isset($_POST["login"]) && $err_user) {
+                echo '<span class="red">Username or password not correct</span>';
             }
             ?>
         </p>
@@ -97,8 +80,8 @@ function ini_connect()
             <label for="clave">Clave:</label>
             <input type="password" name="clave" id="clave">
             <?php
-            if (isset($_POST["login"]) && $err_pass) {
-                echo '<span class="red">Error in password</span>';
+            if (isset($_POST["login"]) && $_POST["clave"] == "") {
+                echo '<span class="red">Password empty</span>';
             }
             ?>
         </p>
