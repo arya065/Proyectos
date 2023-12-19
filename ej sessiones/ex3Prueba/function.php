@@ -1,7 +1,7 @@
 <?php
 define("BD_SERVER", "localhost");
-define("USER", "jose");
-define("PASS", "josefa");
+define("USER", "root");
+define("PASS", "qwer");
 define("BD_NAME", "video_club");
 
 function query()
@@ -25,10 +25,14 @@ function LetraNIF($dni)
 {
     $letter = substr($_POST["dni"], strlen($_POST["dni"]) - 1);
     $dni = substr($_POST["dni"], 0, strlen($_POST["dni"]) - 1); //get only numbers
-    $valor = (int) ($dni / 23);
-    $valor *= 23;
-    $valor = $dni - $valor;
-    $letras = "TRWAGMYFPDXBNJZSQVHLCKEO";
-    $letraNif = substr($letras, $valor, 1);
-    return $letraNif == $letter;
+    if (is_numeric($dni)) {
+        $valor = (int) ($dni / 23);
+        $valor *= 23;
+        $valor = $dni - $valor;
+        $letras = "TRWAGMYFPDXBNJZSQVHLCKEO";
+        $letraNif = substr($letras, $valor, 1);
+        return $letraNif == $letter;
+    } else {
+        return false;
+    }
 }
