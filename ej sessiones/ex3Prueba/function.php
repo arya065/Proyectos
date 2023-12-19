@@ -17,7 +17,7 @@ function query()
         $result = mysqli_query($conn, $consulta);
     } catch (Exception $e) {
         mysqli_close($conn);
-        die("<p>no he podido eliminar:" . $e->getMessage() . "</p></body></html>");
+        die("<p>no hacer query:" . $e->getMessage() . "</p></body></html>");
     }
     return $result;
 }
