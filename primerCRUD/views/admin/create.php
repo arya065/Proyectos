@@ -1,7 +1,7 @@
 <?php
 require("../../function.php");
 session_start();
-if (!timeout() | \stillExist($_SESSION["username"])) {
+if (!timeout() && stillExist($_SESSION["username"])) {
     if (isset($_POST["back"])) {
         header("Location: admin.php");
         return;

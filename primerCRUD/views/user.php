@@ -1,7 +1,7 @@
 <?php
 require("../function.php");
 session_start();
-if (!timeout() || stillExist($_SESSION["username"])) {
+if (!timeout() && stillExist($_SESSION["username"])) {
     var_dump(timeout());
     if (isset($_POST["logout"])) {
         session_destroy();
