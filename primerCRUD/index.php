@@ -1,6 +1,9 @@
 <?php
 require "function.php";
 session_start();
+// session_destroy();
+// session_abort();
+
 if (isset($_POST["enter"])) {
     $errUser = $errPass = false;
     if ($_POST["usuario"] == "") {
@@ -10,10 +13,9 @@ if (isset($_POST["enter"])) {
         $errPass = true;
     }
     $errForm =  $errUser || $errPass;
-
     if (!$errForm && !ifExist($_POST["usuario"], $_POST["clave"])) {
         $errAccess = true;
-    } else {
+    } else if (!$errForm) {
         if (userAdmin($_POST["usuario"], $_POST["clave"])) {
             $_SESSION["username"] = $_POST["usuario"];
             header("Location: views/admin/admin.php");

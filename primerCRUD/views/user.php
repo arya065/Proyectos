@@ -1,7 +1,8 @@
 <?php
 require("../function.php");
 session_start();
-if (stillExist($_SESSION["username"])) {
+if (!timeout() || stillExist($_SESSION["username"])) {
+    var_dump(timeout());
     if (isset($_POST["logout"])) {
         session_destroy();
         header("Location: ../index.php");
@@ -26,5 +27,8 @@ if (stillExist($_SESSION["username"])) {
 
     </html>
 <?php
+} else {
+    header("Location: ../index.php");
+    return;
 }
 ?>
