@@ -1,15 +1,28 @@
 <?php
-    // SERVIDOR_BD,USUARIO_BD,CLAVE_BD y NOMBRE_BD son CTES
-
-    //Conexión con PDO
-    $conexion=new PDO("mysql:host=".SERVIDOR_BD.";dbname=".NOMBRE_BD,USUARIO_BD,CLAVE_BD,array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
-    
-    // Conexión mysqli
-    $conexion=mysqli_connect(SERVIDOR_BD,USUARIO_BD,CLAVE_BD,NOMBRE_BD);
-    mysqli_set_charset($conexion,"utf-8");
-
-    //Algunas funciones y metodos según conexion PDO ó mysqli
-    $ultim_id=$conexion->lastInsertId();
-
-    $ultim_id=mysqli_insert_id($conexion);
+require("function.php");
+session_start();
 ?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Video Club</h1>
+    <form action="index.php" method="post">
+        <p><label for="usuario">Nombre de usuario</label><input type="text" name="usuario" id="usuario"></p>
+        <p><label for="clave">Contrasena</label><input type="text" name="clave" id="clave"></p>
+        <p><label for="repeat">Repeta la Contrasena</label><input type="text" name="repeat" id="repeat"></p>
+        <p><label for="foto">Foto:</label><input type="file" name="foto" id="foto"></p>
+        <p>
+            <button type="submit" name="back">Volver</button>
+            <button type="submit" name="send">Continuar</button>
+        </p>
+    </form>
+</body>
+
+</html>
