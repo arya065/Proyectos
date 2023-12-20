@@ -13,6 +13,16 @@ if (isset($_POST["enter"])) {
 
     if (!$errForm && !ifExist($_POST["usuario"], $_POST["clave"])) {
         $errAccess = true;
+    } else {
+        if (userAdmin($_POST["usuario"], $_POST["clave"])) {
+            $_SESSION["username"] = $_POST["usuario"];
+            header("Location: views/admin/admin.php");
+            return;
+        } else {
+            $_SESSION["username"] = $_POST["usuario"];
+            header("Location: views/user.php");
+            return;
+        }
     }
 }
 
