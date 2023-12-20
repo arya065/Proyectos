@@ -1,9 +1,35 @@
 <?php
+// session_destroy();
+require("function.php");
 session_start();
 if (isset($_GET["logout"])) {
     session_destroy();
 }
-
+if (isset($_POST["entrar"]) && checkUser($_POST["nombre"], $_POST["clave"])) {
+    $_SESSION["username"] = $_POST["nombre"];
+    header("Location: views/listado.php");
+    return;
+}
+function checkUser($user, $pass)
+{
+    try {
+        $conn = mysqli_connect("localhost", USER, PASS, BD_NAME);
+        mysqli_set_charset($conn, "utf8");
+    } catch (Exception $e) {
+        die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
+    }
+    try {
+        $consulta = "select * from usuarios where usuario='$user' and clave='$pass'";
+        $result = mysqli_query($conn, $consulta);
+    } catch (Exception $e) {
+        mysqli_close($conn);
+        die("<p>no he podido eliminar:" . $e->getMessage() . "</p></body></html>");
+    }
+    if (mysqli_num_rows($result) > 0) {
+        return true;
+    }
+    return false;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -11,6 +11,7 @@ email es correcto sintacticamente y no repetido
 dni es correcto
 */
 if (isset($_POST["send"])) {
+    $err_nombre = $err_clave = $err_claveRep = $err_dni = $err_mail = $err_tel = false;
     // vacio
     if ($_POST["nombre"] == "") {
         $err_nombre = true;
@@ -31,12 +32,15 @@ if (isset($_POST["send"])) {
         $err_tel = true;
     }
     // repetidos
-    // if (checkRepeat("usuarios", "usuario", $_POST["nombre"])) {
-    //     $err_nombre = true;
-    // }
-    // if (checkRepeat("usuarios", "email", $_POST["mail"])) {
-    //     $err_mail = true;
-    // }
+    if (checkRepeat("usuarios", "usuario", $_POST["nombre"])) {
+        $err_nombre = true;
+    }
+    if (checkRepeat("usuarios", "email", $_POST["mail"])) {
+        $err_mail = true;
+    }
+    if (checkRepeat("usuarios", "dni", $_POST["dni"])) {
+        $err_dni = true;
+    }
     if ($_POST["clave"] != $_POST["claveRep"]) {
         $err_claveRep = true;
     }
@@ -50,10 +54,12 @@ if (isset($_POST["send"])) {
     if (!LetraNIF($_POST["dni"])) {
         $err_dni = true;
     }
+
     $err_form = $err_nombre || $err_clave || $err_claveRep || $err_dni || $err_mail || $err_tel;
     // $err_form = true;
     if (!$err_form) {
         $_SESSION["username"] = $_POST["nombre"];
+        createUser($_POST["dni"], $_POST["nombre"], $_POST["clave"], $_POST["tel"], $_POST["mail"]);
         header("Location: listado.php");
         return;
     }
@@ -68,15 +74,32 @@ function checkRepeat($table, $field, $value)
     }
     try {
         $consulta = "select * from $table where $field='$value'";
+        echo $consulta;
         $result = mysqli_query($conn, $consulta);
     } catch (Exception $e) {
         mysqli_close($conn);
-        die("<p>no he podido eliminar:" . $e->getMessage() . "</p></body></html>");
+        die("<p>no se puede comprobar si se repite " . $e->getMessage() . "</p></body></html>");
     }
     if (mysqli_num_rows($result) > 0) {
         return true;
     }
     return false;
+}
+function createUser($dni, $user, $pass, $tel, $mail)
+{
+    try {
+        $conn = mysqli_connect("localhost", USER, PASS, BD_NAME);
+        mysqli_set_charset($conn, "utf8");
+    } catch (Exception $e) {
+        die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
+    }
+    try {
+        $consulta = "insert into usuarios (dni,usuario,clave,telefono,email) values ('$dni','$user','$pass',$tel,'$mail')";
+        $result = mysqli_query($conn, $consulta);
+    } catch (Exception $e) {
+        mysqli_close($conn);
+        die("<p>no se puede insertar " . $e->getMessage() . "</p></body></html>");
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -108,7 +131,7 @@ function checkRepeat($table, $field, $value)
             <label for="nombre">Nombre de usuario:</label>
             <input type="text" name="nombre" id="nombre" value="<?php if (isset($_POST["send"])) echo $_POST["nombre"] ?>">
             <?php
-            if (isset($err_nombre)) {
+            if (isset($err_nombre) && $err_nombre) {
                 echo '<span class="red">error</span>';
             }
             ?>
@@ -117,7 +140,7 @@ function checkRepeat($table, $field, $value)
             <label for="clave">Contrasena:</label>
             <input type="password" name="clave" id="clave" value="<?php if (isset($_POST["send"])) echo $_POST["clave"] ?>">
             <?php
-            if (isset($err_clave)) {
+            if (isset($err_clave) && $err_clave) {
                 echo '<span class="red">error</span>';
             }
             ?>
@@ -126,7 +149,7 @@ function checkRepeat($table, $field, $value)
             <label for="claveRep">Repita la contrasena:</label>
             <input type="password" name="claveRep" id="claveRep">
             <?php
-            if (isset($err_claveRep)) {
+            if (isset($err_claveRep) && $err_claveRep) {
                 echo '<span class="red">error</span>';
             }
             ?>
@@ -135,7 +158,7 @@ function checkRepeat($table, $field, $value)
             <label for="dni">DNI:</label>
             <input type="text" name="dni" id="dni" value="<?php if (isset($_POST["send"])) echo $_POST["dni"] ?>">
             <?php
-            if (isset($err_dni)) {
+            if (isset($err_dni) && $err_dni) {
                 echo '<span class="red">error</span>';
             }
             ?>
@@ -144,7 +167,7 @@ function checkRepeat($table, $field, $value)
             <label for="mail">Email:</label>
             <input type="text" name="mail" id="mail" value="<?php if (isset($_POST["send"])) echo $_POST["mail"] ?>">
             <?php
-            if (isset($err_mail)) {
+            if (isset($err_mail) && $err_mail) {
                 echo '<span class="red">error</span>';
             }
             ?>
@@ -153,7 +176,7 @@ function checkRepeat($table, $field, $value)
             <label for="tel">Telefono:</label>
             <input type="text" name="tel" id="tel" value="<?php if (isset($_POST["send"])) echo $_POST["tel"] ?>">
             <?php
-            if (isset($err_tel)) {
+            if (isset($err_tel) && $err_tel) {
                 echo '<span class="red">error</span>';
             }
             ?>

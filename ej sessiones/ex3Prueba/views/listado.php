@@ -1,4 +1,5 @@
 <?php
+require "../function.php";
 session_start();
 function getAllMovies()
 {
@@ -9,7 +10,7 @@ function getAllMovies()
         die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
     }
     try {
-        $consulta = "select * from peliculas";
+        $consulta = "select idPelicula,titulo,caratula from peliculas";
         $result = mysqli_query($conn, $consulta);
     } catch (Exception $e) {
         mysqli_close($conn);
