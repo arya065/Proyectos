@@ -2,7 +2,7 @@
 require("../function.php");
 session_start();
 if (!timeout() && stillExist($_SESSION["username"])) {
-    var_dump(timeout());
+    // var_dump(timeout());
     if (isset($_POST["logout"])) {
         session_destroy();
         header("Location: ../index.php");
@@ -19,7 +19,7 @@ if (!timeout() && stillExist($_SESSION["username"])) {
     </head>
 
     <body>
-        <h1>Buenas, <?php echo $_SESSION['username'] ?></h1>
+        <h1>Buenas, <?php echo $_SESSION['username'] ?> usuario normal</h1>
         <form action="user.php" method="post">
             <button type="submit" name="logout">Salir</button>
         </form>
