@@ -3,7 +3,7 @@ class Film
 {
     private $nombre, $ano, $director, $precio, $alquilada, $fecha_dev, $recarga;
     static $list = [];
-    function __construct($nombre = "value1", $ano = "1970", $director = "value1", $precio = 1, $alquilada = false, $fecha_dev = "1 January 2024", $recarga = 0)
+    function __construct($nombre = "value1", $ano = "1970", $director = "value1", $precio = 1, $alquilada = 0, $fecha_dev = "1 January 2024", $recarga = 0)
     {
 
         if ($this->getFilm($nombre) == -1) {

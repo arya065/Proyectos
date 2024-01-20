@@ -1,14 +1,8 @@
 <?php
 require("film.php");
 $film1 = new Film();
-// $film1->__destruct();
 $film2 = new Film("value2", "2014", "value2", 2, true, "2 January 2024", 1);
-foreach (Film::$list as $value) {
-    print_r($value->getName());
-    echo "<br>";
-}
-// print_r($film1->getAllData());
-$listCli = [$film1];
+$listCli = [$film2];
 function showFilmCli($film)
 {
     $data = $film->getAllData();
@@ -26,7 +20,6 @@ function getEstimated($fecha)
 {
     $estimated = strtotime($fecha);
     $diff = abs(time() - $estimated);
-    // echo $diff, '<br>';
     $years = floor($diff / (365 * 60 * 60 * 24));
     $months = floor(($diff - $years * 365 * 60 * 60 * 24) / (30 * 60 * 60 * 24));
     $days = floor(($diff - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 * 24) / (60 * 60 * 24));
@@ -64,7 +57,6 @@ function getEstimated($fecha)
                     <th>Acciones</th>
                 </tr>
                 <?php
-                // print_r($film1);
                 if (sizeof($listCli)) {
                     foreach ($listCli as $value) {
                         echo "<tr>";
@@ -92,7 +84,35 @@ function getEstimated($fecha)
     </div>
     <div>
         <h1>Todas peliculas</h1>
-
+        <form action="index.php" method="post">
+            <table border="1px">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Ano</th>
+                    <th>Director</th>
+                    <th>Precio</th>
+                    <th>Alquilada</th>
+                    <th>Fecha devolucion</th>
+                    <th>Recarga</th>
+                    <th>Acciones</th>
+                </tr>
+                <?php
+                foreach (Film::$list as $value) {
+                    echo "<tr>";
+                    $film = $value->getAllData();
+                    foreach ($film as $v) {
+                        echo "<td>$v</td>";
+                    }
+                    if (!$film[4]) {
+                        echo "<td><button type='submit' name='rent'>Alquilar libro</button></td>";
+                    } else {
+                        echo "<td class='red'>No se puede alquilar</td>";
+                    }
+                    echo "</tr>";
+                }
+                ?>
+            </table>
+        </form>
     </div>
 </body>
 
