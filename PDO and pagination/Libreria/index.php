@@ -130,14 +130,17 @@ if (isset($_POST["logout"])) {
         <h2>Listado de los libros</h2>
         <div id="libros">
             <?php
-            var_dump(ifAdm("test3",$conn));
-            // $list = getAllBooks();
-            // while ($line = mysqli_fetch_assoc($list)) {
-            //     echo '<div>';
-            //     echo '<img src="Images/' . $line["portada"] . '" alt="img">';
-            //     echo '<p>' . $line["titulo"] . ' - ' . $line["precio"] . ' euros</p>';
-            //     echo '</div>';
-            // }
+            var_dump(ifExist("t1", "t1", $conn));
+            echo "<br>";
+            var_dump(ifAdm("t1", $conn));
+            
+            $list = getAllBooks($conn);
+            foreach ($list as $line) {
+                echo '<div>';
+                echo '<img src="Images/' . $line["portada"] . '" alt="img">';
+                echo '<p>' . $line["titulo"] . ' - ' . $line["precio"] . ' euros</p>';
+                echo '</div>';
+            }
             ?>
         </div>
 </body>

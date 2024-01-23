@@ -7,7 +7,7 @@ function createConn()
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES   => false
         ];
-        $conn = new PDO("mysql:host=localhost;dbname=bd_libreria_exam", "root", "qwer", $opt);
+        $conn = new PDO("mysql:host=localhost;dbname=bd_libreria_exam", "jose", "josefa", $opt);
         return $conn;
     } catch (PDOException $e) {
         echo "No ha podido crear conexion: " . $e->getMessage();
@@ -47,8 +47,11 @@ function timeout()
 function ifAdm($name, $conn)
 {
     try {
-        $sql = "select * from usuarios where lector='$name'";
-        $result = $conn->query($sql)->fetch();
+        $sql = "select * from usuarios where lector=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$name]);
+        $result = $stmt->fetch();
+        // $result = $conn->query($sql)->fetch();
     } catch (PDOException $e) {
         echo "No ha podido realizar consulta: " . $e->getMessage();
     }
@@ -60,27 +63,23 @@ function ifAdm($name, $conn)
 function ifExist($name, $pass, $conn)
 {
     try {
-        $sql = "select * from usuarios where lector='$name' and clave='$pass'";
-        $result = $conn->query($sql)->fetch();
+        $sql = "select * from usuarios where lector=? and clave=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$name, $pass]);
+        $result = $stmt->rowCount() > 0;
+        // $result = $conn->query($sql)->fetch();
     } catch (PDOException $e) {
         echo "No ha podido realizar consulta: " . $e->getMessage();
     }
     return $result;
 }
-function getAllBooks()
+function getAllBooks($conn)
 {
     try {
-        $conn = mysqli_connect("localhost", USER, PASS, BD_NAME);
-        mysqli_set_charset($conn, "utf8");
-    } catch (Exception $e) {
-        die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
-    }
-    try {
-        $consulta = "select * from libros";
-        $result = mysqli_query($conn, $consulta);
-    } catch (Exception $e) {
-        mysqli_close($conn);
-        die("<p>no hacer query:" . $e->getMessage() . "</p></body></html>");
+        $sql = "select * from libros";
+        $result = $conn->query($sql);
+    } catch (PDOException $e) {
+        echo "No ha podido realizar consulta: " . $e->getMessage();
     }
     return $result;
 }
@@ -94,27 +93,16 @@ function del($ref, $conn)
         echo "No ha podido realizar consulta: " . $e->getMessage();
     }
     return $result;
-    
 }
-function repeatRef($ref)
+function repeatRef($ref, $conn)
 {
     try {
-        $conn = mysqli_connect("localhost", USER, PASS, BD_NAME);
-        mysqli_set_charset($conn, "utf8");
-    } catch (Exception $e) {
-        die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
+        $sql = "select * from libros where referencia=$ref";
+        $result = $conn->query($sql);
+    } catch (PDOException $e) {
+        echo "No ha podido realizar consulta: " . $e->getMessage();
     }
-    try {
-        $consulta = "select * from libros where referencia=$ref";
-        $result = mysqli_query($conn, $consulta);
-    } catch (Exception $e) {
-        mysqli_close($conn);
-        die("<p>no hacer query:" . $e->getMessage() . "</p></body></html>");
-    }
-    if (mysqli_fetch_assoc($result) > 0) {
-        return true;
-    }
-    return false;
+    return $result;
 }
 function correctNum($num)
 {
