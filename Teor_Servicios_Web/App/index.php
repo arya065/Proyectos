@@ -7,7 +7,7 @@
 </head>
 <body>
     <?php
-    define("DIR_SERV","http://localhost/Proyectos/Curso23_24/Teor_SW/primera_api");
+    define("DIR_SERV","http://localhost/Proyectos/Teor_Servicios_Web/primera_api");
 
     function consumir_servicios_REST($url,$metodo,$datos=null)
     {
