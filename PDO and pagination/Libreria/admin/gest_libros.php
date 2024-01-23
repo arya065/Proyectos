@@ -1,7 +1,9 @@
 <?php
 require("../function.php");
 session_start();
-if (!timeout() && stillExist($_SESSION["usuario"]) && !$_SESSION["usuarioNormal"]) {
+$conn = createConn();
+
+if (!timeout() && stillExist($_SESSION["usuario"], $conn) && !$_SESSION["usuarioNormal"]) {
     if (isset($_SESSION["message"])) {
         echo $_SESSION["message"];
         unset($_SESSION["message"]);
@@ -45,7 +47,7 @@ if (!timeout() && stillExist($_SESSION["usuario"]) && !$_SESSION["usuarioNormal"
         // file
         // other
         if (correctNum($_POST["referencia"])) {
-            if (repeatRef($_POST["referencia"])) {
+            if (repeatRef($_POST["referencia"], $conn)) {
                 $errRef = true;
             }
         } else {
@@ -56,7 +58,7 @@ if (!timeout() && stillExist($_SESSION["usuario"]) && !$_SESSION["usuarioNormal"
         }
         $errForm =  $errRef || $errTitulo || $errAutor || $errDesc || $errPrecio;
         if (!$errForm) {
-            addBook($_POST["referencia"], $_POST["titulo"], $_POST["autor"], $_POST["desc"], $_POST["precio"]);
+            addBook($_POST["referencia"], $_POST["titulo"], $_POST["autor"], $_POST["desc"], $_POST["precio"], $conn);
             $_SESSION["message"] = "anadido con exito";
             header("Location: gest_libros.php");
             return;
@@ -98,10 +100,10 @@ if (!timeout() && stillExist($_SESSION["usuario"]) && !$_SESSION["usuarioNormal"
             <h1>Libreria</h1>
             <?php
             echo '<p>Bienvenido <b>' . $_SESSION["usuario"] . '</b> - <button type="submit" name="logout">Salir</button></p>';
-            $list = getAllBooks();
+            $list = getAllBooks($conn);
             echo '<table border="1">';
             echo '<tr><th>Ref</th><th>Titulo</th><th>Accion</th></tr>';
-            while ($line = mysqli_fetch_assoc($list)) {
+            foreach($list as $line){
                 echo '<tr>';
                 echo '<td>' . $line["referencia"] . '</td>';
                 echo '<td>' . $line["titulo"] . '</td>';

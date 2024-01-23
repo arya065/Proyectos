@@ -7,22 +7,11 @@ function createConn()
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES   => false
         ];
-        $conn = new PDO("mysql:host=localhost;dbname=bd_libreria_exam", "jose", "josefa", $opt);
+        $conn = new PDO("mysql:host=localhost;dbname=bd_libreria_exam", "root", "qwer", $opt);
         return $conn;
     } catch (PDOException $e) {
         echo "No ha podido crear conexion: " . $e->getMessage();
     }
-}
-function preparedStmt($conn)
-{
-    try {
-        $sql = "select * from usuarios";
-        // $stmt = $conn->prepare($sql);
-        $result = "";
-    } catch (PDOException $e) {
-        echo "No ha podido realizar consulta: " . $e->getMessage();
-    }
-    return $result;
 }
 function stillExist($user, $conn)
 {
@@ -51,7 +40,6 @@ function ifAdm($name, $conn)
         $stmt = $conn->prepare($sql);
         $stmt->execute([$name]);
         $result = $stmt->fetch();
-        // $result = $conn->query($sql)->fetch();
     } catch (PDOException $e) {
         echo "No ha podido realizar consulta: " . $e->getMessage();
     }
@@ -67,7 +55,6 @@ function ifExist($name, $pass, $conn)
         $stmt = $conn->prepare($sql);
         $stmt->execute([$name, $pass]);
         $result = $stmt->rowCount() > 0;
-        // $result = $conn->query($sql)->fetch();
     } catch (PDOException $e) {
         echo "No ha podido realizar consulta: " . $e->getMessage();
     }
@@ -114,19 +101,10 @@ function correctNum($num)
     }
     return true;
 }
-function addBook($ref, $titulo, $autor, $desc, $precio)
+function addBook($ref, $titulo, $autor, $desc, $precio, $conn)
 {
-    try {
-        $conn = mysqli_connect("localhost", USER, PASS, BD_NAME);
-        mysqli_set_charset($conn, "utf8");
-    } catch (Exception $e) {
-        die("<p>no he podido connectarme:" . $e->getMessage() . "</p>");
-    }
-    try {
-        $consulta = "insert into libros (referencia,titulo,autor,descripcion,precio,portada) values ($ref,'$titulo','$autor','$desc',$precio,'')";
-        $result = mysqli_query($conn, $consulta);
-    } catch (Exception $e) {
-        mysqli_close($conn);
-        die("<p>no hacer query:" . $e->getMessage() . "</p></body></html>");
-    }
+    $sql = "insert into libros (referencia,titulo,autor,descripcion,precio,portada) values (?,?,?,?,?,'')";
+    $stmt = $conn->prepare($sql);
+    $result = $stmt->execute([$ref, $titulo, $autor, $desc, $precio]);
+    return $result;
 }

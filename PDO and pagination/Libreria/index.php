@@ -3,8 +3,6 @@ require("function.php");
 session_start();
 $conn = createConn();
 
-// print_r($_SESSION);
-// session_destroy();
 function error_page($title, $body)
 {
     $html = '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0">';
@@ -18,7 +16,7 @@ if (isset($_POST["logout"])) {
     header("Location:index.php");
     return;
 } else if (isset($_SESSION["usuario"]) && isset($_SESSION["usuarioNormal"]) && $_SESSION["usuarioNormal"]) {
-    if (!timeout() && stillExist($_SESSION["usuario"]) && $_SESSION["usuarioNormal"]) {
+    if (!timeout() && stillExist($_SESSION["usuario"], $conn) && $_SESSION["usuarioNormal"]) {
         echo '<form action="index.php" method="post">';
         echo '<p>Bienvenido <b>' . $_SESSION["usuario"] . '</b> - <button type="submit" name="logout">Salir</button></p>';
         echo '</form>';
@@ -36,13 +34,13 @@ if (isset($_POST["logout"])) {
     if ($_POST["clave"] == "") {
         $errClave = true;
     }
-    if (!ifExist($_POST["usuario"], $_POST["clave"])) {
+    if (!ifExist($_POST["usuario"], $_POST["clave"], $conn)) {
         $errAccess = true;
     }
     $errForm = $errClave || $errLector || $errAccess;
     //no errors in form
     if (!$errForm) {
-        if (ifAdm($_POST["usuario"])) {
+        if (ifAdm($_POST["usuario"], $conn)) {
             $_SESSION["usuario"] = $_POST['usuario'];
             $_SESSION["usuarioNormal"] = false;
             header("Location: admin/gest_libros.php");
@@ -130,10 +128,6 @@ if (isset($_POST["logout"])) {
         <h2>Listado de los libros</h2>
         <div id="libros">
             <?php
-            var_dump(ifExist("t1", "t1", $conn));
-            echo "<br>";
-            var_dump(ifAdm("t1", $conn));
-            
             $list = getAllBooks($conn);
             foreach ($list as $line) {
                 echo '<div>';
@@ -146,6 +140,3 @@ if (isset($_POST["logout"])) {
 </body>
 
 </html>
-<?php
-// }
-?>
