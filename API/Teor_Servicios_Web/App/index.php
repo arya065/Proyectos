@@ -9,12 +9,8 @@
 
 <body>
     <?php
-    // Берём текущий код и устанавливаем новый
-    // var_dump(http_response_code(201));
-    // // Берём новый код
-    // var_dump(http_response_code());
+    define("DIR_SERV", "http://proyectos/API/Teor_Servicios_Web/primera_api");
 
-    define("DIR_SERV", "http://proyectos/API/Teor_Servicios_Web/primera_api/");
     function consumir_servicios_REST($url, $metodo, $datos = null)
     {
         $llamada = curl_init();
@@ -40,53 +36,52 @@
     }
 
 
-    // $url = DIR_SERV . "/saludo";
-    // //$respuesta=file_get_contents($url);
-    // $respuesta = consumir_servicios_REST($url, "GET");
-    // $obj = json_decode($respuesta);
-    // if (!$obj) {
-    //     die("<p>Error consumiendo el servicio1: " . $url . "<p>" . $respuesta);
-    // } else {
-    //     echo "<p>El mensaje recibido ha sido <strong>" . $obj->mensaje . "</strong></p>";
-    // }
-    // // ///////////////////////////////////////////////////////////////////////////////////////////////
-    // $url = DIR_SERV . "/saludo/" . urlencode("Maria Antonia");
-    // //$respuesta=file_get_contents($url);
-    // $respuesta = consumir_servicios_REST($url, "GET");
-    // $obj = json_decode($respuesta);
-    // if (!$obj)
-    //     die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
+    $url = DIR_SERV . "/saludo";
+    //$respuesta=file_get_contents($url);
+    $respuesta = consumir_servicios_REST($url, "GET");
+    print_r($respuesta);
+    // echo $respuesta;
+    $obj = json_decode($respuesta);
+    if (!$obj) {
+        die("<p>Error consumiendo el servicio1: " . $url . "<p>" . $respuesta);
+    } else {
+        echo "<p>El mensaje recibido ha sido <strong>" . $obj->mensaje . "</strong></p>";
+    }
 
-    // echo "<p>El mensaje recibido ha sido <strong>" . $obj->mensaje . "</strong></p>";
+    $url = DIR_SERV . "/saludo/" . urlencode("Maria Antonia");
+    //$respuesta=file_get_contents($url);
+    $respuesta = consumir_servicios_REST($url, "GET");
+    $obj = json_decode($respuesta);
+    if (!$obj)
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
 
-    // $url = DIR_SERV . "/saludo";
-    // $datos["nombre"] = "Juan Alonso";
-    // $respuesta = consumir_servicios_REST($url, "POST", $datos);
-    // $obj = json_decode($respuesta);
-    // if (!$obj)
-    //     die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
+    echo "<p>El mensaje recibido ha sido <strong>" . $obj->mensaje . "</strong></p>";
 
-    // echo "<p>El mensaje recibido ha sido <strong>" . $obj->mensaje . "</strong></p>";
+    $url = DIR_SERV . "/saludo";
+    $datos["nombre"] = "Juan Alonso";
+    $respuesta = consumir_servicios_REST($url, "POST", $datos);
+    $obj = json_decode($respuesta);
+    if (!$obj)
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
 
-
-    // $url = DIR_SERV . "/borrar_saludo/37";
-    // $respuesta = consumir_servicios_REST($url, "DELETE");
-    // $obj = json_decode($respuesta);
-    // if (!$obj)
-    //     die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
-
-    // echo "<p>El mensaje recibido ha sido <strong>" . $obj->mensaje . "</strong></p>";
-
-    // $url = DIR_SERV . "/actualizar_saludo/78";
-    // $datos["nombre"] = "Pepe Pérez";
-    // $respuesta = consumir_servicios_REST($url, "PUT", $datos);
-    // $obj = json_decode($respuesta);
-    // if (!$obj)
-    //     die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
-
-    // echo "<p>El mensaje recibido ha sido <strong>" . $obj->mensaje . "</strong></p>";
+    echo "<p>El mensaje recibido ha sido <strong>" . $obj->mensaje . "</strong></p>";
 
 
+    $url = DIR_SERV . "/borrar_saludo/37";
+    $respuesta = consumir_servicios_REST($url, "DELETE");
+    $obj = json_decode($respuesta);
+    if (!$obj)
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
+
+    echo "<p>El mensaje recibido ha sido <strong>" . $obj->mensaje . "</strong></p>";
+
+    $url = DIR_SERV . "/actualizar_saludo/78";
+    $datos["nombre"] = "Pepe Pérez";
+    $respuesta = consumir_servicios_REST($url, "PUT", $datos);
+    $obj = json_decode($respuesta);
+    if (!$obj)
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
+    echo "<p>El mensaje recibido ha sido <strong>" . $obj->mensaje . "</strong></p>";
     ?>
 </body>
 
