@@ -35,13 +35,7 @@
         return $respuesta;
     }
     getProdCod("1");
-    // $url = DIR_SERV . "/producto/insertar/somename2";
-    // $respuesta = consumir_servicios_REST($url, "PUT");
-    // print_r($respuesta);
-    // $obj = json_decode($respuesta);
-    // if (!$obj) {
-    //     die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
-    // }
+    insertProd("name2");
     ?>
 </body>
 

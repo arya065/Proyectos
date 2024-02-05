@@ -33,3 +33,13 @@ function getProdCod($cod)
         die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
     }
 }
+function insertProd($name)
+{
+    $url = DIR_SERV . "/producto/insertar/$name";
+    $respuesta = consumir_servicios_REST($url, "PUT");
+    print_r($respuesta);
+    $obj = json_decode($respuesta);
+    if (!$obj) {
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
+    }
+}
