@@ -1,6 +1,16 @@
-<?php
-    define("DIR_SERV", "http://proyectos/API/Teor_Servicios_Web/primera_api");
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <?php
+    require "../primera_api/functions.php";
+    define("DIR_SERV", "http://localhost/Proyectos/API/ej1/primera_api");
     function consumir_servicios_REST($url, $metodo, $datos = null)
     {
         $llamada = curl_init();
@@ -24,3 +34,15 @@
         curl_close($llamada);
         return $respuesta;
     }
+    getProdCod("1");
+    // $url = DIR_SERV . "/producto/insertar/somename2";
+    // $respuesta = consumir_servicios_REST($url, "PUT");
+    // print_r($respuesta);
+    // $obj = json_decode($respuesta);
+    // if (!$obj) {
+    //     die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
+    // }
+    ?>
+</body>
+
+</html>
