@@ -43,3 +43,34 @@ function insertProd($name)
         die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
     }
 }
+function actualizarProd($cod)
+{
+    $url = DIR_SERV . "/producto/actualizar/$cod";
+    $respuesta = consumir_servicios_REST($url, "GET");
+    print_r($respuesta);
+    $obj = json_decode($respuesta);
+    if (!$obj) {
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
+    }
+}
+function borrarProd($cod)
+{
+    $url = DIR_SERV . "/producto/borrar/$cod";
+    $respuesta = consumir_servicios_REST($url, "DELETE");
+    print_r($respuesta);
+    $obj = json_decode($respuesta);
+    if (!$obj) {
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
+    }
+}
+function existTablaColumnaValor($tabla, $columna, $valor)
+{
+    $url = DIR_SERV . "/repetido/$tabla/$columna/$valor";
+    $respuesta = consumir_servicios_REST($url, "GET");
+    print_r($respuesta);
+    $obj = json_decode($respuesta);
+    // print_r($obj);
+    if (!$obj) {
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
+    }
+}

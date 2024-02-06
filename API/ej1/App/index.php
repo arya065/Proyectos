@@ -34,8 +34,29 @@
         curl_close($llamada);
         return $respuesta;
     }
-    getProdCod("1");
-    insertProd("name2");
+    function formInsert()
+    {
+        ?>
+        <form action="index.php" method="post">
+            <label for="nombre">Nombre</label>
+            <input type="text" name="nombre" id="nombre">
+            <br>
+            <input type="submit" value="send">
+        </form>
+        <?php
+    }
+    // getProdCod("1");
+    // echo "<br>__________________________<br>";
+    // formInsert();
+    // if (isset($_POST["nombre"]) && $_POST["nombre"] != "") {
+    //     insertProd($_POST["nombre"]);
+    // }
+    // echo "<br>__________________________<br>";
+    // actualizarProd(1);
+    // echo "<br>__________________________<br>";
+    // borrarProd(17);
+    // echo "<br>__________________________<br>";
+    existTablaColumnaValor("productos", "codigo", "1");
     ?>
 </body>
 
