@@ -62,4 +62,5 @@ $app->get("/repetido/{tabla}/{columna}/{valor}", function ($request) {
         echo json_encode(array("message" => ($res != [] ? "existe" : "no existe")));
     }
 });
+// DESCRIBE `productos`;
 $app->run();
