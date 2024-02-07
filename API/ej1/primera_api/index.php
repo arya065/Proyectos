@@ -63,17 +63,19 @@ $app->get("/repetido/{tabla}/{columna}/{valor}", function ($request) {
     }
 });
 $app->get("/repetido/{tabla}/{columna}/{valor}/{columna_id}/{valor_id}", function ($request) {
-    // $conn = createConn();
-    // $tabla = $request->getAttribute("tabla");
-    // $columna = $request->getAttribute("columna");
-    // $valor = $request->getAttribute("valor");
-    // if ($tabla == "productos" && ($columna == "codigo" || $columna == "nombre")) {
-    //     $sql = "SELECT * FROM $tabla where $columna=?";
-    //     $stmt = $conn->prepare($sql);
-    //     $stmt->execute([$valor]);
-    //     $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    //     $conn = null;
-    //     echo json_encode(array("message" => ($res != [] ? "existe" : "no existe")));
-    // }
+    $conn = createConn();
+    $tabla = $request->getAttribute("tabla");
+    $columna = $request->getAttribute("columna");
+    $columna_id = $request->getAttribute("columna_id");
+    $valor = $request->getAttribute("valor");
+    $valor_id = $request->getAttribute("valor_id");
+    if ($tabla == "productos" && ($columna == "codigo" || $columna == "nombre")) {
+        $sql = "SELECT * FROM $tabla where $columna = ? AND $columna_id != ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$valor, $valor_id]);
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
+        echo json_encode(array("message" => ($res != [] ? "existe" : "no existe")));
+    }
 });
 $app->run();

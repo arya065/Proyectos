@@ -74,11 +74,20 @@ function existTablaColumnaValor($tabla, $columna, $valor)
         die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
     }
 }
-function getColumnName()
+function existTablaColumnaValorId($tabla, $columna, $valor, $id)
+{
+    $url = DIR_SERV . "/repetido/$tabla/$columna/$valor/" . getColumnName($tabla) . "/$id";
+    $respuesta = consumir_servicios_REST($url, "GET");
+    print_r($respuesta);
+    $obj = json_decode($respuesta);
+    if (!$obj) {
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
+    }
+}
+function getColumnName($table)
 {
     $conn = createConn();
-    $sql = "DESCRIBE productos";
+    $sql = "DESCRIBE $table";
     $res = $conn->query($sql)->fetchAll();
-    echo $res[0]["Field"];
     return $res[0]["Field"];
 }
