@@ -1,0 +1,22 @@
+{
+    "results": [
+        {
+            "result": {
+                "id": 1,
+                "points": 10
+            }
+        },
+        {
+            "result": {
+                "id": 2,
+                "points": 100
+            }
+        },
+        {
+            "result": {
+                "id": 3,
+                "points": 30
+            }
+        }
+    ]
+}
