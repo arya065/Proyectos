@@ -56,7 +56,8 @@
     // echo "<br>__________________________<br>";
     // borrarProd(17);
     // echo "<br>__________________________<br>";
-    existTablaColumnaValor("productos", "codigo", "1");
+    // existTablaColumnaValor("productos", "codigo", "1");
+    getColumnName();
     ?>
 </body>
 

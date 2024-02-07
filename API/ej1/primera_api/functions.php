@@ -74,3 +74,11 @@ function existTablaColumnaValor($tabla, $columna, $valor)
         die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
     }
 }
+function getColumnName()
+{
+    $conn = createConn();
+    $sql = "DESCRIBE productos";
+    $res = $conn->query($sql)->fetchAll();
+    echo $res[0]["Field"];
+    return $res[0]["Field"];
+}
