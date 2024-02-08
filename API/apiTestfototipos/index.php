@@ -19,19 +19,18 @@ $app = new \Slim\App;
 
 
 $app->get('/take/all', function () {
-    $answer["msg"] = "Take all";
-    getAll();
+    $answer["msg"] = getAll();
     echo json_encode($answer["msg"]);
 });
 
 $app->get('/take/{id}', function ($request) {
-    $answer["msg"] = "Take " . $request->getAttribute("id");
-    getWithId($request->getAttribute("id"));
+    $answer["msg"] = getWithId($request->getAttribute("id"));
     echo json_encode($answer["msg"]);
 });
 
-$app->put("/add/{points}/{id}", function ($request) {
-    $answer["msg"] = "Take " . $request->getAttribute("points") . " id " . $request->getAttribute("id");
+$app->get("/add/{points}/{id}", function ($request) {
+    $answer["msg"] = "Take points: " . $request->getAttribute("points") . " id: " . $request->getAttribute("id");
+    addToList($request->getAttribute("id"), $request->getAttribute("points"));
     echo json_encode($answer["msg"]);
 });
 $app->run();

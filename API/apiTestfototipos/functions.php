@@ -6,65 +6,49 @@ function getList()
 }
 function setList($list)
 {
-    file_put_contents("./data/database.json", $list);
+    file_put_contents("./data/database.json", json_encode($list));
+    print_r(getList());
+    echo "<br>";
 }
-function addToList($value)
+function addToList($id, $points)
 {
+
+    print_r(getList());
+    echo "<br>";
+
+    $value = ["result" => ["id" => $id, "points" => $points]];
     $list = getList();
     // print_r(json_encode($value));
     $list[] = $value;
-    print_r($list);
+    // print_r($list);
+    echo "<br>";
+    echo "<br>";
+
+    foreach ($list as $key => $value2) {
+        print_r(json_encode($value2));
+        echo "<br>";
+    }
+    // setList($list);
 }
 function getAll()
 {
     $list = getList();
-    echo '<table border="1px">';
-    echo '<tr>';
-    echo '<th>Id</th>';
-    echo '<th>Points</th>';
-    echo '<th>Accion</th>';
-    echo '</tr>';
-    foreach ($list as $key => $value) {
-        echo "<tr>";
-        foreach ($value->result as $value2) {
-            echo "<td>";
-            print_r($value2);
-            echo "</td>";
-        }
-        echo "<td>Borrar-modificar</td>";
-        echo "</tr>";
-    }
-    echo '</table>';
+    return $list;
 }
 function getWithId($id)
 {
     $find = false;
     $list = getList();
-    echo '<table border="1px">';
-    echo '<tr>';
-    echo '<th>Id</th>';
-    echo '<th>Points</th>';
-    echo '<th>Accion</th>';
-    echo '</tr>';
-    echo "<tr>";
-    echo "<td>";
-    print_r($id);
-    echo "</td>";
     foreach ($list as $value) {
         if (!$find) {
             foreach ($value->result as $key => $value2) {
                 if ($key == "id" && $value2 == $id) {
-                    echo "<td>";
-                    print_r($value2);
-                    echo "</td>";
-                    echo "<td>Borrar-modificar</td>";
-                    break;
+                    // print_r($value->result);
+                    // echo "<br>";
+                    return ["result" => $value->result];
                 }
             }
-        } else {
-            break;
         }
     }
-    echo "</tr>";
-    echo '</table>';
+    return ["result" => ["id" => null, "points" => null]];
 }
