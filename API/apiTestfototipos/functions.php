@@ -2,33 +2,19 @@
 function getList()
 {
     $data = file_get_contents("./data/database.json");
-    return json_decode($data)->results;
+    return json_decode($data);
 }
 function setList($list)
 {
     file_put_contents("./data/database.json", json_encode($list));
-    print_r(getList());
-    echo "<br>";
+    return json_encode($list);
 }
 function addToList($id, $points)
 {
-
-    print_r(getList());
-    echo "<br>";
-
-    $value = ["result" => ["id" => $id, "points" => $points]];
+    $value = ["result" => ["id" => (int) $id, "points" => (int)$points]];
     $list = getList();
-    // print_r(json_encode($value));
     $list[] = $value;
-    // print_r($list);
-    echo "<br>";
-    echo "<br>";
-
-    foreach ($list as $key => $value2) {
-        print_r(json_encode($value2));
-        echo "<br>";
-    }
-    // setList($list);
+    return setList($list);
 }
 function getAll()
 {
@@ -43,8 +29,6 @@ function getWithId($id)
         if (!$find) {
             foreach ($value->result as $key => $value2) {
                 if ($key == "id" && $value2 == $id) {
-                    // print_r($value->result);
-                    // echo "<br>";
                     return ["result" => $value->result];
                 }
             }

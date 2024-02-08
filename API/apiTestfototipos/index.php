@@ -29,8 +29,7 @@ $app->get('/take/{id}', function ($request) {
 });
 
 $app->get("/add/{points}/{id}", function ($request) {
-    $answer["msg"] = "Take points: " . $request->getAttribute("points") . " id: " . $request->getAttribute("id");
-    addToList($request->getAttribute("id"), $request->getAttribute("points"));
+    $answer["msg"] = json_decode(addToList($request->getAttribute("id"), $request->getAttribute("points")));
     echo json_encode($answer["msg"]);
 });
 $app->run();
