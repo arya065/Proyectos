@@ -1,6 +1,6 @@
 <?php
-chdir(__DIR__);
 // require("C:/ospanel/domains/Proyectos/API/ej1/conf.php");
+chdir(__DIR__);
 include "../conf.php";
 
 function createConn()
@@ -43,6 +43,7 @@ function insertProd($name)
     $respuesta = consumir_servicios_REST($url, "PUT");
     print_r($respuesta);
     $obj = json_decode($respuesta);
+    print_r($obj);
     if (!$obj) {
         die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
     }

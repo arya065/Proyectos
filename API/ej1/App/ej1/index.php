@@ -48,12 +48,12 @@
     <?php
     }
 
-    getProdCod("1");
+    // getProdCod("1");
     // echo "<br>__________________________<br>";
-    // formInsert();
-    // if (isset($_POST["nombre"]) && $_POST["nombre"] != "") {
-    //     insertProd($_POST["nombre"]);
-    // }
+    formInsert();
+    if (isset($_POST["nombre"]) && $_POST["nombre"] != "") {
+        insertProd($_POST["nombre"]);
+    }
     // echo "<br>__________________________<br>";
     // actualizarProd(1);
     // echo "<br>__________________________<br>";
