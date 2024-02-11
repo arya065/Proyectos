@@ -18,8 +18,9 @@ $app->get("/producto/{codigo}", function ($request) {
     $conn = createConn();
     $value = $request->getAttribute("codigo");
     $sql = "SELECT * FROM productos WHERE codigo=?";
-    $res = $conn->prepare($sql)->execute([$value]);
-    echo json_encode(array("message" => ($res ? "existe" : "no existe")));
+    $stmt = $conn->prepare($sql);
+    $res = $stmt->execute([$value]);
+    echo json_encode(array("message" => ($stmt->rowCount() != 0 ? "existe" : "no existe")));
     $conn = null;
 });
 
@@ -30,7 +31,6 @@ $app->put("/producto/insertar/{nombre}", function ($request) {
     $res = $conn->prepare($sql)->execute([$nombre]);
     $conn = null;
     echo json_encode(array("message" => ($res == 1 ? "insertado correctamente producto con nombre $nombre" : "no insertado")));
-
 });
 $app->get("/producto/actualizar/{codigo}", function ($request) {
     $conn = createConn();

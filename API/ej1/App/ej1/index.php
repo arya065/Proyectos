@@ -9,8 +9,10 @@
 
 <body>
     <?php
-    require "../primera_api/functions.php";
-    define("DIR_SERV", "http://localhost/Proyectos/API/ej1/primera_api");
+
+    require "../../primera_api/functions.php";
+    chdir(__DIR__);
+    require("../../conf.php");
     function consumir_servicios_REST($url, $metodo, $datos = null)
     {
         $llamada = curl_init();
@@ -36,16 +38,17 @@
     }
     function formInsert()
     {
-        ?>
+    ?>
         <form action="index.php" method="post">
             <label for="nombre">Nombre</label>
             <input type="text" name="nombre" id="nombre">
             <br>
             <input type="submit" value="send">
         </form>
-        <?php
+    <?php
     }
-    // getProdCod("1");
+
+    getProdCod("1");
     // echo "<br>__________________________<br>";
     // formInsert();
     // if (isset($_POST["nombre"]) && $_POST["nombre"] != "") {

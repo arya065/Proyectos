@@ -1,4 +1,8 @@
 <?php
+chdir(__DIR__);
+// require("C:/ospanel/domains/Proyectos/API/ej1/conf.php");
+include "../conf.php";
+
 function createConn()
 {
     try {
@@ -7,7 +11,7 @@ function createConn()
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false
         ];
-        $conn = new PDO("mysql:host=localhost;dbname=bd_tienda", "jose", "josefa", $opt);
+        $conn = new PDO("mysql:host=localhost;dbname=" . DB_NAME, USER, PASS, $opt);
         return $conn;
     } catch (PDOException $e) {
         echo "No ha podido crear conexion: " . $e->getMessage();

@@ -1,5 +1,5 @@
 <?php
-define("DIR_SERV", "http://localhost/Proyectos/API/ej1/primera_api");
+require("../../conf.php");
 function consumir_servicios_REST($url, $metodo, $datos = null)
 {
     $llamada = curl_init();
@@ -31,7 +31,7 @@ function createConn()
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false
         ];
-        $conn = new PDO("mysql:host=localhost;dbname=bd_tienda", "jose", "josefa", $opt);
+        $conn = new PDO("mysql:host=localhost;dbname=" . DB_NAME, USER, PASS, $opt);
         return $conn;
     } catch (PDOException $e) {
         echo "No ha podido crear conexion: " . $e->getMessage();
