@@ -1,6 +1,15 @@
 <?php
+session_start();
 require "./functions.php";
 $list = getAllProd();
+function del($id)
+{
+    borrarProd($id);
+}
+function show($id)
+{
+    print_r(getProdCod($id));
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,26 +27,47 @@ $list = getAllProd();
 
 <body>
     <h1>Listado de productos</h1>
-    <table border="1px">
-        <tr>
-            <th>Codigo</th>
-            <th>Nombre</th>
-            <th>Accion</th>
-        </tr>
-        <?php
-        foreach ($list->message as $value) {
-            echo "<tr>";
-            foreach ($value as $value2) {
+    <form action="index.php" method="post" enctype="multipart/form-data">
+        <table border="1px">
+            <tr>
+                <th>Codigo</th>
+                <th>Nombre</th>
+                <th>Accion</th>
+            </tr>
+            <?php
+            foreach ($list->message as $value) {
+                echo "<tr>";
+                $tmp = 0;
+                foreach ($value as $key => $value2) {
+                    if ($key == "codigo") {
+                        $tmp = $value2;
+                    }
+                    echo "<td>";
+                    echo $value2;
+                    echo "<br>";
+                    echo "</td>";
+                }
                 echo "<td>";
-                print_r($value2);
-                echo "<br>";
+                echo '<button type="submit" name="del" value="' . $tmp . '">Borrar</button>';
+                echo '<button type="submit" name="mod" value="' . $tmp . '">Modificar</button>';
+                echo '<button type="submit" name="read" value="' . $tmp . '">Mostrar</button>';
                 echo "</td>";
+                echo "</tr>";
             }
-            echo "<td>Borrar-modificar</td>";
-            echo "</tr>";
-        }
-        ?>
-    </table>
+            ?>
+        </table>
+    </form>
+    <?php
+    if (isset($_POST["del"])) {
+        del($_POST["del"]);
+    }
+    if (isset($_POST["read"])) {
+        show($_POST["read"]);
+    }
+    if (isset($_POST["mod"])) {
+        print_r($_POST["mod"]);
+    }
+    ?>
 </body>
 
 </html>
