@@ -7,14 +7,18 @@ define("DB_NAME", "bd_foro");
 
 /*
 ASK API
-$app->get("/url", function () {
+$app->get("/url", function ($request) {
+    try {
     $conn = createConn();
     $sql = "SELECT * FROM usuarios";
     $stmt = $conn->prepare($sql);
-    $stmt->execute();
+    $stmt->execute([param]);
     $stmt->debugDumpParams();
     $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
     echo json_encode(array("result" => $res));
+    } catch (PDOException $e) {
+        echo json_encode(array("error" => $e->getMessage()));
+    }
     $conn = null;
 
 });
