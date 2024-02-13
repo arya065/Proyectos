@@ -1,4 +1,10 @@
 <?php
+function setCookies()
+{
+    $cookieName = "passed";
+    $cookieValue = true;
+    setcookie($cookieName, $cookieValue, time() + (30), "/");
+}
 function getList()
 {
     $data = file_get_contents("./data/database.json");
@@ -11,10 +17,15 @@ function setList($list)
 }
 function addToList($id, $points)
 {
-    $value = ["result" => ["id" => (int) $id, "points" => (int)$points]];
-    $list = getList();
-    $list[] = $value;
-    return setList($list);
+    if (isset($_COOKIE["passed"])) {
+        return json_encode(array("message" => "No se puede pasar el test mas de un vez"));
+    } else {
+        setCookies();
+        $value = ["result" => ["id" => (int) $id, "points" => (int) $points]];
+        $list = getList();
+        $list[] = $value;
+        return setList($list);
+    }
 }
 function getAll()
 {
