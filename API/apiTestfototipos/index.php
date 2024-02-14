@@ -1,5 +1,9 @@
 <?php
-header('Access-Control-Allow-Origin: *');
+//блок для доступа с react и отправки запросов
+header('Access-Control-Allow-Origin: http://localhost:3000');
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Headers: Content-Type');
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -28,7 +32,7 @@ $app->get('/take/{id}', function ($request) {
     echo json_encode($answer["msg"]);
 });
 
-$app->get("/add/{points}/{id}", function ($request) {
+$app->post("/add/{points}/{id}", function ($request) {
     $answer["msg"] = json_decode(addToList($request->getAttribute("id"), $request->getAttribute("points")));
     echo json_encode($answer["msg"]);
 });

@@ -1,9 +1,10 @@
 <?php
 function setCookies()
 {
-    $cookieName = "passed";
-    $cookieValue = true;
-    setcookie($cookieName, $cookieValue, time() + (30), "/");
+    $cookieName = "passed"; //name of cookies
+    $cookieValue = true; //value of cookies
+    $cookieTime = time() + 120; //seconds of cookies live
+    setcookie($cookieName, $cookieValue, $cookieTime, "/");
 }
 function getList()
 {
