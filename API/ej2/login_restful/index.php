@@ -4,7 +4,7 @@
 // error_reporting(E_ALL);
 require __DIR__ . '/Slim/autoload.php';
 require "../conf.php";
-require "../ej3/function.php";
+require "../ej4/function.php";
 // $configuration = [
 //     'settings' => [
 //         'displayErrorDetails' => true,

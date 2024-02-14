@@ -36,7 +36,25 @@ function consumir_servicios_REST($url, $metodo, $datos = null)
 </head>
 
 <body>
+    <h1>Login</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>nombre</th>
+            <th>usuario</th>
+            <th>clave</th>
+            <th>email</th>
+            <th>tipo</th>
+        </tr>
+        <?php
+        // print_r(getAllUsers());
+        // var_dump(createUser("t", "t", "t", "test@gmail.com"));
+        print_r(deleteUser(37));
+        ?>
+    </table>
+    <form action="index.php" method="post">
 
+    </form>
 </body>
 
 </html>

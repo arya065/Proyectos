@@ -15,13 +15,35 @@ function createConn()
         echo "No ha podido crear conexion: " . $e->getMessage();
     }
 }
-function getAllProd()
+function getAllUsers()
 {
-    $url = DIR_SERV . "/productos";
-    $respuesta = consumir_servicios_REST($url, "GET");
-    print_r($respuesta);
-    $obj = json_decode($respuesta);
+    $url = DIR_SERV . "/usuarios";
+    $answer = consumir_servicios_REST($url, "GET");
+    print_r($answer);
+    $obj = json_decode($answer);
     if (!$obj) {
-        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $respuesta);
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $answer);
     }
+}
+function createUser($nombre, $usuario, $clave, $email)
+{
+    $url = DIR_SERV . "/crearUsuario";
+    $answer = consumir_servicios_REST($url, "GET");
+    // print_r($answer);
+    $obj = json_decode($answer);
+    if (!$obj) {
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $answer);
+    } else {
+        return $obj->result ? true : false;
+    }
+}
+function deleteUser($id)
+{
+    $url = DIR_SERV . "/borrarUsuario/$id";
+    $answer = consumir_servicios_REST($url, "GET");
+    $obj = json_decode($answer);
+    if (!$obj) {
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $answer);
+    }
+    print_r($obj->result);
 }
