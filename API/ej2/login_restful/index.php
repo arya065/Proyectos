@@ -37,20 +37,19 @@ $app->get('/usuarios', function ($request) {
 $app->get("/crearUsuario", function ($request) {
     try {
         $conn = createConn();
-        // $nombre = $request->getParam("nombre");
-        // $usuario = $request->getParam("usuario");
-        // $clave = $request->getParam("clave");
-        // $email = $request->getParam("email");
+        $nombre = $request->getParam("nombre");
+        $usuario = $request->getParam("usuario");
+        $clave = $request->getParam("clave");
+        $email = $request->getParam("email");
 
         $sql = "INSERT INTO usuarios (nombre,usuario,clave,email) VALUES (?,?,?,?)";
         $stmt = $conn->prepare($sql);
-        $stmt->execute(["test", "test", md5("test"), "test"]);
+        $stmt->execute([$nombre, $usuario, md5($clave), $email]);
         echo json_encode(array("result" => $conn->lastInsertId()));
     } catch (PDOException $e) {
         echo json_encode(array("error" => $e->getMessage()));
     }
     $conn = null;
-
 });
 
 $app->get("/login", function ($request) {
@@ -73,8 +72,8 @@ $app->get("/borrarUsuario/{idUsuario}", function ($request) {
         $usuario = $request->getAttribute("idUsuario");
         $sql = "DELETE FROM usuarios WHERE id_usuario=?";
         $stmt = $conn->prepare($sql);
-        $stmt->execute([$usuario]);
-        echo json_encode(array("result" => $stmt->rowCount() == 0 ? "no eliminado" : "eliminado con exito"));
+        $res = $stmt->execute([$usuario]);
+        echo json_encode(array("result" => !$res ? "no eliminado" : "eliminado con exito"));
     } catch (PDOException $e) {
         echo json_encode(array("error" => $e->getMessage()));
     }
