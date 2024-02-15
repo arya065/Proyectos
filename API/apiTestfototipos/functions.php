@@ -3,7 +3,7 @@ function setCookies()
 {
     $cookieName = "passed"; //name of cookies
     $cookieValue = true; //value of cookies
-    $cookieTime = time() + 120; //seconds of cookies live
+    $cookieTime = time() + 1; //seconds of cookies live
     setcookie($cookieName, $cookieValue, $cookieTime, "/");
 }
 function getList()
