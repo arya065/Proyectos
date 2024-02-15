@@ -59,7 +59,7 @@ $app->get("/login", function ($request) {
         // $clave = $request->getParam("clave");
         $sql = "SELECT id_usuario FROM usuarios WHERE usuario=? AND clave=?";
         $stmt = $conn->prepare($sql);
-        $stmt->execute(["test", md5("test")]);
+        $stmt->execute([$request->getParam("usuario"), md5($request->getParam("clave"))]);
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode(array("result" => $res[0]["id_usuario"]));
     } catch (PDOException $e) {

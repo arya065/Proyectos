@@ -64,3 +64,13 @@ function controlErrorForm($nombre, $usuario, $clave, $email)
     }
     return true;
 }
+function login($usuario,$clave){
+    $url = DIR_SERV ."/login";
+    $response = consumir_servicios_REST($url,"GET",["usuario"=>$usuario,"clave"=>$clave]);
+    // print_r($response);
+    $obj = json_decode($response);
+    if(!$obj){
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $response);
+    }
+    return $obj->result;
+}
