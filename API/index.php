@@ -1,6 +1,6 @@
 <?php
 //блок для доступа с react и отправки запросов
-header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Origin: https://thematic-learning.com/2DAW2024/ALEXEY/build/');
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Headers: Content-Type');
 
