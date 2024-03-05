@@ -1,36 +1,40 @@
 <?php
 require "config_bd.php";
-
-function conexion_pdo()
+function createConn()
 {
-    try{
-        $conexion= new PDO("mysql:host=".SERVIDOR_BD.";dbname=".NOMBRE_BD,USUARIO_BD,CLAVE_BD,array(PDO::MYSQL_ATTR_INIT_COMMAND=>"SET NAMES 'utf8'"));
-        
-        $respuesta["mensaje"]="Conexi&oacute;n a la BD realizada con &eacute;xito";
-        
-        $conexion=null;
+    try {
+        $opt = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false
+        ];
+        $conn = new PDO("mysql:host=localhost;dbname=" . DB_NAME, USER, PASS, $opt);
+        return $conn;
+    } catch (PDOException $e) {
+        echo "No ha podido crear conexion: " . $e->getMessage();
     }
-    catch(PDOException $e){
-        $respuesta["error"]="Imposible conectar:".$e->getMessage();
-    }
+}
+// ASK API
+function consumir_servicios_REST($url, $metodo, $datos = null)
+{
+    $llamada = curl_init();
+    curl_setopt($llamada, CURLOPT_URL, $url);
+    curl_setopt($llamada, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($llamada, CURLOPT_CUSTOMREQUEST, $metodo);
+    if (isset($datos))
+        curl_setopt($llamada, CURLOPT_POSTFIELDS, http_build_query($datos));
+    $respuesta = curl_exec($llamada);
+    curl_close($llamada);
     return $respuesta;
 }
-
-
-function conexion_mysqli()
-{
-  
-    try
-    {
-        $conexion=mysqli_connect(SERVIDOR_BD,USUARIO_BD,CLAVE_BD,NOMBRE_BD);
-        mysqli_set_charset($conexion,"utf8");
-        $respuesta["mensaje"]="Conexi&oacute;n a la BD realizada con &eacute;xito";
-        mysqli_close($conexion);
-    }
-    catch(Exception $e)
-    {
-        $respuesta["error"]="Imposible conectar:".$e->getMessage();
-    }
-    return $respuesta;
-}
+// function login($user, $pass)
+// {
+//     $url = DIR_SERV . "/login";
+//     $response = consumir_servicios_REST($url, "GET", ["usuario" => $user, "clave" => $pass]);
+//     $obj = json_decode($response);
+//     if (!$obj) {
+//         die("<p>Error consumiendo el servicio: " . $url . "<p>" . $response);
+//     }
+//     return $obj;
+// }
 ?>
