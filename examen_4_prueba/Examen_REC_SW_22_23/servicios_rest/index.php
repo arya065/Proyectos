@@ -24,9 +24,9 @@ $app->get('/login', function ($request) {
         $_SESSION["api_session"] = session_id();
         $_SESSION["user"] = $usuario;
         $_SESSION["pass"] = $clave;
-        echo json_encode($res[0] == "" ? array ("mensaje" => "Usuario no se encuentra regis. en la BD") : array ("usuario" => $res[0], "api_session" => $_SESSION["api_session"]));
+        echo json_encode($res[0] == "" ? array("mensaje" => "Usuario no se encuentra regis. en la BD") : array("usuario" => $res[0], "api_session" => $_SESSION["api_session"]));
     } catch (PDOException $e) {
-        echo json_encode(array ("error" => $e->getMessage()));
+        echo json_encode(array("error" => $e->getMessage()));
     }
     $conn = null;
 });
@@ -34,7 +34,8 @@ $app->get('/login', function ($request) {
 $app->get('/logueado', function ($request) {
     try {
         $api_session = $request->getParam('api_session');
-        session_id($api_session);
+        // session_id($api_session);
+        session_id("s06vpf5ajjjgps7u44ggmj2noe3fkle9");
         session_start();
         if ($_SESSION["api_session"]) {
             $usuario = $_SESSION["user"];
@@ -45,9 +46,9 @@ $app->get('/logueado', function ($request) {
         $stmt = $conn->prepare($sql);
         $stmt->execute([$usuario, md5($clave)]);
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($res[0] == "" ? array ("mensaje" => "Usuario no se encuentra logueado") : array ("usuario" => $res[0]));
+        echo json_encode($res[0] == "" ? array("mensaje" => "Usuario no se encuentra logueado") : array("usuario" => $res[0]));
     } catch (PDOException $e) {
-        echo json_encode(array ("error" => $e->getMessage()));
+        echo json_encode(array("error" => $e->getMessage()));
     }
     $conn = null;
 });
@@ -55,17 +56,19 @@ $app->get('/logueado', function ($request) {
 $app->get('/salir', function ($request) {
     try {
         $api_session = $request->getParam('api_session');
-        session_id($api_session);
+        // session_id($api_session);
+        session_id("s06vpf5ajjjgps7u44ggmj2noe3fkle9");
+
         session_start();
         if ($_SESSION["api_session"]) {
             session_regenerate_id();
             session_destroy();
-            echo json_encode(array ("log_out" => "Cerrada sesion en la API"));
+            echo json_encode(array("log_out" => "Cerrada sesion en la API"));
         } else {
-            echo json_encode(array ("log_out" => "No existe sesion en la API"));
+            echo json_encode(array("log_out" => "No existe sesion en la API"));
         }
     } catch (PDOException $e) {
-        echo json_encode(array ("error" => $e->getMessage()));
+        echo json_encode(array("error" => $e->getMessage()));
     }
     $conn = null;
 });
@@ -73,7 +76,9 @@ $app->get('/salir', function ($request) {
 $app->get('/usuario/{id_usuario}', function ($request) {
     try {
         $api_session = $request->getParam('api_session');
-        session_id($api_session);
+        // session_id($api_session);
+        session_id("s06vpf5ajjjgps7u44ggmj2noe3fkle9");
+
         session_start();
         if ($_SESSION["api_session"]) {
             $id = $request->getAttribute("id_usuario");
@@ -83,18 +88,20 @@ $app->get('/usuario/{id_usuario}', function ($request) {
         $stmt = $conn->prepare($sql);
         $stmt->execute([$id]);
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($res[0] == "" ? array ("mensaje" => "Usuario no se encuentra logueado") : array ("usuario" => $res[0]));
+        echo json_encode($res[0] == "" ? array("mensaje" => "Usuario no se encuentra logueado") : array("usuario" => $res[0]));
     } catch (PDOException $e) {
-        echo json_encode(array ("error" => $e->getMessage()));
+        echo json_encode(array("error" => $e->getMessage()));
     }
     $conn = null;
 });
 
 
-$app->get('usuariosGuardia/{dia}/{hora}', function ($request) {
+$app->get('/usuariosGuardia/{dia}/{hora}', function ($request) {
     try {
         $api_session = $request->getParam('api_session');
-        session_id($api_session);
+        // session_id($api_session);
+        session_id("s06vpf5ajjjgps7u44ggmj2noe3fkle9");
+
         session_start();
         if ($_SESSION["api_session"]) {
             $dia = $request->getAttribute("dia");
@@ -105,11 +112,10 @@ $app->get('usuariosGuardia/{dia}/{hora}', function ($request) {
         $stmt = $conn->prepare($sql);
         $stmt->execute([$dia, $hora]);
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($res[0] == "" ? array ("mensaje" => "Usuario no se encuentra logueado") : array ("usuario" => $res[0]));
+        echo json_encode($res[0] == "" ? array("mensaje" => "Usuario no se encuentra logueado") : array("usuarios" => $res));
     } catch (PDOException $e) {
-        echo json_encode(array ("error" => $e->getMessage()));
+        echo json_encode(array("error" => $e->getMessage()));
     }
     $conn = null;
 });
 $app->run();
-?>
