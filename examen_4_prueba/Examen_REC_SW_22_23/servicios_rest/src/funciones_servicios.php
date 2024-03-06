@@ -27,14 +27,63 @@ function consumir_servicios_REST($url, $metodo, $datos = null)
     curl_close($llamada);
     return $respuesta;
 }
-// function login($user, $pass)
-// {
-//     $url = DIR_SERV . "/login";
-//     $response = consumir_servicios_REST($url, "GET", ["usuario" => $user, "clave" => $pass]);
-//     $obj = json_decode($response);
-//     if (!$obj) {
-//         die("<p>Error consumiendo el servicio: " . $url . "<p>" . $response);
-//     }
-//     return $obj;
-// }
-?>
+function login($user, $pass)
+{
+    $url = DIR_SERV . "/login";
+    $response = consumir_servicios_REST($url, "GET", ["usuario" => $user, "clave" => $pass]);
+    $obj = json_decode($response);
+    if (!$obj) {
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $response);
+    }
+    return $obj;
+}
+function logueado($user, $pass, $api_session)
+{
+    $url = DIR_SERV . "/logueado";
+    $response = consumir_servicios_REST($url, "GET", ["usuario" => $user, "clave" => $pass, "api_session" => $api_session]);
+    $obj = json_decode($response);
+    if (!$obj) {
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $response);
+    }
+    return $obj;
+}
+function salir($api_session)
+{
+    $url = DIR_SERV . "/salir";
+    $response = consumir_servicios_REST($url, "GET", ["api_session" => $api_session]);
+    $obj = json_decode($response);
+    if (!$obj) {
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $response);
+    }
+    return $obj;
+}
+function getUser($id, $api_session)
+{
+    $url = DIR_SERV . "/usuario/$id";
+    $response = consumir_servicios_REST($url, "GET", ["api_session" => $api_session]);
+    $obj = json_decode($response);
+    if (!$obj) {
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $response);
+    }
+    return $obj;
+}
+function getGuardia($dia, $hora, $api_session)
+{
+    $url = DIR_SERV . "/usuariosGuardia/$dia/$hora";
+    $response = consumir_servicios_REST($url, "GET", ["api_session" => $api_session]);
+    $obj = json_decode($response);
+    if (!$obj) {
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $response);
+    }
+    return $obj;
+}
+function getGuardiaUser($dia, $hora, $id, $api_session)
+{
+    $url = DIR_SERV . "/usuariosGuardia/$dia/$hora/$id";
+    $response = consumir_servicios_REST($url, "GET", ["api_session" => $api_session]);
+    $obj = json_decode($response);
+    if (!$obj) {
+        die("<p>Error consumiendo el servicio: " . $url . "<p>" . $response);
+    }
+    return $obj;
+}

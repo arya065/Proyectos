@@ -35,9 +35,9 @@ $app->get('/logueado', function ($request) {
     try {
         $api_session = $request->getParam('api_session');
         // session_id($api_session);
-        session_id("s06vpf5ajjjgps7u44ggmj2noe3fkle9");
+        session_id("39u5c5k1hdgp2cphb6nnohk8fcibh2hi");
         session_start();
-        if ($_SESSION["api_session"]) {
+        if ($_SESSION["user"]) {
             $usuario = $_SESSION["user"];
             $clave = $_SESSION["pass"];
         }
@@ -57,10 +57,10 @@ $app->get('/salir', function ($request) {
     try {
         $api_session = $request->getParam('api_session');
         // session_id($api_session);
-        session_id("s06vpf5ajjjgps7u44ggmj2noe3fkle9");
+        session_id("39u5c5k1hdgp2cphb6nnohk8fcibh2hi");
 
         session_start();
-        if ($_SESSION["api_session"]) {
+        if ($_SESSION["user"]) {
             session_regenerate_id();
             session_destroy();
             echo json_encode(array("log_out" => "Cerrada sesion en la API"));
@@ -77,10 +77,10 @@ $app->get('/usuario/{id_usuario}', function ($request) {
     try {
         $api_session = $request->getParam('api_session');
         // session_id($api_session);
-        session_id("s06vpf5ajjjgps7u44ggmj2noe3fkle9");
+        session_id("39u5c5k1hdgp2cphb6nnohk8fcibh2hi");
 
         session_start();
-        if ($_SESSION["api_session"]) {
+        if ($_SESSION["user"]) {
             $id = $request->getAttribute("id_usuario");
         }
         $conn = createConn();
@@ -100,10 +100,10 @@ $app->get('/usuariosGuardia/{dia}/{hora}', function ($request) {
     try {
         $api_session = $request->getParam('api_session');
         // session_id($api_session);
-        session_id("s06vpf5ajjjgps7u44ggmj2noe3fkle9");
+        session_id("39u5c5k1hdgp2cphb6nnohk8fcibh2hi");
 
         session_start();
-        if ($_SESSION["api_session"]) {
+        if ($_SESSION["user"]) {
             $dia = $request->getAttribute("dia");
             $hora = $request->getAttribute("hora");
         }
@@ -113,6 +113,30 @@ $app->get('/usuariosGuardia/{dia}/{hora}', function ($request) {
         $stmt->execute([$dia, $hora]);
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($res[0] == "" ? array("mensaje" => "Usuario no se encuentra logueado") : array("usuarios" => $res));
+    } catch (PDOException $e) {
+        echo json_encode(array("error" => $e->getMessage()));
+    }
+    $conn = null;
+});
+$app->get('/usuariosGuardia/{dia}/{hora}/{id_usuario}', function ($request) {
+    try {
+        $api_session = $request->getParam('api_session');
+        // session_id($api_session);
+        session_id("39u5c5k1hdgp2cphb6nnohk8fcibh2hi");
+
+        session_start();
+        if ($_SESSION["user"]) {
+            $dia = $request->getAttribute("dia");
+            $hora = $request->getAttribute("hora");
+            $id = $request->getAttribute("id_usuario");
+        }
+        $conn = createConn();
+        $sql = "SELECT id_usuario, nombre, usuarios.usuario, clave, email from usuarios join horario_guardias on horario_guardias.usuario = usuarios.id_usuario WHERE dia = ? and hora = ? and id_usuario = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$dia, $hora, $id]);
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo $res[0];
+        echo json_encode($stmt->rowCount() == 0 ? array("de_guardia" => false) : array("de_guardia" => true));
     } catch (PDOException $e) {
         echo json_encode(array("error" => $e->getMessage()));
     }
