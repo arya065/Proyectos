@@ -37,10 +37,10 @@ function login($user, $pass)
     }
     return $obj;
 }
-function logueado($user, $pass, $api_session)
+function logueado($api_session)
 {
     $url = DIR_SERV . "/logueado";
-    $response = consumir_servicios_REST($url, "GET", ["usuario" => $user, "clave" => $pass, "api_session" => $api_session]);
+    $response = consumir_servicios_REST($url, "GET", ["api_session" => $api_session]);
     $obj = json_decode($response);
     if (!$obj) {
         die("<p>Error consumiendo el servicio: " . $url . "<p>" . $response);
@@ -69,6 +69,7 @@ function getUser($id, $api_session)
 }
 function getGuardia($dia, $hora, $api_session)
 {
+    echo "<br>here<br>";
     $url = DIR_SERV . "/usuariosGuardia/$dia/$hora";
     $response = consumir_servicios_REST($url, "GET", ["api_session" => $api_session]);
     $obj = json_decode($response);
