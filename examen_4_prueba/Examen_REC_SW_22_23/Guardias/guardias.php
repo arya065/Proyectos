@@ -1,14 +1,14 @@
 <?php
+// session_start();
 require "../servicios_rest/src/funciones_servicios.php";
 if (isset($_POST["exit"]) && $_POST["exit"]) {
-    session_start();
-    print_r($_SESSION["api_session"]);
-    $user = getUser(1, $_SESSION["api_session"]);
-    print_r($user);
+    // print_r($_SESSION["api_session"]);
+    // $user = getUser(1, $_SESSION["api_session"]);
+    // print_r($user);
 
-    // salir($_SESSION["api_session"]);
-    // header("Location: guardias.php");
-    // exit;
+    salir($_SESSION["api_session"]);
+    header("Location: index.php");
+    exit;
 }
 session_start();
 ?>
