@@ -1,0 +1,42 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Desarrollo Web</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <script>
+        function handleKey() {
+            console.log($("#name").val());
+        }
+        function handleSubmit(event) {
+            event.preventDefault();
+            let name = $("#name").val();
+            $.ajax({
+                type: "GET",
+                // dataType: "json",
+                url: "../back/index.php",
+                data: { name: name }
+            })
+                .done(function (data) {
+
+                    alert(data);
+                    $("#answer").html(data.html);
+                })
+                .fail(function () {
+                    alert("error");
+                })
+        }
+    </script>
+    <form action="" method="get" onsubmit=handleSubmit(event)>
+        <p><label for="name">Name</label><input type="text" name="name" id="name" onkeyup=handleKey()></p>
+        <p><label for="surname">Surname</label><input type="text" name="surname" id="surname"></p>
+        <p><label for="pass">Pass</label><input type="password" name="pass" id="pass"></p>
+        <button type="submit">send</button>
+    </form>
+    <p id="answer"></p>
+</body>
+
+</html>
