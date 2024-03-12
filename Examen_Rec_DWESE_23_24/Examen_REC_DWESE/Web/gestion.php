@@ -2,7 +2,7 @@
 session_name("ExamenRec_SW_23_24");
 session_start();
 require "functions.php";
-if ($_SESSION["act"] < time() - 5) {
+if ($_SESSION["act"] < time() - 5 * 60) {
     $response = json_decode(consumir_servicios_REST("/salir", "GET", ["api_session" => $_SESSION["api_session"]]));
     session_destroy();
     header("Location: index.php");

@@ -143,7 +143,7 @@ function getGuardia($api_session, $dia, $hora)
     session_start();
     if (isset($_SESSION["usuario"])) {
         try {
-            $consulta = "SELECT id_usuario,nombre,usuarios.usuario,clave,email from usuarios join horario_lectivo on usuarios.id_usuario = horario_lectivo.usuario where dia = ? and hora = ?";
+            $consulta = "SELECT usuarios.* FROM `usuarios`,horario_lectivo  WHERE usuarios.id_usuario = horario_lectivo.usuario and horario_lectivo.dia = ? and horario_lectivo.hora = ? and horario_lectivo.grupo = 51";
             $sentencia = $conexion->prepare($consulta);
             $sentencia->execute([$dia, $hora]);
 
