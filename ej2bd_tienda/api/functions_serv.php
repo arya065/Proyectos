@@ -31,3 +31,96 @@ function getProductos()
         return json_encode(array("error" => $e->getMessage()));
     }
 }
+function getProductosCode($code)
+{
+    try {
+        $conn = createConn();
+        $sql = "SELECT * from producto where cod=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$code]);
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
+        return json_encode(array("answer" => $res));
+    } catch (PDOException $e) {
+        $conn = null;
+        return json_encode(array("error" => $e->getMessage()));
+    }
+}
+function insertProducto($code, $nombre, $nombreCorto, $descr, $pvp, $familia)
+{
+    try {
+        $conn = createConn();
+        $sql = "INSERT into producto (cod,nombre,nombre_corto,descripcion,PVP,familia) values (?,?,?,?,?,?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$code, $nombre, $nombreCorto, $descr, $pvp, $familia]);
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
+        return json_encode(array("answer" => "El producto con nombre $nombreCorto se ha insertado correctamente"));
+    } catch (PDOException $e) {
+        $conn = null;
+        return json_encode(array("error" => $e->getMessage()));
+    }
+}
+function updateProd($code, $nombre, $nombreCorto, $descr, $pvp, $familia)
+{
+    try {
+        $conn = createConn();
+        $sql = "UPDATE producto set nombre =?, nombre_corto=?, descripcion=?, PVP=?, familia=? where cod = ?";
+        $stmt = $conn->prepare($sql);
+        $tmp = $stmt->execute([$nombre, $nombreCorto, $descr, $pvp, $familia, $code]);
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
+        return json_encode(array("answer" => "El producto con nombre $nombreCorto se ha actualizado correctamente"));
+    } catch (PDOException $e) {
+        $conn = null;
+        return json_encode(array("error" => $e->getMessage()));
+    }
+}
+function delProd($code)
+{
+    try {
+        $conn = createConn();
+        $sql = "DELETE from producto where cod = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$code]);
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
+        return json_encode(array("answer" => "El producto con codigo $code se ha borrado correctamente"));
+    } catch (PDOException $e) {
+        $conn = null;
+        return json_encode(array("error" => $e->getMessage()));
+    }
+}
+function getFamiliares()
+{
+    try {
+        $conn = createConn();
+        $sql = "SELECT * from familia";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
+        return json_encode(array("answer" => $res));
+    } catch (PDOException $e) {
+        $conn = null;
+        return json_encode(array("error" => $e->getMessage()));
+    }
+}
+function repeated($table, $col, $value)
+{
+    try {
+        $conn = createConn();
+        $sql = "SELECT * from $table where $col = ?";
+        $stmt = $conn->prepare($sql);
+        // echo "here";
+        $tmp = $stmt->execute([$value]);
+        print_r($stmt->debugDumpParams());
+        echo "<br>";
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
+        return json_encode(array("answer" => $res));
+    } catch (PDOException $e) {
+        $conn = null;
+        return json_encode(array("error" => $e->getMessage()));
+    }
+}
