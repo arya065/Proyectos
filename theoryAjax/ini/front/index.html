@@ -17,15 +17,49 @@
             $.ajax({
                 type: "GET",
                 dataType: "json",
-                url: "http://proyectos/theoryAjax/ini/back/index.php",
+                url: "../back/index.php",
                 data: { name: name }
             })
                 .done(function (data) {
                     $("#answer").html((data).html);
                 })
-                .fail(function () {
-                    alert("error");
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log("error", jqXHR.status);
+                    // console.log(error_ajax_jquery(jqXHR, textStatus));
                 })
+        }
+        function error_ajax_jquery(jqXHR, textStatus) {
+            var respuesta;
+            if (jqXHR.status === 0) {
+
+                respuesta = 'Not connect: Verify Network.';
+
+            } else if (jqXHR.status == 404) {
+
+                respuesta = 'Requested page not found [404]';
+
+            } else if (jqXHR.status == 500) {
+
+                respuesta = 'Internal Server Error [500].';
+
+            } else if (textStatus === 'parsererror') {
+
+                respuesta = 'Requested JSON parse failed.';
+
+            } else if (textStatus === 'timeout') {
+
+                respuesta = 'Time out error.';
+
+            } else if (textStatus === 'abort') {
+
+                respuesta = 'Ajax request aborted.';
+
+            } else {
+
+                respuesta = 'Uncaught Error: ' + jqXHR.responseText;
+
+            }
+            return respuesta;
         }
     </script>
     <form onsubmit=handleSubmit(event)>
