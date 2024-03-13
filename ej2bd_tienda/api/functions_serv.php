@@ -91,7 +91,7 @@ function delProd($code)
         return json_encode(array("error" => $e->getMessage()));
     }
 }
-function getFamiliares()
+function getFamilias()
 {
     try {
         $conn = createConn();
@@ -112,10 +112,22 @@ function repeated($table, $col, $value)
         $conn = createConn();
         $sql = "SELECT * from $table where $col = ?";
         $stmt = $conn->prepare($sql);
-        // echo "here";
         $tmp = $stmt->execute([$value]);
-        print_r($stmt->debugDumpParams());
-        echo "<br>";
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
+        return json_encode(array("answer" => $res));
+    } catch (PDOException $e) {
+        $conn = null;
+        return json_encode(array("error" => $e->getMessage()));
+    }
+}
+function repeatedEdit($table, $col, $value, $col_id, $value_id)
+{
+    try {
+        $conn = createConn();
+        $sql = "SELECT * from $table where $col = ? and $col_id != ?";
+        $stmt = $conn->prepare($sql);
+        $tmp = $stmt->execute([$value, $value_id]);
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $conn = null;
         return json_encode(array("answer" => $res));
