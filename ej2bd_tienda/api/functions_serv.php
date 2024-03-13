@@ -110,7 +110,12 @@ function repeated($table, $col, $value)
 {
     try {
         $conn = createConn();
-        $sql = "SELECT * from $table where $col = ?";
+        echo $col, "<br>";
+        // $test = filter_var($col, FILTER_SANITIZE_STRING);
+        $test = htmlspecialchars($col,ENT_QUOTES,'UTF-8');
+        print_r($test, "<br>");
+        $sql = "SELECT * from $table where $test= ?";
+
         $stmt = $conn->prepare($sql);
         $tmp = $stmt->execute([$value]);
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
