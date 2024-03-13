@@ -1,5 +1,29 @@
 <?php
 define("DIR_SERV", "http://localhost/Proyectos/ej2bd_tienda/api/");
+function formControl($code, $nombre, $nombreCorto, $descr, $pvp, $familia)
+{
+    $err_code = $err_nombre = $err_nombreCorto = $err_descr = $err_pvp = $err_familia = true;
+    if ($code != "") {
+        $err_code = false;
+    }
+    if ($nombre != "") {
+        $err_nombre = false;
+    }
+    if ($nombreCorto != "") {
+        $err_nombreCorto = false;
+    }
+    if ($descr != "") {
+        $err_descr = false;
+    }
+    if ($pvp != "") {
+        $err_pvp = false;
+    }
+    if ($familia != "") {
+        $err_familia = false;
+    }
+    return $err_code || $err_nombre || $err_nombreCorto || $err_descr || $err_pvp || $err_familia;
+
+}
 // ASK API
 function consumir_servicios_REST($url, $metodo, $datos = null)
 {

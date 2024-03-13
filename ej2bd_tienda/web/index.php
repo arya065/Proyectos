@@ -1,4 +1,5 @@
 <?php
+session_start();
 require "functions.php";
 $list = getAllProd()->answer;
 // print_r($list[0]);
@@ -13,14 +14,15 @@ $list = getAllProd()->answer;
     <style>
         table {
             border-collapse: collapse;
+            margin: auto;
         }
 
         th {
             background: darkgrey;
         }
 
-        td {
-            font-size: 12px;
+        .err {
+            color: red;
         }
     </style>
 </head>
@@ -28,15 +30,35 @@ $list = getAllProd()->answer;
 <body>
     <h1>Crud table</h1>
     <?php
+    //table form
     if (isset($_POST["add"])) {
-        echo "add form";
-    }
-    if (isset($_POST["del"])) {
+        require "views/add_form.php";
+    } elseif (isset($_POST["del"])) {
         echo "delete message";
+    } else if (isset($_POST["chng"])) {
+        require "views/change_form.php";
     }
-    if (isset($_POST["chng"])) {
-        echo "change form";
+
+    //add form
+    if (isset($_POST["send"]) && $_POST["send"] == "add") {
+        unset($_SESSION["code"], $_SESSION["nombre"], $_SESSION["nombreCorto"], $_SESSION["descr"], $_SESSION["pvp"], $_SESSION["familia"]);
+        $res = formControl($_POST["code"], $_POST["nombre"], $_POST["nombreCorto"], $_POST["descr"], $_POST["pvp"], $_POST["familia"]);
+        $_SESSION["code"] = $_POST["code"];
+        $_SESSION["nombre"] = $_POST["nombre"];
+        $_SESSION["nombreCorto"] = $_POST["nombreCorto"];
+        $_SESSION["descr"] = $_POST["descr"];
+        $_SESSION["pvp"] = $_POST["pvp"];
+        $_SESSION["familia"] = $_POST["familia"];
+        if ($res) {
+            require "views/add_form.php";
+        } else {
+            unset($_SESSION["code"], $_SESSION["nombre"], $_SESSION["nombreCorto"], $_SESSION["descr"], $_SESSION["pvp"], $_SESSION["familia"]);
+        }
+    } else if (isset($_POST["send"]) && $_POST["send"] == "back") {
+        unset($_SESSION["code"], $_SESSION["nombre"], $_SESSION["nombreCorto"], $_SESSION["descr"], $_SESSION["pvp"], $_SESSION["familia"]);
     }
+    //change form
+    
     ?>
     <form action="index.php" method="post">
 
@@ -45,8 +67,6 @@ $list = getAllProd()->answer;
                 <th>Codigo</th>
                 <th>Nombre corto</th>
                 <th>PVP</th>
-                <th>Descripcion</th>
-                <th>Familia</th>
                 <th>Acciones <button type="submit" name="add" value="add">+</button></th>
             </tr>
             <?php
@@ -55,9 +75,9 @@ $list = getAllProd()->answer;
                 echo '<td>' . $value->cod . '</td>';
                 echo '<td>' . $value->nombre_corto . '</td>';
                 echo '<td>' . $value->PVP . '</td>';
-                echo '<td>' . $value->descripcion . '</td>';
-                echo '<td>' . $value->familia . '</td>';
-                echo '<td><button type="submit" name="del" value="' . $value->cod . '">Eliminar</button><button type="submit" name="chng"value="' . $value->cod . '">Cambiar</button></td>';
+                // echo '<td>' . $value->descripcion . '</td>';
+                // echo '<td>' . $value->familia . '</td>';
+                echo '<td><button type="submit" name="del" value="' . $value->cod . '">Borrar</button><button type="submit" name="chng"value="' . $value->cod . '">Editar</button></td>';
                 echo "</tr>";
             }
             ?>
