@@ -1,6 +1,30 @@
 <?php
+function correctNie($string)
+{
+    $letters = "TRWAGMYFPDXBNJZSQVHLCKEO";
+    $numbers = "12344567890";
+    if (strlen($string) != 9) {
+        return false;
+    }
+    $str_num = substr($string, 0, strlen($string) - 1);
+    for ($i = 0; $i < strlen($str_num); $i++) {
+        for ($j = 0; $j < strlen($letters); $j++) {
+            if (substr($str_num, $i, 1) == $letters[$j]) {
+                return false;
+            }
+        }
+    }
+    $letter = substr($string, strlen($string) - 1);
+    for ($i = 0; $i < strlen($numbers); $i++) {
+        if ($letter == substr($numbers, $i, 1)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 if (isset ($_POST["send"])) {
-    $err = $_POST["usuario"] == "" || $_POST["nombre"] == "" || $_POST["clave"] == "" || $_POST["dni"] == "" || $_POST["sexo"] == "" || $_POST["boletin"] == "";
+    $err = $_POST["usuario"] == "" || $_POST["nombre"] == "" || $_POST["clave"] == "" || $_POST["dni"] == "" || !correctNie($_POST["dni"]) || $_POST["sexo"] == "" || $_POST["boletin"] == "";
     $err_foto = ($_FILES["foto"]["size"] > 500 * 1024) || $_FILES["foto"]["name"] == '';
 }
 if (isset ($_POST["send"]) && !$err && !$err_foto) {
@@ -80,6 +104,8 @@ if (isset ($_POST["send"]) && !$err && !$err_foto) {
                         <?php
                     if (isset ($_POST["dni"]) && $_POST["dni"] == "") {
                         echo "<span>Debes rellenar el dni</span>";
+                    } else if (isset ($_POST["dni"]) && !correctNie($_POST["dni"])) {
+                        echo "<span>DNI tiene que tener 8 numeros seguidos y una letra</span>";
                     }
                     ?>
                 </p>
