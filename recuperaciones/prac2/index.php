@@ -1,3 +1,18 @@
+<?php
+if (isset ($_POST["del"])) {
+    unset($_POST);
+}
+function checkAficiones($check)
+{
+    foreach ($_POST["aficiones"] as $key => $value) {
+        if ($value == $check) {
+            return true;
+        }
+    }
+    return false;
+}
+// print_r($_POST["aficiones"]);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,45 +27,58 @@
     <form action="index.php" method="post">
         <p>
             <label for="nombre">Nombre:</label>
-            <input type="text" name="nombre" id="nombre">
-        </p>
-        <p>
-            <label for="nacido">Nacido en:</label>
-            <select name="nacido" id="nacido">
-                <option value="1">Malaga</option>
-                <option value="2">Cadiz</option>
-                <option value="3">Granada</option>
-            </select>
-        </p>
-        <p>
-            <label for="hombre">Sexo:</label>
-            <label for="hombre">Hombre</label>
-            <input type="radio" name="sexo" id="hombre">
-            <label for="mujer">Mujer</label>
-            <input type="radio" name="sexo" id="mujer">
-        </p>
-        <p>
-            <label for="deportes">Aficiones:</label>
-            <label for="deportes">Deportes</label>
-            <input type="checkbox" name="aficiones" id="deportes">
-            <label for="lectura">Lectura</label>
-            <input type="checkbox" name="aficiones" id="lectura">
-            <label for="otros">Otros</label>
-            <input type="checkbox" name="aficiones" id="otros">
-        </p>
-        <p>
-            <label for="comentarios">Comentarios:</label>
-            <textarea name="comentarios" id="comentarios" cols="20" rows="2"></textarea>
-        </p>
-        <p>
-            <label for="foto">Incluir mi foto (Archivo de tipo imagen Max. 500KB)</label>
-            <input type="file" name="foto" id="foto">
-        </p>
-        <p>
-            <input type="submit" value="Enviar">
-            <input type="reset" value="Borrar Campos">
-        </p>
-    </form>
-</body>
+            <input type="text" name="nombre" id="nombre" value="<?php if (isset ($_POST["nombre"]))
+                echo $_POST["nombre"] ?>">
+            </p>
+            <p>
+                <label for="nacido">Nacido en:</label>
+                <select name="nacido" id="nacido">
+                    <option value="1" <?php if (isset ($_POST["nacido"]) && $_POST["nacido"] == "1")
+                echo "selected" ?>>Malaga
+                    </option>
+                    <option value="2" <?php if (isset ($_POST["nacido"]) && $_POST["nacido"] == "2")
+                echo "selected" ?>>Cadiz
+                    </option>
+                    <option value="3" <?php if (isset ($_POST["nacido"]) && $_POST["nacido"] == "3")
+                echo "selected" ?>>
+                        Granada</option>
+                </select>
+            </p>
+            <p>
+                <label for="hombre">Sexo:</label>
+                <label for="hombre">Hombre</label>
+                <input type="radio" name="sexo" id="hombre" value="hombre" <?php if (isset ($_POST["sexo"]) && $_POST["sexo"] == "hombre")
+                echo "checked" ?>>
+                <label for="mujer" selected>Mujer</label>
+                <input type="radio" name="sexo" id="mujer" value="mujer" <?php if (isset ($_POST["sexo"]) && $_POST["sexo"] == "mujer")
+                echo "checked" ?>>
+            </p>
+            <p>
+                <label for="deportes">Aficiones:</label>
+                <label for="deportes">Deportes</label>
+                <input type="checkbox" name="aficiones[]" id="deportes" value="deportes" <?php if (isset ($_POST["aficiones"]) && checkAficiones("deportes"))
+                echo "checked" ?>>
+                <label for="lectura">Lectura</label>
+                <input type="checkbox" name="aficiones[]" id="lectura" value="lectura" <?php if (isset ($_POST["aficiones"]) && checkAficiones("lectura"))
+                echo "checked" ?>>
+                <label for="otros">Otros</label>
+                <input type="checkbox" name="aficiones[]" id="otros" value="otros" <?php if (isset ($_POST["aficiones"]) && checkAficiones("otros"))
+                echo "checked" ?>>
+            </p>
+            <p>
+                <label for="comentarios">Comentarios:</label>
+                <textarea name="comentarios" id="comentarios" cols="20" rows="2"><?php if (isset ($_POST["comentarios"]))
+                echo $_POST["comentarios"] ?></textarea>
+            </p>
+            <p>
+                <label for="foto">Incluir mi foto (Archivo de tipo imagen Max. 500KB)</label>
+                <input type="file" name="foto" id="foto">
+            </p>
+            <p>
+                <button type="submit" name="send" value="send">Enviar</button>
+                <button type="submit" name="del" value="del">Borrar Campos</button>
+            </p>
+        </form>
+    </body>
 
-</html>
+    </html>
