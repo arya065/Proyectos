@@ -62,12 +62,12 @@ function salir($api_session)
 }
 function logueado($api_session)
 {
-    return logedIn($api_session);
+    return loggedIn($api_session);
 }
 // _____________________________________________________________________ not tested
 function usuarios($api_session)
 {
-    if (logedIn($api_session)) {
+    if (loggedIn($api_session)) {
         try {
             $conn = createConn();
             $sql = "SELECT * from usuarios";
