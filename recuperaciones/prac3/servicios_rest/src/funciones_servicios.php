@@ -41,12 +41,12 @@ function login($usuario, $clave)
 }
 function salir($api_session)
 {
-    session_name("api_prac3");//61koolojnsh28q32at4n1d97oit14jcm
-    session_id($api_session);//k7kfbnjo7rffgt0isdgqiag6a9f4uqr4
+    session_name("api_prac3");//kkghbepeueung8ljsqqj5p936cov5klv
+    session_id($api_session);//
     session_start();
-    session_regenerate_id();
+    // session_regenerate_id();
     session_unset();
-    // session_destroy();
+    var_dump(session_destroy());
     return array("logout" => "Session closed");
 }
 function logueado($api_session)
