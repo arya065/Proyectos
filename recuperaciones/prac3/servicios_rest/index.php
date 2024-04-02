@@ -6,8 +6,15 @@ $app = new \Slim\App;
 $app->get('/login', function ($request) {
     // $usuario = $request->getParam("usuario");
     // $clave = $request->getParam("clave");
-    echo json_encode(login("1", "1"));
+    echo json_encode(login("2", "2"));
     // echo json_encode(login($usuario, $clave));
+    ////////////////////////////////////////////////////
+    // $tmp = json_encode(login("1", "1"));
+    // if(json_decode($tmp)->api_session == ""){
+    //     echo "not login";
+    // } else{
+    //     echo "login";
+    // }
 });
 
 $app->get('/salir/{session}', function($request){
@@ -16,5 +23,10 @@ $app->get('/salir/{session}', function($request){
 $app->get('/logueado/{session}', function($request){
     echo json_encode(logueado($request->getAttribute("session")));
 });
+
+$app->get('/usuarios/{session}', function($request){
+    echo json_encode(usuarios($request->getAttribute("session")));
+});
+
 $app->run();
 ?>

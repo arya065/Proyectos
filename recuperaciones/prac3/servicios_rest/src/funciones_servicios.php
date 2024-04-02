@@ -29,7 +29,8 @@ function login($usuario, $clave)
             session_start();
             $_SESSION["usuario"] = $res["usuario"];
             $_SESSION["clave"] = $res["clave"];
-            return array("message" => $res, "api_session" => session_id());
+            $_SESSION["api_session"] = session_id();
+            return array("message" => $res, "api_session" => $_SESSION["api_session"]);
         }
         return array("message" => "no existe usuario");
     } catch (PDOException $e) {
@@ -40,41 +41,126 @@ function login($usuario, $clave)
 }
 function salir($api_session)
 {
-    try {
-        // session_id($api_session);
-        session_name("api_prac3");
-        session_start();
-        // session_regenerate_id();
-        session_destroy();
-        return array("logout" => "Session closed");
-    } catch (PDOException $e) {
-        $stmt = null;
-        $conn = null;
-        return array("error" => "Error metodo 'login' " . $e->getMessage());
-    }
+    session_name("api_prac3");//61koolojnsh28q32at4n1d97oit14jcm
+    session_id($api_session);//k7kfbnjo7rffgt0isdgqiag6a9f4uqr4
+    session_start();
+    session_regenerate_id();
+    session_unset();
+    // session_destroy();
+    return array("logout" => "Session closed");
 }
 function logueado($api_session)
 {
+    // session_name("api_prac3");
+    // session_start();
+    // $_SESSION["usuario"] = $res["usuario"];
+    // $_SESSION["clave"] = $res["clave"];
+    session_name("api_prac3");
+    session_id($api_session);
+    session_start();
+    return array("message" => $_SESSION);
+}
+// _____________________________________________________________________ not tested
+function usuarios($api_session)
+{
+    // session_id($api_session);
+    // session_start();
+    // if ($_SESSION["api_session"] == $api_session) {
+    //     return array("message" => $_SESSION);
+    // } else {
+    //     return array("message" => "not into");
+    // }
+
     try {
         $conn = createConn();
-        $sql = "SELECT * from usuarios where usuario=? and clave=?";
+        $sql = "SELECT * from usuarios";
         $stmt = $conn->prepare($sql);
-        $stmt->execute(["1", "1"]);
-        $res = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($stmt->rowCount() > 0) {
-            // session_name("api_prac3");
-            // session_start();
-            // $_SESSION["usuario"] = $res["usuario"];
-            // $_SESSION["clave"] = $res["clave"];
-            session_id($api_session);
-            // session_name("api_prac3");
-            session_start();
-            return array("message" => $_SESSION);
-        }
-        return array("message" => "no existe usuario");
+        $stmt->execute();
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array("message" => $res);
     } catch (PDOException $e) {
         $stmt = null;
         $conn = null;
-        return array("error" => "Error metodo 'login' " . $e->getMessage());
+        return array("error" => "Error metodo 'logueado' " . $e->getMessage());
+    }
+}
+
+function registrar($api_session, $usuario, $clave, $nombre, $dni, $sexo, $foto, $subscripcion, $tipo)
+{
+    try {
+        $conn = createConn();
+        $sql = "INSERT into usuarios (usuario,clave,nombre,dni,sexo,foto,subscripcion,tipo) values (?,?,?,?,?,?,?,?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$usuario, $clave, $nombre, $dni, $sexo, $foto, $subscripcion, $tipo]);
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array("message" => $res);
+    } catch (PDOException $e) {
+        $stmt = null;
+        $conn = null;
+        return array("error" => "Error metodo 'logueado' " . $e->getMessage());
+    }
+}
+
+function paginacion($api_session, $page, $num)
+{
+    try {
+        $conn = createConn();
+        $sql = "SELECT * from usuarios limit ?,?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([($page - 1) * $num, $num]);
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array("message" => $res);
+    } catch (PDOException $e) {
+        $stmt = null;
+        $conn = null;
+        return array("error" => "Error metodo 'logueado' " . $e->getMessage());
+    }
+}
+
+function usuario($api_session, $id)
+{
+    try {
+        $conn = createConn();
+        $sql = "SELECT * from usuarios where id=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$id]);
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array("message" => $res);
+    } catch (PDOException $e) {
+        $stmt = null;
+        $conn = null;
+        return array("error" => "Error metodo 'logueado' " . $e->getMessage());
+    }
+}
+
+function borrar($api_session, $id)
+{
+    try {
+        $conn = createConn();
+        $sql = "DELETE * from usuarios where id=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$id]);
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array("message" => $res);
+    } catch (PDOException $e) {
+        $stmt = null;
+        $conn = null;
+        return array("error" => "Error metodo 'logueado' " . $e->getMessage());
+    }
+}
+
+function editar($api_session, $id, $usuario, $clave, $nombre, $dni, $sexo, $foto, $subscripcion, $tipo)
+{
+    try {
+        $conn = createConn();
+        $sql = "UPDATE usuarios set usuario=?,clave=?,nombre=?,dni=?,sexo=?,foto=?,subscripcion=?,tipo=? where id=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$usuario, $clave, $nombre, $dni, $sexo, $foto, $subscripcion, $tipo, $id]);
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array("message" => $res);
+    } catch (PDOException $e) {
+        $stmt = null;
+        $conn = null;
+        return array("error" => "Error metodo 'logueado' " . $e->getMessage());
     }
 }
