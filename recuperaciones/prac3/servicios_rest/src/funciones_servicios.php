@@ -1,6 +1,5 @@
 <?php
 require "conf.php";
-
 // CREATE CONNECTION
 function createConn()
 {
@@ -16,6 +15,18 @@ function createConn()
         echo "No ha podido crear conexion: " . $e->getMessage();
     }
 }
+
+function logedIn($api_session)
+{
+    session_name("api_prac3");
+    session_id($api_session);
+    session_start();
+    if (isset($_SESSION["api_session"]) && $_SESSION["api_session"] == $api_session) {
+        return true;
+    }
+    return false;
+}
+
 function login($usuario, $clave)
 {
     try {
@@ -41,47 +52,34 @@ function login($usuario, $clave)
 }
 function salir($api_session)
 {
-    session_name("api_prac3");//kkghbepeueung8ljsqqj5p936cov5klv
-    session_id($api_session);//
+    session_name("api_prac3");
+    session_id($api_session);
     session_start();
     // session_regenerate_id();
     session_unset();
-    var_dump(session_destroy());
+    session_destroy();
     return array("logout" => "Session closed");
 }
 function logueado($api_session)
 {
-    // session_name("api_prac3");
-    // session_start();
-    // $_SESSION["usuario"] = $res["usuario"];
-    // $_SESSION["clave"] = $res["clave"];
-    session_name("api_prac3");
-    session_id($api_session);
-    session_start();
-    return array("message" => $_SESSION);
+    return logedIn($api_session);
 }
 // _____________________________________________________________________ not tested
 function usuarios($api_session)
 {
-    // session_id($api_session);
-    // session_start();
-    // if ($_SESSION["api_session"] == $api_session) {
-    //     return array("message" => $_SESSION);
-    // } else {
-    //     return array("message" => "not into");
-    // }
-
-    try {
-        $conn = createConn();
-        $sql = "SELECT * from usuarios";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return array("message" => $res);
-    } catch (PDOException $e) {
-        $stmt = null;
-        $conn = null;
-        return array("error" => "Error metodo 'logueado' " . $e->getMessage());
+    if (logedIn($api_session)) {
+        try {
+            $conn = createConn();
+            $sql = "SELECT * from usuarios";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return array("message" => $res);
+        } catch (PDOException $e) {
+            $stmt = null;
+            $conn = null;
+            return array("error" => "Error metodo 'logueado' " . $e->getMessage());
+        }
     }
 }
 
