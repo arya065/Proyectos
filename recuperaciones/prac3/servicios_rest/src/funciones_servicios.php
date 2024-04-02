@@ -16,7 +16,7 @@ function createConn()
     }
 }
 
-function logedIn($api_session)
+function loggedIn($api_session)
 {
     session_name("api_prac3");
     session_id($api_session);
