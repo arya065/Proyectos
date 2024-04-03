@@ -18,6 +18,9 @@ function createConn()
 
 function loggedIn($api_session)
 {
+    if ($api_session == "") {
+        return false;
+    }
     session_name("api_prac3");
     session_id($api_session);
     session_start();
@@ -178,6 +181,24 @@ function editar($api_session, $id, $usuario, $clave, $nombre, $dni, $sexo, $foto
             $stmt = null;
             $conn = null;
             return array("error" => "Error metodo 'editar' " . $e->getMessage());
+        }
+    } else {
+        return array("message" => "Not logged in");
+    }
+}
+function findWithWord($api_session, $word){
+    if (loggedIn($api_session)) {
+        try {
+            $conn = createConn();
+            $sql = "SELECT * from usuarios where usuario like ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute(["$word%"]);
+            $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return array("message" => $res);
+        } catch (PDOException $e) {
+            $stmt = null;
+            $conn = null;
+            return array("error" => "Error metodo 'buscar' " . $e->getMessage());
         }
     } else {
         return array("message" => "Not logged in");
