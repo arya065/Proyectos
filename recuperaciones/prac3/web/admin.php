@@ -78,9 +78,9 @@ function switchPage($page)
     </form>
     <?php
     //show user info
-    if (isset($_POST["nombre"])) {
-        echo '<h3>Mostrar usuario con id ' . $_POST["nombre"] . '</h3>';
-        $info = json_decode(consumir_servicios_REST("/usuario/" . $_SESSION["api_session"] . "/" . $_POST["nombre"], "GET"));
+    if (isset($_POST["showInfo"])) {
+        echo '<h3>Mostrar usuario con id ' . $_POST["showInfo"] . '</h3>';
+        $info = json_decode(consumir_servicios_REST("/usuario/" . $_SESSION["api_session"] . "/" . $_POST["showInfo"], "GET"));
         echo "<table>";
         foreach ($info->message[0] as $key => $value) {
             echo "<tr>";
@@ -124,10 +124,10 @@ function switchPage($page)
                 <label for="hombre">Sexo:</label>
 
                 <label for="hombre">Hombre</label>
-                <input type="radio" name="sexo" id="hombre" checked>
+                <input type="radio" name="sexo" id="hombre" value="hombre" checked>
 
                 <label for="mujer">Mujer</label>
-                <input type="radio" name="sexo" id="mujer" <?php if ($info->sexo == "mujer")
+                <input type="radio" name="sexo" id="mujer" value="mujer" <?php if ($info->sexo == "mujer")
                     echo 'checked' ?>>
                 </p>
                 <p>
@@ -136,21 +136,28 @@ function switchPage($page)
                 </p>
                 <p>
                     <label for="subscripcion">Subscripcion:</label>
-                    <input type="checkbox" name="subscripcion" id="subscripcion" <?php if ($info->subscripcion == 1)
+                    <input type="checkbox" name="subscripcion" id="subscripcion" value="1" <?php if ($info->subscripcion == 1)
                     echo 'checked' ?>>
                 </p>
                 <p>
                     <label for="normal">Tipo:</label>
 
                     <label for="normal">Normal</label>
-                    <input type="radio" name="tipo" id="normal" checked>
+                    <input type="radio" name="tipo" id="normal" value="normal" checked>
 
                     <label for="admin">Admin</label>
-                    <input type="radio" name="tipo" id="admin" <?php if ($info->tipo == "admin")
+                    <input type="radio" name="tipo" id="admin" value="admin" <?php if ($info->tipo == "admin")
                     echo 'checked' ?>>
                 </p>
+                <button type="submit" name="guardarEditar" value="guardarEditar">Guardar cambios</button>
             </form>
         <?php
+    }
+    if (isset($_POST["guardarEditar"]) && $_POST["guardarEditar"] != "") {
+        $sub = $_POST["subscripcion"] == 1 ? 1 : 0;
+        $foto = $_FILES["name"] == "" ? "no_imagen" : $_FILES["name"];
+        $res = json_decode(consumir_servicios_REST("/editar/" . $_SESSION["api_session"] . "/" . $_POST["ind"] . "/" . $_POST["usuario"] . "/" . $_POST["clave"] . "/" . $_POST["nombre"] . "/" . $_POST["dni"] . "/" . $_POST["sexo"] . "/" . $foto . "/" . $sub . "/" . $_POST["tipo"], "GET"))->message[0];
+        print_r($res);
     }
     ?>
     <h2>Listado de los usuarios</h2>
@@ -199,7 +206,7 @@ function switchPage($page)
                 echo "<tr>";
                 echo "<td>" . $value->id_usuario . "</td>";
                 echo "<td>" . $value->foto . "</td>";
-                echo '<td><button type="submit" name="nombre" value="' . $value->id_usuario . '">' . $value->nombre . "</button></td>";
+                echo '<td><button type="submit" name="showInfo" value="' . $value->id_usuario . '">' . $value->nombre . "</button></td>";
                 echo '<td><button type="submit" name="borrar" value="' . $value->id_usuario . '">Borrar</button>-<button type="submit" name="editar" value="' . $value->id_usuario . '">Editar</button></td>';
                 echo "</tr>";
             }
