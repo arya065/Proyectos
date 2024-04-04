@@ -90,8 +90,68 @@ function switchPage($page)
         }
         echo "</table>";
     }
-    //add user form
-    //modify user form
+    //delete user
+    if (isset($_POST["borrar"]) && $_POST["borrar"] != "") {
+        json_decode(consumir_servicios_REST("/borrar/" . $_SESSION["api_session"] . "/" . $_POST["borrar"], "GET"));
+    }
+    //modify user
+    if (isset($_POST["editar"]) && $_POST["editar"] != "") {
+        $info = json_decode(consumir_servicios_REST("/usuario/" . $_SESSION["api_session"] . "/" . $_POST["editar"], "GET"))->message[0];
+        print_r($info);
+        ?>
+        <form action="admin.php" method="post">
+            <p>
+                <label for="ind">ID:</label>
+                <input type="text" name="ind" id="ind" value="<?php echo $info->id_usuario ?>">
+            </p>
+            <p>
+                <label for="usuario">Usuario:</label>
+                <input type="text" name="usuario" id="usuario" value="<?php echo $info->usuario ?>">
+            </p>
+            <p>
+                <label for="clave">Clave:</label>
+                <input type="password" name="clave" id="clave" value="<?php echo $info->clave ?>">
+            </p>
+            <p>
+                <label for="nombre">Nombre:</label>
+                <input type="text" name="nombre" id="nombre" value="<?php echo $info->nombre ?>">
+            </p>
+            <p>
+                <label for="dni">DNI:</label>
+                <input type="text" name="dni" id="dni" value="<?php echo $info->dni ?>">
+            </p>
+            <p>
+                <label for="hombre">Sexo:</label>
+
+                <label for="hombre">Hombre</label>
+                <input type="radio" name="sexo" id="hombre" checked>
+
+                <label for="mujer">Mujer</label>
+                <input type="radio" name="sexo" id="mujer" <?php if ($info->sexo == "mujer")
+                    echo 'checked' ?>>
+                </p>
+                <p>
+                    <label for="foto">Foto:</label>
+                    <input type="file" name="foto" id="foto">
+                </p>
+                <p>
+                    <label for="subscripcion">Subscripcion:</label>
+                    <input type="checkbox" name="subscripcion" id="subscripcion" <?php if ($info->subscripcion == 1)
+                    echo 'checked' ?>>
+                </p>
+                <p>
+                    <label for="normal">Tipo:</label>
+
+                    <label for="normal">Normal</label>
+                    <input type="radio" name="tipo" id="normal" checked>
+
+                    <label for="admin">Admin</label>
+                    <input type="radio" name="tipo" id="admin" <?php if ($info->tipo == "admin")
+                    echo 'checked' ?>>
+                </p>
+            </form>
+        <?php
+    }
     ?>
     <h2>Listado de los usuarios</h2>
     <form action="admin.php" method="post">
@@ -123,7 +183,7 @@ function switchPage($page)
                 } else {
                     $totalPages = ceil(count($response->message) / $_SESSION["itemPerPage"]);
                 }
-                if ($totalPages != 1) {
+                if ($totalPages > 1) {
                     $response = json_decode(consumir_servicios_REST("/paginacion/" . $_SESSION["api_session"] . "/" . $_SESSION["current"] . "/" . $_SESSION["itemPerPage"], "GET"));
                 }
                 ?>
@@ -140,7 +200,7 @@ function switchPage($page)
                 echo "<td>" . $value->id_usuario . "</td>";
                 echo "<td>" . $value->foto . "</td>";
                 echo '<td><button type="submit" name="nombre" value="' . $value->id_usuario . '">' . $value->nombre . "</button></td>";
-                echo '<td><button type="submit" name="borrar" value="borrar">Borrar</button>-<button type="submit" name="editar" value="editar">Editar</button></td>';
+                echo '<td><button type="submit" name="borrar" value="' . $value->id_usuario . '">Borrar</button>-<button type="submit" name="editar" value="' . $value->id_usuario . '">Editar</button></td>';
                 echo "</tr>";
             }
             ?>
