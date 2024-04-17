@@ -10,17 +10,15 @@ require __DIR__ . '/../vendor/autoload.php';
 $app = AppFactory::create();
 $app->setBasePath('/Proyectos/testSlim4-3/public');
 
-// echo "hello";
 $app->get('/test', function (Request $request, Response $response, $args) {
-    $response->getBody()->write("Hello world!");
+    echo json_encode(array("hi"=>"there"));
+    // $response->getBody()->write("Hello world!");
     return $response;
 });
-$app->get('/hello/{name}', function (Request $request, Response $response, $args) {
-    $name = $args['name'];
-    $response->getBody()->write("Hello, $name!");
-    return $response;
+$app->get('/test2', function ($request,$response) {
+    $response->getBody()->write(json_encode(array("hi"=>"there")));
+    // return $response;
+    return $response->withHeader('Content-Type', 'application/json');
 });
-
-// echo "here";
 
 $app->run();
