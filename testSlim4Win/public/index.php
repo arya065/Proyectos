@@ -8,7 +8,6 @@ ini_set('display_errors', 1);
 
 require __DIR__ . '/../vendor/autoload.php';
 $app = AppFactory::create();
-// $app->setBasePath('/Proyectos/testSlim4/public');
 $app->setBasePath('/proyectos/testSlim4/public');
 
 $app->get('/test', function (Request $request, Response $response, $args) {
