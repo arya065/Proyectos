@@ -37,3 +37,15 @@ Slim\MiddlewareDispatcher->handle() #3 C:\OSPanel\domains\Proyectos\testSlim4\ve
 Slim\App->handle() #4 C:\OSPanel\domains\Proyectos\testSlim4\public\index.php(25): 
 Slim\App->run() #5 {main} thrown in C:\OSPanel\domains\Proyectos\testSlim4\vendor\slim\slim\Slim\Middleware\RoutingMiddleware.php on line 76
 */
+
+/**
+ * additional info:
+ * composer version: 2.2.6
+ * 
+ * возможно стоит сделать так:
+ * // Установка базового пути для вашего приложения на Windows
+ *$basePath = realpath(__DIR__ . '/..'); // Путь к корневой директории проекта
+ * // Подключение автозагрузчика Composer
+ *require $basePath . '/vendor/autoload.php';
+ 
+ */
