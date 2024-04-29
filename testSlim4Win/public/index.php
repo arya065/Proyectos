@@ -8,7 +8,8 @@ ini_set('display_errors', 1);
 
 require __DIR__ . '/../vendor/autoload.php';
 $app = AppFactory::create();
-$app->setBasePath('/proyectos/testSlim4Win/public');
+$app->setBasePath('/Proyectos/testSlim4Win/public');//вот так работает на linux
+// $app->setBasePath('/proyectos/testSlim4Win/public');//вот так не работает на windows
 
 $app->get('/', function (Request $request, Response $response, $args) {
     $response->getBody()->write("Hello Slim!");
