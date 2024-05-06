@@ -17,8 +17,8 @@ $app->get('/', function (Request $request, Response $response, $args) {
     return $response;
 });
 
-$app->get('/test', function (Request $request, Response $response, $args) {
-    echo json_encode(array ("hi" => "there"));
+$app->get('/test/{name}/{surname}', function (Request $request, Response $response, $args) {
+    echo json_encode(array ($request->getAttribute("name") => $request->getAttribute("surname")));
     return $response;
 });
 $app->get('/test2', function ($request, $response) {
