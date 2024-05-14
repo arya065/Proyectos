@@ -15,23 +15,7 @@ function createConn()
         echo "No ha podido crear conexion: " . $e->getMessage();
     }
 }
-
-function getProductos()
-{
-    try {
-        $conn = createConn();
-        $sql = "SELECT * from producto";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $conn = null;
-        return json_encode(array("answer" => $res));
-    } catch (PDOException $e) {
-        $conn = null;
-        return json_encode(array("error" => $e->getMessage()));
-    }
-}
-function getProductosCode($code)
+function example($code)
 {
     try {
         $conn = createConn();
@@ -41,21 +25,6 @@ function getProductosCode($code)
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $conn = null;
         return json_encode(array("answer" => $res));
-    } catch (PDOException $e) {
-        $conn = null;
-        return json_encode(array("error" => $e->getMessage()));
-    }
-}
-function insertProducto($code, $nombre, $nombreCorto, $descr, $pvp, $familia)
-{
-    try {
-        $conn = createConn();
-        $sql = "INSERT into producto (cod,nombre,nombre_corto,descripcion,PVP,familia) values (?,?,?,?,?,?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$code, $nombre, $nombreCorto, $descr, $pvp, $familia]);
-        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $conn = null;
-        return json_encode(array("answer" => "El producto con nombre $nombreCorto se ha insertado correctamente"));
     } catch (PDOException $e) {
         $conn = null;
         return json_encode(array("error" => $e->getMessage()));

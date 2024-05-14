@@ -1,0 +1,2 @@
+<?php
+//bienvenida y salir

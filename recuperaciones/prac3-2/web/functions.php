@@ -1,5 +1,5 @@
 <?php
-define("DIR_SERV", "http://localhost/Proyectos/recuperaciones/prac3/api/");
+define("DIR_SERV", "http://localhost/Proyectos/recuperaciones/prac3-2/api/");
 // ASK API
 function consumir_servicios_REST($url, $metodo, $datos = null)
 {
