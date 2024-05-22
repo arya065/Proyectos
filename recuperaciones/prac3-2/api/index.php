@@ -20,7 +20,7 @@ $app->get("/login", function ($request) {
 $app->get("/insertarUsuario", function ($request) {
     // $api_session = $request->getParam("api_session");
     // echo insertarUsuario($request->getParam("usuario"), $request->getParam("clave"), $request->getParam("email"), $api_session);
-    echo insertarUsuario("3", "3", "3", "t53iqrkf07fh7jq6qjgcv8o213");
+    echo insertarUsuario("3", "3", "3", "help2");
 });
 $app->get("/usuarios/{columna}/{valor}", function ($request) {
     // $api_session = $request->getParam("api_session");
