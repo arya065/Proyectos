@@ -40,8 +40,8 @@ function login($user, $pass)
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $conn = null;
         if (count($res)) {
-            // session_name("api_func");
-            session_id(session_regenerate_id());
+            session_name("api_func");
+            // session_id(session_regenerate_id());
             session_start();
             $session_api = session_id();
             $_SESSION["usuario"] = $user;
