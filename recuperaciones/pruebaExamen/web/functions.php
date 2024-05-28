@@ -43,7 +43,7 @@ function salir($api_session)
     }
     return $obj;
 }
-function usuario($api_session,$id)
+function usuario($api_session, $id)
 {
     $url = DIR_SERV . "/usuario/$id";
     $response = consumir_servicios_REST($url, "GET", ["api_session" => $api_session]);
@@ -62,4 +62,12 @@ function usuariosGuardia($api_session, $dia, $hora)
         die("<p>Error consumiendo el servicio: " . $url . "<p>" . $response);
     }
     return $obj;
+}
+
+function timeout($prev)
+{
+    if (time() > $prev + 10) {
+        return true;
+    }
+    return false;
 }
