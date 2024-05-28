@@ -64,30 +64,32 @@ if (isset($_POST["salir"])) {
                 </tr>
                 <?php
                 foreach ($hours as $key => $value) {
-                    $guards = usuariosGuardia($_SESSION["api_session"], date_format(date_create(), "N"), $key + 1)->usuarios;
-                    echo '<tr>';
-                    echo "<td>$value</td>";
-                    echo "<td><ol>";
-                    foreach ($guards as $key => $value) {
-                        $name = usuario($_SESSION["api_session"], $value->usuario)->usuario[0]->nombre;
-                        echo "<li><button type='submit' name='showUser' value='" . $value->usuario . "'>" . $name . "</button></li>";
-                    }
-                    echo "</ol></td>";
-                    echo "<td>";
-                    if (isset($_POST["showUser"])) {
-                        $curUser = usuario($_SESSION["api_session"], $_POST["showUser"])->usuario[0];
-                        echo "<p>Nombre:" . $curUser->nombre . "</p>";
-                        echo "<p>Usuario:" . $curUser->usuario . "</p>";
-                        echo "<p>Contrasena:" . $curUser->clave . "</p>";
-                        echo "<p>Email:";
-                        if ($curUser->email == "") {
-                            echo "Email no disponible";
+                    if ($key != 3) {
+                        $guards = usuariosGuardia($_SESSION["api_session"], date_format(date_create(), "N"), $key + 1)->usuarios;
+                        echo '<tr>';
+                        echo "<td>$value</td>";
+                        echo "<td><ol>";
+                        foreach ($guards as $key => $value) {
+                            $name = usuario($_SESSION["api_session"], $value->usuario)->usuario[0]->nombre;
+                            echo "<li><button type='submit' name='showUser' value='" . $value->usuario . "'>" . $name . "</button></li>";
                         }
-                        echo "</p>";
-                    }
-                    echo "</td>";
-                    echo '</tr>';
+                        echo "</ol></td>";
+                        echo "<td>";
+                        if (isset($_POST["showUser"])) {
+                            $curUser = usuario($_SESSION["api_session"], $_POST["showUser"])->usuario[0];
+                            echo "<p>Nombre:" . $curUser->nombre . "</p>";
+                            echo "<p>Usuario:" . $curUser->usuario . "</p>";
+                            echo "<p>Contrasena:" . $curUser->clave . "</p>";
+                            echo "<p>Email:";
+                            if ($curUser->email == "") {
+                                echo "Email no disponible";
+                            }
+                            echo "</p>";
+                        }
+                        echo "</td>";
+                        echo '</tr>';
 
+                    }
                 }
                 echo "</table>";
                 echo '</form>';
