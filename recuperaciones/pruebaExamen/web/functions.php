@@ -66,7 +66,7 @@ function usuariosGuardia($api_session, $dia, $hora)
 
 function timeout($prev)
 {
-    if (time() > $prev + 10) {
+    if (time() > $prev + 300) {
         return true;
     }
     return false;
