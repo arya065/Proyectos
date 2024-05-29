@@ -98,7 +98,7 @@ function usuariosGuardia($api_session, $dia, $hora)
     if (isset($_SESSION["usuario"]) && $api_session == $_SESSION["api_session"]) {
         try {
             $conn = createConn();
-            $sql = "SELECT * from horario_lectivo where dia=? and hora=?";
+            $sql = "SELECT * from horario_lectivo where dia=? and hora=? and grupo = 51";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$dia, $hora]);
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);

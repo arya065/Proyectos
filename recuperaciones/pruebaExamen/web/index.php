@@ -69,13 +69,13 @@ if (isset($_POST["salir"])) {
                         echo '<tr>';
                         echo "<td>$value</td>";
                         echo "<td><ol>";
-                        foreach ($guards as $key => $value) {
-                            $name = usuario($_SESSION["api_session"], $value->usuario)->usuario[0]->nombre;
-                            echo "<li><button type='submit' name='showUser' value='" . $value->usuario . "'>" . $name . "</button></li>";
+                        foreach ($guards as $value2) {
+                            $name = usuario($_SESSION["api_session"], $value2->usuario)->usuario[0]->nombre;
+                            echo "<li><button type='submit' name='showUser' value='" . $value2->usuario . "'>" . $name . "</button></li>";
                         }
                         echo "</ol></td>";
                         echo "<td>";
-                        if (isset($_POST["showUser"])) {
+                        if (isset($_POST["showUser"]) && $key == 0) {
                             $curUser = usuario($_SESSION["api_session"], $_POST["showUser"])->usuario[0];
                             echo "<p>Nombre:" . $curUser->nombre . "</p>";
                             echo "<p>Usuario:" . $curUser->usuario . "</p>";
