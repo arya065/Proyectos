@@ -74,7 +74,7 @@ function alumnos($api_session)
         session_start();
         if (isset($_SESSION["usuario"]) && $_SESSION["api_session"] == $api_session) {
             $conn = createConn();
-            $sql = "SELECT * from alumnos";
+            $sql = "SELECT * from usuario where tipo='alumno'";
             $stmt = $conn->prepare($sql);
             $stmt->execute([]);
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -94,9 +94,89 @@ function notasAlumno($api_session, $cod_alu)
         session_start();
         if (isset($_SESSION["usuario"]) && $_SESSION["api_session"] == $api_session) {
             $conn = createConn();
-            $sql = "SELECT * from alumnos where usuario=? and clave=?";
+            $sql = "SELECT u.cod_usu, u.usuario, a.cod_asig, n.nota FROM usuarios AS u JOIN notas AS n ON u.cod_usu = n.cod_usu JOIN asignaturas AS a ON n.cod_asig = a.cod_asig WHERE u.cod_usu = ?";
             $stmt = $conn->prepare($sql);
-            $stmt->execute([$_SESSION["usuario"], md5($_SESSION["clave"])]);
+            $stmt->execute([$cod_alu]);
+            $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $conn = null;
+            return json_encode(array("usuario" => $res, "api_session" => $api_session));
+        }
+    } catch (PDOException $e) {
+        $conn = null;
+        return json_encode(array("error" => $e->getMessage()));
+    }
+}
+function notasNoEvalAlumno($api_session, $cod_alu)
+{
+    try {
+        session_name("api_func");
+        session_id($api_session);
+        session_start();
+        if (isset($_SESSION["usuario"]) && $_SESSION["api_session"] == $api_session) {
+            $conn = createConn();
+            $sql = "SELECT n.cod_usu, a.cod_asig from notas AS n right JOIN asignaturas AS a ON n.cod_asig = a.cod_asig and n.cod_usu = ? WHERE n.cod_usu is null";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$cod_alu]);
+            $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $conn = null;
+            return json_encode(array("usuario" => $res, "api_session" => $api_session));
+        }
+    } catch (PDOException $e) {
+        $conn = null;
+        return json_encode(array("error" => $e->getMessage()));
+    }
+}
+function quitarNota($api_session, $cod_alu, $cod_asig)
+{
+    try {
+        session_name("api_func");
+        session_id($api_session);
+        session_start();
+        if (isset($_SESSION["usuario"]) && $_SESSION["api_session"] == $api_session) {
+            $conn = createConn();
+            $sql = "DELETE from notas where cod_usu = ? and cod_asig = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$cod_alu, $cod_asig]);
+            $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $conn = null;
+            return json_encode(array("usuario" => $res, "api_session" => $api_session));
+        }
+    } catch (PDOException $e) {
+        $conn = null;
+        return json_encode(array("error" => $e->getMessage()));
+    }
+}
+function ponerNota($api_session, $cod_alu, $cod_asig)
+{
+    try {
+        session_name("api_func");
+        session_id($api_session);
+        session_start();
+        if (isset($_SESSION["usuario"]) && $_SESSION["api_session"] == $api_session) {
+            $conn = createConn();
+            $sql = "INSERT INTO notas (cod_asig,cod_usu,nota) values (?,?,0)";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$cod_asig, $cod_alu]);
+            $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $conn = null;
+            return json_encode(array("usuario" => $res, "api_session" => $api_session));
+        }
+    } catch (PDOException $e) {
+        $conn = null;
+        return json_encode(array("error" => $e->getMessage()));
+    }
+}
+function cambiarNota($api_session, $cod_alu, $cod_asig, $nota)
+{
+    try {
+        session_name("api_func");
+        session_id($api_session);
+        session_start();
+        if (isset($_SESSION["usuario"]) && $_SESSION["api_session"] == $api_session) {
+            $conn = createConn();
+            $sql = "UPDATE notas set nota=? where cod_asig=? and cod_usu=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$nota, $cod_asig, $cod_alu]);
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $conn = null;
             return json_encode(array("usuario" => $res, "api_session" => $api_session));
