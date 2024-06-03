@@ -59,6 +59,15 @@ function logueado($api_session)
         return json_encode(array("error" => "no existe api_session"));
     }
 }
+function salir($api_session)
+{
+    session_name("api_func");
+    session_id($api_session);
+    session_start();
+    session_regenerate_id();
+    session_destroy();
+    return json_encode(array("log_out" => "Cerrada sesion en la API"));
+}
 //web
 function consumir_servicios_REST($url, $metodo, $datos = null)
 {
