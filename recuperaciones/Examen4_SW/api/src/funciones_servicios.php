@@ -1,18 +1,13 @@
 <?php
 require "config_bd.php";
-
-function conexion_pdo()
+function createConn()
 {
     try {
         $conexion = new PDO("mysql:host=" . SERVIDOR_BD . ";dbname=" . NOMBRE_BD, USUARIO_BD, CLAVE_BD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
-
-        $respuesta["mensaje"] = "Conexi&oacute;n a la BD realizada con &eacute;xito";
-
-        $conexion = null;
+        return $conexion;
     } catch (PDOException $e) {
-        $respuesta["error"] = "Imposible conectar:" . $e->getMessage();
+        echo "No ha podido crear conexion: " . $e->getMessage();
     }
-    return $respuesta;
 }
 function login($user, $pass)
 {
@@ -26,6 +21,7 @@ function login($user, $pass)
         if (count($res)) {
             session_name("api_func");
             session_start();
+            session_regenerate_id();
             $session_api = session_id();
             $_SESSION["usuario"] = $user;
             $_SESSION["clave"] = $pass;
@@ -51,6 +47,8 @@ function logueado($api_session)
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $conn = null;
             return json_encode(array("usuario" => $res, "api_session" => $api_session));
+        } else {
+            return json_encode(array("error" => "no tienes permisos para utilizar este api"));
         }
     } catch (PDOException $e) {
         $conn = null;
@@ -63,8 +61,9 @@ function salir($api_session)
     session_id($api_session);
     session_start();
     session_regenerate_id();
+    echo session_id();
     session_destroy();
-    return json_encode(array("logout" => "session cerrada"));
+    return json_encode(array("logout" => "session cerrada",session_id()));
 }
 function alumnos($api_session)
 {
@@ -74,12 +73,14 @@ function alumnos($api_session)
         session_start();
         if (isset($_SESSION["usuario"]) && $_SESSION["api_session"] == $api_session) {
             $conn = createConn();
-            $sql = "SELECT * from usuario where tipo='alumno'";
+            $sql = "SELECT * from usuarios where tipo='alumno'";
             $stmt = $conn->prepare($sql);
             $stmt->execute([]);
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $conn = null;
             return json_encode(array("usuario" => $res, "api_session" => $api_session));
+        } else {
+            return json_encode(array("error" => "no tienes permisos para utilizar este api"));
         }
     } catch (PDOException $e) {
         $conn = null;
@@ -99,7 +100,9 @@ function notasAlumno($api_session, $cod_alu)
             $stmt->execute([$cod_alu]);
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $conn = null;
-            return json_encode(array("usuario" => $res, "api_session" => $api_session));
+            return json_encode(array("notas" => $res, "api_session" => $api_session));
+        } else {
+            return json_encode(array("error" => "no tienes permisos para utilizar este api"));
         }
     } catch (PDOException $e) {
         $conn = null;
@@ -119,7 +122,9 @@ function notasNoEvalAlumno($api_session, $cod_alu)
             $stmt->execute([$cod_alu]);
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $conn = null;
-            return json_encode(array("usuario" => $res, "api_session" => $api_session));
+            return json_encode(array("notas" => $res, "api_session" => $api_session));
+        } else {
+            return json_encode(array("error" => "no tienes permisos para utilizar este api"));
         }
     } catch (PDOException $e) {
         $conn = null;
@@ -139,7 +144,9 @@ function quitarNota($api_session, $cod_alu, $cod_asig)
             $stmt->execute([$cod_alu, $cod_asig]);
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $conn = null;
-            return json_encode(array("usuario" => $res, "api_session" => $api_session));
+            return json_encode(array("resultado" => $res, "api_session" => $api_session));
+        } else {
+            return json_encode(array("error" => "no tienes permisos para utilizar este api"));
         }
     } catch (PDOException $e) {
         $conn = null;
@@ -159,7 +166,9 @@ function ponerNota($api_session, $cod_alu, $cod_asig)
             $stmt->execute([$cod_asig, $cod_alu]);
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $conn = null;
-            return json_encode(array("usuario" => $res, "api_session" => $api_session));
+            return json_encode(array("resultado" => $res, "api_session" => $api_session));
+        } else {
+            return json_encode(array("error" => "no tienes permisos para utilizar este api"));
         }
     } catch (PDOException $e) {
         $conn = null;
@@ -179,7 +188,9 @@ function cambiarNota($api_session, $cod_alu, $cod_asig, $nota)
             $stmt->execute([$nota, $cod_asig, $cod_alu]);
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $conn = null;
-            return json_encode(array("usuario" => $res, "api_session" => $api_session));
+            return json_encode(array("resultado" => $res, "api_session" => $api_session));
+        } else {
+            return json_encode(array("error" => "no tienes permisos para utilizar este api"));
         }
     } catch (PDOException $e) {
         $conn = null;
