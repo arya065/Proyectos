@@ -1,3 +1,28 @@
+<?php
+require "functions_clients.php";
+session_name("client_session");
+session_start();
+
+if (isset($_POST["enter"]) && $_POST["usuario"] != "" && $_POST["clave"] != "") {
+    $res = login($_POST["usuario"], $_POST["clave"]);
+
+    if ($res->usuario == []) {
+        session_destroy();
+        header("Location: index.php");
+    } else {
+        print_r($res->usuario[0]);
+        $_SESSION["usuario"] = $res->usuario[0]->usuario;
+        $_SESSION["cod_usu"] = $res->usuario[0]->cod_usu;
+        $_SESSION["api_session"] = $res->api_session;
+
+        if ($res->usuario[0]->tipo == "alumno") {
+            header("Location: views/student.php");
+        } else {
+            header("Location: views/prof.php");
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 

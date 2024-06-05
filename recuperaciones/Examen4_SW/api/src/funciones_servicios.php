@@ -60,10 +60,8 @@ function salir($api_session)
     session_name("api_func");
     session_id($api_session);
     session_start();
-    session_regenerate_id();
-    echo session_id();
     session_destroy();
-    return json_encode(array("logout" => "session cerrada",session_id()));
+    return json_encode(array("logout" => "session cerrada"));
 }
 function alumnos($api_session)
 {
@@ -95,7 +93,7 @@ function notasAlumno($api_session, $cod_alu)
         session_start();
         if (isset($_SESSION["usuario"]) && $_SESSION["api_session"] == $api_session) {
             $conn = createConn();
-            $sql = "SELECT u.cod_usu, u.usuario, a.cod_asig, n.nota FROM usuarios AS u JOIN notas AS n ON u.cod_usu = n.cod_usu JOIN asignaturas AS a ON n.cod_asig = a.cod_asig WHERE u.cod_usu = ?";
+            $sql = "SELECT u.cod_usu, u.usuario, a.denominacion, n.nota FROM usuarios AS u JOIN notas AS n ON u.cod_usu = n.cod_usu JOIN asignaturas AS a ON n.cod_asig = a.cod_asig WHERE u.cod_usu = ?";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$cod_alu]);
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -117,7 +115,7 @@ function notasNoEvalAlumno($api_session, $cod_alu)
         session_start();
         if (isset($_SESSION["usuario"]) && $_SESSION["api_session"] == $api_session) {
             $conn = createConn();
-            $sql = "SELECT n.cod_usu, a.cod_asig from notas AS n right JOIN asignaturas AS a ON n.cod_asig = a.cod_asig and n.cod_usu = ? WHERE n.cod_usu is null";
+            $sql = "SELECT n.cod_usu, a.cod_asig, a.denominacion from notas AS n right JOIN asignaturas AS a ON n.cod_asig = a.cod_asig and n.cod_usu = ? WHERE n.cod_usu is null";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$cod_alu]);
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);

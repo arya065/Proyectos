@@ -3,36 +3,36 @@
 require "src/funciones_servicios.php";
 require __DIR__ . '/Slim/autoload.php';
 
-define("API_SESSION", "1m5ekc8a9s1upu316k96fka2dhefmcmk");
 
 $app = new \Slim\App;
 
 $app->get('/login', function ($request) {
-    echo login("mperotr333", "123456");
+    echo login("masantos76", "123456");
+    // echo login($request->getParam("usuario"), $request->getParam("clave"));
 });
 $app->get('/logueado', function ($request) {
-    echo logueado(API_SESSION);
+    echo logueado($request->getParam("api_session"));
 });
 $app->get('/salir', function ($request) {
-    echo salir(API_SESSION);
+    echo salir($request->getParam("api_session"));
 });
 $app->get('/alumnos', function ($request) {
-    echo alumnos(API_SESSION);
+    echo alumnos($request->getParam("api_session"));
 });
-$app->get('/notasAlumno', function ($request) {
-    echo notasAlumno(API_SESSION, "1");
+$app->get('/notasAlumno/{cod_alu}', function ($request) {
+    echo notasAlumno($request->getParam("api_session"), $request->getAttribute("cod_alu"));
 });
-$app->get('/notasNoEvalAlumno', function ($request) {
-    echo notasNoEvalAlumno(API_SESSION, "1");
+$app->get('/notasNoEvalAlumno/{cod_alu}', function ($request) {
+    echo notasNoEvalAlumno($request->getParam("api_session"), $request->getAttribute("cod_alu"));
 });
-$app->get('/quitarNota', function ($request) {
-    echo quitarNota(API_SESSION, "1", "1");
+$app->get('/quitarNota/{cod_alu}', function ($request) {
+    echo quitarNota($request->getParam("api_session"), $request->getAttribute("cod_alu"), "1");
 });
-$app->get('/ponerNota', function ($request) {
-    echo ponerNota(API_SESSION, "1", "1");
+$app->get('/ponerNota/{cod_alu}', function ($request) {
+    echo ponerNota($request->getParam("api_session"), $request->getAttribute("cod_alu"), "1");
 });
-$app->get('/cambiarNota', function ($request) {
-    echo cambiarNota(API_SESSION, "1", "1", "5");
+$app->get('/cambiarNota/{cod_alu}', function ($request) {
+    echo cambiarNota($request->getParam("api_session"), $request->getAttribute("cod_alu"), "1", "5");
 });
 
 
