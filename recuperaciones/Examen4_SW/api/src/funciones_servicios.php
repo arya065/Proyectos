@@ -93,7 +93,7 @@ function notasAlumno($api_session, $cod_alu)
         session_start();
         if (isset($_SESSION["usuario"]) && $_SESSION["api_session"] == $api_session) {
             $conn = createConn();
-            $sql = "SELECT u.cod_usu, u.usuario, a.denominacion, n.nota FROM usuarios AS u JOIN notas AS n ON u.cod_usu = n.cod_usu JOIN asignaturas AS a ON n.cod_asig = a.cod_asig WHERE u.cod_usu = ?";
+            $sql = "SELECT u.cod_usu, u.usuario, a.denominacion, a.cod_asig, n.nota FROM usuarios AS u JOIN notas AS n ON u.cod_usu = n.cod_usu JOIN asignaturas AS a ON n.cod_asig = a.cod_asig WHERE u.cod_usu = ?";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$cod_alu]);
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);

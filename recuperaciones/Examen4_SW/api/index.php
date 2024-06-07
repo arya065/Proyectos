@@ -26,13 +26,13 @@ $app->get('/notasNoEvalAlumno/{cod_alu}', function ($request) {
     echo notasNoEvalAlumno($request->getParam("api_session"), $request->getAttribute("cod_alu"));
 });
 $app->get('/quitarNota/{cod_alu}', function ($request) {
-    echo quitarNota($request->getParam("api_session"), $request->getAttribute("cod_alu"), "1");
+    echo quitarNota($request->getParam("api_session"), $request->getAttribute("cod_alu"), $request->getParam("cod_asig"));
 });
 $app->get('/ponerNota/{cod_alu}', function ($request) {
-    echo ponerNota($request->getParam("api_session"), $request->getAttribute("cod_alu"), "1");
+    echo ponerNota($request->getParam("api_session"), $request->getAttribute("cod_alu"), $request->getParam("cod_asig"));
 });
 $app->get('/cambiarNota/{cod_alu}', function ($request) {
-    echo cambiarNota($request->getParam("api_session"), $request->getAttribute("cod_alu"), "1", "5");
+    echo cambiarNota($request->getParam("api_session"), $request->getAttribute("cod_alu"), $request->getParam("cod_asig"), $request->getParam("nota"));
 });
 
 
