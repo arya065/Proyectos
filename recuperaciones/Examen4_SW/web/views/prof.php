@@ -85,6 +85,7 @@ if (isset($_SESSION["mensaje"])) {
                     foreach ($alumnos->usuario as $key => $value) {
                         if ($_POST["alumno"] == json_encode(["cod" => $value->cod_usu, "usuario" => $value->nombre])) {
                             echo "<option value='" . json_encode(["cod" => $value->cod_usu, "usuario" => $value->nombre]) . "' selected>";
+                            $tmp_name = $value->nombre;
                         } else {
                             echo "<option value='" . json_encode(["cod" => $value->cod_usu, "usuario" => $value->nombre]) . "'>";
                         }
@@ -103,6 +104,7 @@ if (isset($_SESSION["mensaje"])) {
             $notasNoEval = notasNoEvalAlumno($_SESSION["api_session"], $_SESSION["alumno"]->cod);
             // print_r($notas->notas);
             echo "<p>Notas de Alumno <b>" . $_SESSION["alumno"]->usuario . "</b></p>";
+            echo "<h2>test tmp_name: '<b>" . $tmp_name . "</b>'</h2>";
             ?>
             <form action="prof.php" method="post">
                 <!-- Mostrar notas alumno -->
