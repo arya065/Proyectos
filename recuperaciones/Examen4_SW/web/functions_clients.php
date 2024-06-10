@@ -1,6 +1,7 @@
 <?php
 define("DIR_SERV", "http://localhost/Proyectos/recuperaciones/Examen4_SW/api");
 // define("DIR_SERV", "http://proyectos/recuperaciones/Examen4_SW/api");
+define("INACTIVE_TIME", 5 * 60);
 
 function consumir_servicios_REST($url, $metodo, $datos = null)
 {
@@ -103,4 +104,12 @@ function cambiarNota($api_session, $cod_alu, $cod_asig, $nota)
         die("<p>Error consumiendo el servicio: " . $url . "<p>" . $response);
     }
     return $obj;
+}
+
+function timeout($last_active)
+{
+    if ($last_active + INACTIVE_TIME < time()) {
+        return true;
+    }
+    return false;
 }

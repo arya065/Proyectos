@@ -14,6 +14,7 @@ if (isset($_POST["enter"]) && $_POST["usuario"] != "" && $_POST["clave"] != "") 
         $_SESSION["usuario"] = $res->usuario[0]->usuario;
         $_SESSION["cod_usu"] = $res->usuario[0]->cod_usu;
         $_SESSION["api_session"] = $res->api_session;
+        $_SESSION["last_active"] = time();
 
         if ($res->usuario[0]->tipo == "alumno") {
             header("Location: views/student.php");
