@@ -3,7 +3,7 @@ require "../functions_clients.php";
 session_name("client_session");
 session_start();
 
-if (isset($_POST["exit"]) || timeout($_SESSION["last_active"])) {
+if (isset($_POST["exit"]) || timeout($_SESSION["last_active"]) || isset(logueado($_SESSION["api_session"])->error)) {
     salir($_SESSION["api_session"]);
     session_destroy();
     header("Location: ../index.php");

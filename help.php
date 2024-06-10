@@ -69,6 +69,7 @@ function salir($api_session)
     return json_encode(array("log_out" => "Cerrada sesion en la API"));
 }
 //web
+define("DIR_SERV", "http://localhost/Proyectos/recuperaciones/path/to/api");
 function consumir_servicios_REST($url, $metodo, $datos = null)
 {
     $llamada = curl_init();
@@ -91,10 +92,16 @@ function loginWeb($user, $pass)
     }
     return $obj;
 }
-function timeout($prev)
+function timeout($last_active)
 {
-    if (time() > $prev + 300) {
+    if (time() > $last_active + 5 * 60) {
         return true;
     }
     return false;
+}
+
+if (isset($_POST["exit"]) || timeout($_SESSION["last_active"]) || isset(logueado($_SESSION["api_session"])->error)) {
+    salir($_SESSION["api_session"]);
+    session_destroy();
+    header("Location: ../index.php");
 }
